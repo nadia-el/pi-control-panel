@@ -1,11 +1,15 @@
 namespace PiControlPanel.API.GraphQL
 {
+    using System;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Boxed.AspNetCore;
     using global::GraphQL.Server;
     using global::GraphQL.Server.Ui.Playground;
     using LightInject;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.Extensions.Configuration;
@@ -17,16 +21,10 @@ namespace PiControlPanel.API.GraphQL
     using PiControlPanel.Application.Services;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Contracts.Constants;
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Security.Claims;
-    using System.Text;
-    using System.Threading.Tasks;
-
+    
     /// <summary>
     /// Application startup class.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private readonly IConfiguration configuration;
@@ -135,16 +133,11 @@ namespace PiControlPanel.API.GraphQL
         /// <param name="env">IWebHostEnvironment.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
-            if (webHostEnvironment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/" });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
+            app.UseIf(
+                    !webHostEnvironment.IsProduction(),
+                    x => x
+                        .UseDeveloperExceptionPage()
+                        .UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/" }));
 
             // enables Access-Control-Allow-Origin (angular calling webapi methods)
             app.UseCors(builder => builder
@@ -157,10 +150,10 @@ namespace PiControlPanel.API.GraphQL
             app.UseWebSockets();
             app.UseGraphQLWebSockets<ControlPanelSchema>();
 
-            app.UseAuthentication()
+            app.UseForwardedHeaders()
+                .UseAuthentication()
+                .UseHealthChecks("/healthcheck")
                 .UseGraphQL<ControlPanelSchema>();
-
-            app.UseHealthChecks("/healthcheck");
         }
     }
 }
