@@ -16,6 +16,8 @@ namespace PiControlPanel.API.GraphQL
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
+    using NLog;
+    using NLog.Web;
     using PiControlPanel.API.GraphQL.Extensions;
     using PiControlPanel.API.GraphQL.Schemas;
     using PiControlPanel.Application.Services;
@@ -124,6 +126,7 @@ namespace PiControlPanel.API.GraphQL
             container.RegisterFrom<AppCompositionRoot>();
 
             container.RegisterSingleton<IConfiguration>(factory => configuration);
+            container.RegisterSingleton<ILogger>(factory => NLogBuilder.ConfigureNLog("Configuration/nlog.config").GetCurrentClassLogger());
         }
 
         /// <summary>

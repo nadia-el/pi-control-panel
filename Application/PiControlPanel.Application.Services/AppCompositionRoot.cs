@@ -1,8 +1,8 @@
 ﻿namespace PiControlPanel.Application.Services
 {
     using LightInject;
-    using PiControlPanel.Domain.Contracts.Infrastructure;
-    using Infra = PiControlPanel.Infrastructure.Persistence.Services;
+    using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
 
     /// <summary>
     ///     Implementation of LightInject's ICompositionRoot responsible for
@@ -16,8 +16,8 @@
         /// <param name="serviceRegistry">LightInject's service registry</param>
         public void Compose(IServiceRegistry serviceRegistry)
         {
-            serviceRegistry.RegisterScoped<IControlPanelService, Infra.ControlPanelService>();
-            serviceRegistry.RegisterScoped<IUserAccountService, Infra.UserAccountService>();
+            serviceRegistry.RegisterScoped<IControlPanelService, Infrastructure.OnDemand.Services.ControlPanelService>();
+            serviceRegistry.RegisterScoped<IUserAccountService, Infrastructure.Persistence.Services.UserAccountService>();
         }
     }
 }

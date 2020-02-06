@@ -1,6 +1,6 @@
 ﻿namespace PiControlPanel.Infrastructure.Persistence.Services
 {
-    using PiControlPanel.Domain.Contracts.Infrastructure;
+    using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
     using PiControlPanel.Domain.Models;
     using System.Threading.Tasks;
 

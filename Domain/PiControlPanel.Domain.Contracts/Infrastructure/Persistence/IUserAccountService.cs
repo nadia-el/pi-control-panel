@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.Domain.Contracts.Infrastructure
+﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence
 {
     using PiControlPanel.Domain.Models;
     using System;
