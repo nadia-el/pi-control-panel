@@ -1,5 +1,8 @@
 ﻿namespace PiControlPanel.Infrastructure.OnDemand.Services
 {
+    using System;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
@@ -8,23 +11,43 @@
     
     public class ControlPanelService : IControlPanelService
     {
+        private readonly ISubject<Hardware> hardwareSubject;
         private readonly ILogger logger;
 
-        public ControlPanelService(ILogger logger)
+        public ControlPanelService(ISubject<Hardware> hardwareSubject, ILogger logger)
         {
+            this.hardwareSubject = hardwareSubject;
             this.logger = logger;
         }
 
         public Task<Hardware> GetHardwareAsync(BusinessContext context)
         {
             logger.Info("Infra layer -> GetHardwareAsync");
-            return Task.FromResult(new Hardware()
+            var hardware = this.GetHardware();
+            return Task.FromResult(hardware);
+        }
+
+        public void PublishHardware()
+        {
+            logger.Info("Infra layer -> PublishHardware");
+            var hardware = this.GetHardware();
+            this.hardwareSubject.OnNext(hardware);
+        }
+
+        public IObservable<Hardware> GetHardwareObservable(BusinessContext context)
+        {
+            return this.hardwareSubject.AsObservable();
+        }
+
+        private Hardware GetHardware()
+        {
+            return new Hardware()
             {
                 Cpu = new Cpu()
                 {
                     Temperature = GetTemperature()
                 }
-            });
+            };
         }
 
         private double GetTemperature()

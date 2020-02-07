@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Application.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.Persistence", "Infrastructure\PiControlPanel.Infrastructure.Persistence\PiControlPanel.Infrastructure.Persistence.csproj", "{FE854AD5-80E2-46FD-ABDE-C698F72CEBD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiControlPanel.Infrastructure.OnDemand", "Infrastructure\PiControlPanel.Infrastructure.OnDemand\PiControlPanel.Infrastructure.OnDemand.csproj", "{7B6BA491-E08D-4A29-8C6B-21FC0E565F20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.OnDemand", "Infrastructure\PiControlPanel.Infrastructure.OnDemand\PiControlPanel.Infrastructure.OnDemand.csproj", "{7B6BA491-E08D-4A29-8C6B-21FC0E565F20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiControlPanel.Application.BackgroundServices", "Application\PiControlPanel.Application.BackgroundServices\PiControlPanel.Application.BackgroundServices.csproj", "{6AC5DEF7-EB06-449D-861D-23D4AC201479}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{7B6BA491-E08D-4A29-8C6B-21FC0E565F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B6BA491-E08D-4A29-8C6B-21FC0E565F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B6BA491-E08D-4A29-8C6B-21FC0E565F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC5DEF7-EB06-449D-861D-23D4AC201479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC5DEF7-EB06-449D-861D-23D4AC201479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC5DEF7-EB06-449D-861D-23D4AC201479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC5DEF7-EB06-449D-861D-23D4AC201479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{7B78B461-6866-46A9-BD89-60DA06FAE882} = {394BF366-1BFB-4BC9-BE9A-61DFB1E98EEB}
 		{FE854AD5-80E2-46FD-ABDE-C698F72CEBD0} = {A9C7A4A7-6C4E-4F75-98E4-F3F89D766073}
 		{7B6BA491-E08D-4A29-8C6B-21FC0E565F20} = {A9C7A4A7-6C4E-4F75-98E4-F3F89D766073}
+		{6AC5DEF7-EB06-449D-861D-23D4AC201479} = {394BF366-1BFB-4BC9-BE9A-61DFB1E98EEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98CB8066-E593-4DFF-9EA8-9BB8DB364288}

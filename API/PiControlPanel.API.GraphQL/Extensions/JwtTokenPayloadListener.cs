@@ -9,11 +9,11 @@
 
     public class JwtTokenPayloadListener : IOperationMessageListener
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public JwtTokenPayloadListener(IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public Task BeforeHandleAsync(MessageHandlingContext context)
@@ -27,11 +27,11 @@
                 {
                     token = token.Replace("Bearer ", string.Empty);
                     var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-                    _httpContextAccessor.HttpContext.User =
+                    this.httpContextAccessor.HttpContext.User =
                         new ClaimsPrincipal(new ClaimsIdentity(jwtSecurityToken.Claims));
                 }
             }
-            var user = _httpContextAccessor.HttpContext.User;
+            var user = this.httpContextAccessor.HttpContext.User;
             context.Properties["GraphQLUserContext"] = new GraphQLUserContext() { User = user };
             return Task.FromResult(true);
         }

@@ -3,6 +3,8 @@
     using LightInject;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
+    using PiControlPanel.Domain.Models;
+    using System.Reactive.Subjects;
 
     /// <summary>
     ///     Implementation of LightInject's ICompositionRoot responsible for
@@ -18,6 +20,7 @@
         {
             serviceRegistry.RegisterScoped<IControlPanelService, Infrastructure.OnDemand.Services.ControlPanelService>();
             serviceRegistry.RegisterScoped<IUserAccountService, Infrastructure.Persistence.Services.UserAccountService>();
+            serviceRegistry.RegisterSingleton<ISubject<Hardware>>(factory => new ReplaySubject<Hardware>(1));
         }
     }
 }

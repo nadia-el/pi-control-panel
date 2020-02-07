@@ -37,7 +37,7 @@
                 // Add GraphQL data loader to reduce the number of calls to our repository.
                 .AddDataLoader()
                 .Services
-                .AddTransient<IOperationMessageListener, JwtTokenPayloadListener>()
+                //.AddTransient<IOperationMessageListener, JwtTokenPayloadListener>() //TODO uncomment to get context for subscriptions
                 .AddTransient(typeof(IGraphQLExecuter<>), typeof(InstrumentingGraphQLExecutor<>));
 
         public static IServiceContainer AddGraphQLServicesDependency(this IServiceContainer container)
@@ -50,8 +50,8 @@
 
             container.RegisterScoped<ControlPanelQuery>();
             container.RegisterScoped<HardwareType>();
-            //container.RegisterScoped<PiControlPanelMutation>();
-            //container.RegisterScoped<PiControlPanelSubscription>();
+            //container.RegisterScoped<ControlPanelMutation>();
+            container.RegisterScoped<ControlPanelSubscription>();
             container.RegisterScoped<ControlPanelSchema>();
 
             return container;

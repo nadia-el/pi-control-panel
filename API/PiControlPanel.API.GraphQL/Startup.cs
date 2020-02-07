@@ -20,6 +20,7 @@ namespace PiControlPanel.API.GraphQL
     using NLog.Web;
     using PiControlPanel.API.GraphQL.Extensions;
     using PiControlPanel.API.GraphQL.Schemas;
+    using PiControlPanel.Application.BackgroundServices;
     using PiControlPanel.Application.Services;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Contracts.Constants;
@@ -110,6 +111,8 @@ namespace PiControlPanel.API.GraphQL
             {
                 options.AllowSynchronousIO = true;
             });
+
+            services.AddHostedService<HardwareWorker>();
         }
 
         /// <summary>
