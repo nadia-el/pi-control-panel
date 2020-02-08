@@ -29,5 +29,11 @@
             logger.Info("Application layer -> GetHardwareObservable");
             return onDemandService.GetHardwareObservable(context);
         }
+
+        public Task<bool> ShutdownAsync(BusinessContext context)
+        {
+            logger.Info("Application layer -> ShutdownAsync");
+            return onDemandService.ShutdownAsync(context);
+        }
     }
 }

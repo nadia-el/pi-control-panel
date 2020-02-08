@@ -50,7 +50,7 @@
 
             container.RegisterScoped<ControlPanelQuery>();
             container.RegisterScoped<HardwareType>();
-            //container.RegisterScoped<ControlPanelMutation>();
+            container.RegisterScoped<ControlPanelMutation>();
             container.RegisterScoped<ControlPanelSubscription>();
             container.RegisterScoped<ControlPanelSchema>();
 

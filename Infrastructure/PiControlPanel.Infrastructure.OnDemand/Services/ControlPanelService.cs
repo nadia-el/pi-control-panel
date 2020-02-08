@@ -39,6 +39,13 @@
             return this.hardwareSubject.AsObservable();
         }
 
+        public Task<bool> ShutdownAsync(BusinessContext context)
+        {
+            var result = Constants.ShutdownCommand.Bash();
+            logger.Debug($"Result of ShutdownAsync from command: '{result}'");
+            return Task.FromResult(true);
+        }
+
         private Hardware GetHardware()
         {
             return new Hardware()
@@ -53,7 +60,7 @@
         private double GetTemperature()
         {
             var result = Constants.TemperatureCommand.Bash();
-            logger.Debug($"GetTemperature from command: '{result}'");
+            logger.Debug($"Result of GetTemperature from command: '{result}'");
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");
             double temperature;

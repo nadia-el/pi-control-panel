@@ -9,5 +9,7 @@
         Task<Hardware> GetHardwareAsync(BusinessContext context);
 
         IObservable<Hardware> GetHardwareObservable(BusinessContext context);
+
+        Task<bool> ShutdownAsync(BusinessContext context);
     }
 }

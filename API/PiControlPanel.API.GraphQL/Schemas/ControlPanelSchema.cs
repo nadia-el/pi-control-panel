@@ -9,7 +9,7 @@
             : base(dependencyResolver)
         {
             Query = dependencyResolver.Resolve<ControlPanelQuery>();
-            //Mutation = dependencyResolver.Resolve<PiControlPanelMutation>();
+            Mutation = dependencyResolver.Resolve<ControlPanelMutation>();
             Subscription = dependencyResolver.Resolve<ControlPanelSubscription>();
         }
     }
