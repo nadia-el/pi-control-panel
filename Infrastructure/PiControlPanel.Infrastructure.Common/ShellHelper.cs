@@ -1,5 +1,6 @@
-﻿namespace PiControlPanel.Infrastructure.OnDemand.Utils
+﻿namespace PiControlPanel.Infrastructure.Common
 {
+    using System;
     using System.Diagnostics;
 
     public static class ShellHelper
@@ -16,13 +17,14 @@
                     Arguments = $"-c \"{escapedArgs}\"",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
+                    CreateNoWindow = true
                 }
             };
             process.Start();
             string result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-            return result;
+
+            return result == null ? string.Empty : result.TrimEnd(Environment.NewLine.ToCharArray());
         }
     }
 }

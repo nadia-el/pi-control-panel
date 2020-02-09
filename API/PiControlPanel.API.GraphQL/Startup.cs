@@ -92,10 +92,15 @@ namespace PiControlPanel.API.GraphQL
 
             services.AddGraphQLAuth(settings =>
             {
-                settings.AddPolicy(AuthorizationPolicyName.Authenticated,
-                    p => p.RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString }));
-                settings.AddPolicy(AuthorizationPolicyName.Individual,
-                    p => p.RequireClaim(ClaimTypes.Role, new string[] { Roles.Individual }));
+                settings.AddPolicy(AuthorizationPolicyName.AuthenticatedPolicy,
+                    p => p
+                        .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
+                        .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString }));
+                settings.AddPolicy(AuthorizationPolicyName.IndividualPolicy,
+                    p => p
+                        .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
+                        .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString })
+                        .RequireClaim(ClaimTypes.Role, new string[] { Roles.Individual }));
             });
 
             services.AddHealthChecks();
@@ -123,6 +128,7 @@ namespace PiControlPanel.API.GraphQL
         {
             container.AddGraphQLServicesDependency();
 
+            container.RegisterScoped<ISecurityService, SecurityService>();
             container.RegisterScoped<IControlPanelService, ControlPanelService>();
 
             //Registers all services required for the Application layer

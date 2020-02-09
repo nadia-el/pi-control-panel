@@ -2,8 +2,8 @@
 {
     public static class CustomClaimTypes
     {
-        public static string UserId = "UserId";
-        public static string Username = "Username";
-        public static string IsAnonymous = "IsAnonymous";
+        public const string Username = "Username";
+        public const string IsAnonymous = "IsAnonymous";
+        public const string IsAuthenticated = "IsAuthenticated";
     }
 }

@@ -37,7 +37,7 @@
                 // Add GraphQL data loader to reduce the number of calls to our repository.
                 .AddDataLoader()
                 .Services
-                //.AddTransient<IOperationMessageListener, JwtTokenPayloadListener>() //TODO uncomment to get context for subscriptions
+                .AddTransient<IOperationMessageListener, JwtTokenPayloadListener>()
                 .AddTransient(typeof(IGraphQLExecuter<>), typeof(InstrumentingGraphQLExecutor<>));
 
         public static IServiceContainer AddGraphQLServicesDependency(this IServiceContainer container)

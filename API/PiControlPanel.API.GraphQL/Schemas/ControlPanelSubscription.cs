@@ -21,10 +21,10 @@
                 },
                 subscribe: context =>
                 {
-                    //MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
-                    //GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
-                    //var businessContext = graphQLUserContext.GetBusinessContext();
-                    BusinessContext businessContext = null;
+                    logger.Info("Hardware subscription request");
+                    MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
+                    GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
+                    var businessContext = graphQLUserContext.GetBusinessContext();
 
                     return controlPanelService.GetHardwareObservable(businessContext);
                 });
