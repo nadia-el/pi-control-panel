@@ -50,7 +50,7 @@
             //if (!parsedLoginInfo[1].Equals(hashedPassword))
             if (!string.Equals(parsedLoginInfo[1], hashedPassword, StringComparison.InvariantCultureIgnoreCase))
             {
-                logger.Error($"Hashed password --{hashedPassword}-- different from existing hashed password --{parsedLoginInfo[1]}--");
+                logger.Error($"Hashed password {hashedPassword} different from existing hashed password {parsedLoginInfo[1]}");
                 return Task.FromResult(false);
             }
 
