@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Types.Input
+﻿namespace PiControlPanel.Api.GraphQL.Types.Input
 {
     using global::GraphQL.Types;
     using PiControlPanel.Domain.Models;

@@ -1,4 +1,4 @@
-namespace PiControlPanel.API.GraphQL
+namespace PiControlPanel.Api.GraphQL
 {
     using System;
     using System.Security.Claims;
@@ -18,8 +18,8 @@ namespace PiControlPanel.API.GraphQL
     using Microsoft.IdentityModel.Tokens;
     using NLog;
     using NLog.Web;
-    using PiControlPanel.API.GraphQL.Extensions;
-    using PiControlPanel.API.GraphQL.Schemas;
+    using PiControlPanel.Api.GraphQL.Extensions;
+    using PiControlPanel.Api.GraphQL.Schemas;
     using PiControlPanel.Application.BackgroundServices;
     using PiControlPanel.Application.Services;
     using PiControlPanel.Domain.Contracts.Application;

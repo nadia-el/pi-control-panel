@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Extensions
+﻿namespace PiControlPanel.Api.GraphQL.Extensions
 {
     using global::GraphQL;
     using global::GraphQL.Execution;

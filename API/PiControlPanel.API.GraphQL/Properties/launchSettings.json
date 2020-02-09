@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PiControlPanel.API.GraphQL": {
+    "PiControlPanel.Api.GraphQL": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

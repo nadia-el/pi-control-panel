@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Extensions
+﻿namespace PiControlPanel.Api.GraphQL.Extensions
 {
     using System.Security.Claims;
     using global::GraphQL.Authorization;

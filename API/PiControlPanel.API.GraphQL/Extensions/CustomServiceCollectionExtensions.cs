@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Extensions
+﻿namespace PiControlPanel.Api.GraphQL.Extensions
 {
     using global::GraphQL;
     using global::GraphQL.Http;
@@ -9,8 +9,8 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using PiControlPanel.API.GraphQL.Schemas;
-    using PiControlPanel.API.GraphQL.Types;
+    using PiControlPanel.Api.GraphQL.Schemas;
+    using PiControlPanel.Api.GraphQL.Types;
 
     public static class CustomServiceCollectionExtensions
     {

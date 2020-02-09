@@ -1,4 +1,4 @@
-namespace PiControlPanel.API.GraphQL
+namespace PiControlPanel.Api.GraphQL
 {
     using System;
     using System.IO;
@@ -12,7 +12,7 @@ namespace PiControlPanel.API.GraphQL
     using Microsoft.Extensions.Hosting;
     using NLog;
     using NLog.Web;
-    using PiControlPanel.API.GraphQL.Options;
+    using PiControlPanel.Api.GraphQL.Options;
 
     public class Program
     {

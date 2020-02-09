@@ -1,8 +1,8 @@
-﻿namespace PiControlPanel.API.GraphQL.Types
+﻿namespace PiControlPanel.Api.GraphQL.Types
 {
     using global::GraphQL.Types;
     using NLog;
-    using PiControlPanel.API.GraphQL.Extensions;
+    using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
 
     public class HardwareType : ObjectGraphType

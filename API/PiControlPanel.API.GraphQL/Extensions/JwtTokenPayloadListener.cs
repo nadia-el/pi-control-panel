@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Extensions
+﻿namespace PiControlPanel.Api.GraphQL.Extensions
 {
     using global::GraphQL.Server.Transports.Subscriptions.Abstractions;
     using Microsoft.AspNetCore.Http;

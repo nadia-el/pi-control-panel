@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Options
+﻿namespace PiControlPanel.Api.GraphQL.Options
 {
     /// <summary>
     /// The dynamic response compression options for the application.

@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Options
+﻿namespace PiControlPanel.Api.GraphQL.Options
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Mvc;

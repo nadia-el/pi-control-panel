@@ -1,9 +1,9 @@
-﻿namespace PiControlPanel.API.GraphQL.Schemas
+﻿namespace PiControlPanel.Api.GraphQL.Schemas
 {
     using global::GraphQL.Authorization;
     using global::GraphQL.Types;
     using NLog;
-    using PiControlPanel.API.GraphQL.Extensions;
+    using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Contracts.Constants;
 

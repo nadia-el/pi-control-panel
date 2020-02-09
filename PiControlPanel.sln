@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.API.GraphQL", "API\PiControlPanel.API.GraphQL\PiControlPanel.API.GraphQL.csproj", "{263AE3BA-4172-4BFD-99CC-7BF02C9FB633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Api.GraphQL", "Api\PiControlPanel.Api.GraphQL\PiControlPanel.Api.GraphQL.csproj", "{263AE3BA-4172-4BFD-99CC-7BF02C9FB633}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{E12B36FC-E7E7-42B6-896C-B3CFF9E13AFD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{E12B36FC-E7E7-42B6-896C-B3CFF9E13AFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{394BF366-1BFB-4BC9-BE9A-61DFB1E98EEB}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Application.BackgroundServices", "Application\PiControlPanel.Application.BackgroundServices\PiControlPanel.Application.BackgroundServices.csproj", "{6AC5DEF7-EB06-449D-861D-23D4AC201479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiControlPanel.Infrastructure.Common", "Infrastructure\PiControlPanel.Infrastructure.Common\PiControlPanel.Infrastructure.Common.csproj", "{9BF012BD-A5AB-400B-9A20-BF4745EAB17F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.Common", "Infrastructure\PiControlPanel.Infrastructure.Common\PiControlPanel.Infrastructure.Common.csproj", "{9BF012BD-A5AB-400B-9A20-BF4745EAB17F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

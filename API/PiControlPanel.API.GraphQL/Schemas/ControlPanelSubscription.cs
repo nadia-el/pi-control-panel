@@ -1,11 +1,11 @@
-﻿namespace PiControlPanel.API.GraphQL.Schemas
+﻿namespace PiControlPanel.Api.GraphQL.Schemas
 {
     using global::GraphQL;
     using global::GraphQL.Server.Transports.Subscriptions.Abstractions;
     using global::GraphQL.Types;
     using NLog;
-    using PiControlPanel.API.GraphQL.Extensions;
-    using PiControlPanel.API.GraphQL.Types;
+    using PiControlPanel.Api.GraphQL.Extensions;
+    using PiControlPanel.Api.GraphQL.Types;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware;
 

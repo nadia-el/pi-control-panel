@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.API.GraphQL.Schemas
+﻿namespace PiControlPanel.Api.GraphQL.Schemas
 {
     using global::GraphQL;
     using global::GraphQL.Types;

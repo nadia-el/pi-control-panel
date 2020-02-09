@@ -54,15 +54,13 @@
                 string.IsNullOrWhiteSpace(userAccount.Username) ||
                 string.IsNullOrWhiteSpace(userAccount.Password))
             {
-                logger.Error("Missing user account information");
-                return null; // TODO: throw business error?
+                throw new BusinessException("Missing user account information");
             }
 
             var isUserAccountValid = await userAccountService.ValidateAsync(userAccount);
             if (!isUserAccountValid)
             {
-                logger.Error("Invalid user account");
-                return null; // TODO: throw business error?
+                throw new BusinessException("Invalid user account");
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
