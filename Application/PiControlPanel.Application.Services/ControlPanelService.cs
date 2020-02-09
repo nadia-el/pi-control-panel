@@ -5,6 +5,7 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models;
+    using PiControlPanel.Domain.Models.Hardware;
     using Infra = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
 
     public class ControlPanelService : IControlPanelService
@@ -18,16 +19,16 @@
             this.logger = logger;
         }
 
-        public Task<Hardware> GetHardwareAsync(BusinessContext context)
+        public Task<Cpu> GetCpuAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetHardwareAsync");
-            return onDemandService.GetHardwareAsync(context);
+            logger.Info("Application layer -> GetCpuAsync");
+            return onDemandService.GetCpuAsync(context);
         }
 
-        public IObservable<Hardware> GetHardwareObservable(BusinessContext context)
+        public IObservable<Cpu> GetCpuObservable(BusinessContext context)
         {
-            logger.Info("Application layer -> GetHardwareObservable");
-            return onDemandService.GetHardwareObservable(context);
+            logger.Info("Application layer -> GetCpuObservable");
+            return onDemandService.GetCpuObservable(context);
         }
 
         public Task<bool> ShutdownAsync(BusinessContext context)

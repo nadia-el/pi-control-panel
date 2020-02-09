@@ -7,36 +7,37 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Models;
+    using PiControlPanel.Domain.Models.Hardware;
     using PiControlPanel.Infrastructure.Common;
     
     public class ControlPanelService : IControlPanelService
     {
-        private readonly ISubject<Hardware> hardwareSubject;
+        private readonly ISubject<Cpu> cpuSubject;
         private readonly ILogger logger;
 
-        public ControlPanelService(ISubject<Hardware> hardwareSubject, ILogger logger)
+        public ControlPanelService(ISubject<Cpu> cpuSubject, ILogger logger)
         {
-            this.hardwareSubject = hardwareSubject;
+            this.cpuSubject = cpuSubject;
             this.logger = logger;
         }
 
-        public Task<Hardware> GetHardwareAsync(BusinessContext context)
+        public Task<Cpu> GetCpuAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetHardwareAsync");
-            var hardware = this.GetHardware();
-            return Task.FromResult(hardware);
+            logger.Info("Infra layer -> GetCpuAsync");
+            var cpu = this.GetCpu();
+            return Task.FromResult(cpu);
         }
 
-        public void PublishHardware()
+        public void PublishCpu()
         {
-            logger.Info("Infra layer -> PublishHardware");
-            var hardware = this.GetHardware();
-            this.hardwareSubject.OnNext(hardware);
+            logger.Info("Infra layer -> PublishCpu");
+            var cpu = this.GetCpu();
+            this.cpuSubject.OnNext(cpu);
         }
 
-        public IObservable<Hardware> GetHardwareObservable(BusinessContext context)
+        public IObservable<Cpu> GetCpuObservable(BusinessContext context)
         {
-            return this.hardwareSubject.AsObservable();
+            return this.cpuSubject.AsObservable();
         }
 
         public Task<bool> ShutdownAsync(BusinessContext context)
@@ -47,20 +48,18 @@
             return Task.FromResult(true);
         }
 
-        private Hardware GetHardware()
+        private Cpu GetCpu()
         {
-            return new Hardware()
+            return new Cpu()
             {
-                Cpu = new Cpu()
-                {
-                    Temperature = GetTemperature()
-                }
+                Temperature = GetTemperature(),
+                
             };
         }
 
         private double GetTemperature()
         {
-            var result = Constants.TemperatureCommand.Bash();
+            var result = Constants.MeasureTempCommand.Bash();
             logger.Debug($"Result of GetTemperature from command: '{result}'");
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");

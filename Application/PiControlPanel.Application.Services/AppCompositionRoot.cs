@@ -3,7 +3,7 @@
     using LightInject;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
-    using PiControlPanel.Domain.Models;
+    using PiControlPanel.Domain.Models.Hardware;
     using System.Reactive.Subjects;
 
     /// <summary>
@@ -20,7 +20,7 @@
         {
             serviceRegistry.RegisterScoped<IControlPanelService, Infrastructure.OnDemand.Services.ControlPanelService>();
             serviceRegistry.RegisterScoped<IUserAccountService, Infrastructure.Persistence.Services.UserAccountService>();
-            serviceRegistry.RegisterSingleton<ISubject<Hardware>>(factory => new ReplaySubject<Hardware>(1));
+            serviceRegistry.RegisterSingleton<ISubject<Cpu>>(factory => new ReplaySubject<Cpu>(1));
         }
     }
 }

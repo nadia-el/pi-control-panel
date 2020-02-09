@@ -23,8 +23,8 @@
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.Info($"Worker running at: {DateTimeOffset.Now}");
-                this.controlPanelService.PublishHardware();
-                await Task.Delay(1000, stoppingToken);
+                this.controlPanelService.PublishCpu();
+                await Task.Delay(5000, stoppingToken);
             }
         }
     }

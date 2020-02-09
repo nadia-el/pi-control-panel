@@ -7,26 +7,26 @@
     using PiControlPanel.API.GraphQL.Extensions;
     using PiControlPanel.API.GraphQL.Types;
     using PiControlPanel.Domain.Contracts.Application;
-    using PiControlPanel.Domain.Models;
+    using PiControlPanel.Domain.Models.Hardware;
 
     public class ControlPanelSubscription : ObjectGraphType
     {
         public ControlPanelSubscription(IControlPanelService controlPanelService, ILogger logger)
         {
-            FieldSubscribe<HardwareType>(
-                "Hardware",
+            FieldSubscribe<CpuType>(
+                "Cpu",
                 resolve: context =>
                 {
-                    return context.Source as Hardware;
+                    return context.Source as Cpu;
                 },
                 subscribe: context =>
                 {
-                    logger.Info("Hardware subscription request");
+                    logger.Info("Cpu subscription");
                     MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
                     GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return controlPanelService.GetHardwareObservable(businessContext);
+                    return controlPanelService.GetCpuObservable(businessContext);
                 });
         }
     }

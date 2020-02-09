@@ -17,7 +17,7 @@
                 "Shutdown",
                 resolve: async context =>
                 {
-                    logger.Info("Shutdown request");
+                    logger.Info("Shutdown mutation");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

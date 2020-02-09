@@ -3,14 +3,15 @@
     using System;
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models;
+    using PiControlPanel.Domain.Models.Hardware;
 
     public interface IControlPanelService
     {
-        Task<Hardware> GetHardwareAsync(BusinessContext context);
+        Task<Cpu> GetCpuAsync(BusinessContext context);
 
-        void PublishHardware();
+        void PublishCpu();
 
-        IObservable<Hardware> GetHardwareObservable(BusinessContext context);
+        IObservable<Cpu> GetCpuObservable(BusinessContext context);
 
         Task<bool> ShutdownAsync(BusinessContext context);
     }

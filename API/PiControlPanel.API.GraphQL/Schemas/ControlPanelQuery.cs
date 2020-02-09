@@ -12,8 +12,7 @@
 
     public class ControlPanelQuery : ObjectGraphType
     {
-        public ControlPanelQuery(ISecurityService securityService,
-            IControlPanelService controlPanelService, ILogger logger)
+        public ControlPanelQuery(ISecurityService securityService, ILogger logger)
         {
             FieldAsync<StringGraphType>(
                 "Login",
@@ -22,21 +21,23 @@
                 ),
                 resolve: async context =>
                 {
-                    logger.Info("Login request");
+                    logger.Info("Login query");
                     var userAccount = context.GetArgument<UserAccount>("userAccount");
 
                     return await securityService.GenerateJsonWebTokenAsync(userAccount);
                 });
 
-            FieldAsync<HardwareType>(
+            Field<HardwareType>(
                 "Hardware",
-                resolve: async context =>
+                resolve: context =>
                 {
-                    logger.Info("Hardware request");
+                    logger.Info("Hardware query");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await controlPanelService.GetHardwareAsync(businessContext);
+                    // Retuning empty object to make GraphQL resolve the HardwareType fields
+                    // https://graphql-dotnet.github.io/docs/getting-started/query-organization/
+                    return new { };
                 })
                 .AuthorizeWith(AuthorizationPolicyName.AuthenticatedPolicy);
         }
