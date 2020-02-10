@@ -6,6 +6,13 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj", "Api/PiControlPanel.Api.GraphQL/"]
+COPY ["Application/PiControlPanel.Application.BackgroundServices/PiControlPanel.Application.BackgroundServices.csproj", "Application/PiControlPanel.Application.BackgroundServices/"]
+COPY ["Application/PiControlPanel.Application.Services/PiControlPanel.Application.Services.csproj", "Application/PiControlPanel.Application.Services/"]
+COPY ["Domain/PiControlPanel.Domain.Contracts/PiControlPanel.Domain.Contracts.csproj", "Domain/PiControlPanel.Domain.Contracts/"]
+COPY ["Domain/PiControlPanel.Domain.Models/PiControlPanel.Domain.Models.csproj", "Domain/PiControlPanel.Domain.Models/"]
+COPY ["Infrastructure/PiControlPanel.Infrastructure.Common/PiControlPanel.Infrastructure.Common.csproj", "Infrastructure/PiControlPanel.Infrastructure.Common/"]
+COPY ["Infrastructure/PiControlPanel.Infrastructure.OnDemand/PiControlPanel.Infrastructure.OnDemand.csproj", "Infrastructure/PiControlPanel.Infrastructure.OnDemand/"]
+COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence/PiControlPanel.Infrastructure.Persistence.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence/"]
 RUN dotnet restore "Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj"
 COPY . .
 WORKDIR "/src/Api/PiControlPanel.Api.GraphQL"
