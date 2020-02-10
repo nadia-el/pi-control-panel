@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim-arm32v7 AS base
 WORKDIR /app
 EXPOSE 80
 
 # Build Stage
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster-arm32v7 AS build
 WORKDIR /src
 COPY ["Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj", "Api/PiControlPanel.Api.GraphQL/"]
 COPY ["Application/PiControlPanel.Application.BackgroundServices/PiControlPanel.Application.BackgroundServices.csproj", "Application/PiControlPanel.Application.BackgroundServices/"]
