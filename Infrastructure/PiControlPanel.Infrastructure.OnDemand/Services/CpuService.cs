@@ -25,7 +25,7 @@
         public Task<Cpu> GetAsync(BusinessContext context)
         {
             logger.Info("Infra layer -> GetAsync");
-            var cpu = this.GetGpu();
+            var cpu = this.GetCpu();
             return Task.FromResult(cpu);
         }
 
@@ -36,20 +36,20 @@
             return Task.FromResult(temperature);
         }
 
-        public void PublishTemperature()
+        public void PublishStatus()
         {
-            logger.Info("Infra layer -> PublishTemperature");
+            logger.Info("Infra layer -> PublishStatus");
             var temperature = this.GetTemperature();
             this.cpuSubject.OnNext(new Cpu() { Temperature = temperature });
         }
 
-        public IObservable<Cpu> GetCpuObservable(BusinessContext context)
+        public IObservable<Cpu> GetObservable(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetCpuObservable");
+            logger.Info("Infra layer -> GetObservable");
             return this.cpuSubject.AsObservable();
         }
 
-        private Cpu GetGpu()
+        private Cpu GetCpu()
         {
             var result = Constants.CatProcCpuInfoCommand.Bash();
             logger.Debug($"Result of CatProcCpuInfo from command: '{result}'");

@@ -31,10 +31,10 @@
             return onDemandService.GetTemperatureAsync(context);
         }
 
-        public IObservable<Cpu> GetCpuObservable(BusinessContext context)
+        public IObservable<Cpu> GetObservable(BusinessContext context)
         {
-            logger.Info("Application layer -> GetCpuObservable");
-            return onDemandService.GetCpuObservable(context);
+            logger.Info("Application layer -> GetObservable");
+            return onDemandService.GetObservable(context);
         }
     }
 }

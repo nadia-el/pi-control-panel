@@ -23,7 +23,7 @@
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.Info($"Worker running at: {DateTimeOffset.Now}");
-                this.cpuService.PublishTemperature();
+                this.cpuService.PublishStatus();
                 await Task.Delay(5000, stoppingToken);
             }
         }

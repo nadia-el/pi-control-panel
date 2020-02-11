@@ -11,8 +11,8 @@
 
         Task<double> GetTemperatureAsync(BusinessContext context);
 
-        void PublishTemperature();
+        void PublishStatus();
 
-        IObservable<Cpu> GetCpuObservable(BusinessContext context);
+        IObservable<Cpu> GetObservable(BusinessContext context);
     }
 }

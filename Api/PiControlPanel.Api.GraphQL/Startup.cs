@@ -1,6 +1,5 @@
 namespace PiControlPanel.Api.GraphQL
 {
-    using System;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -32,6 +31,7 @@ namespace PiControlPanel.Api.GraphQL
     {
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ILogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -42,6 +42,7 @@ namespace PiControlPanel.Api.GraphQL
         {
             this.configuration = configuration;
             this.webHostEnvironment = webHostEnvironment;
+            this.logger = NLogBuilder.ConfigureNLog("Configuration/nlog.config").GetCurrentClassLogger();
         }
 
         /// <summary>
@@ -78,12 +79,12 @@ namespace PiControlPanel.Api.GraphQL
                         {
                             OnAuthenticationFailed = context =>
                             {
-                                Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                                logger.Warn("OnAuthenticationFailed: " + context.Exception.Message);
                                 return Task.CompletedTask;
                             },
                             OnTokenValidated = context =>
                             {
-                                Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                                logger.Trace("OnTokenValidated: " + context.SecurityToken);
                                 return Task.CompletedTask;
                             }
                         };
@@ -131,12 +132,13 @@ namespace PiControlPanel.Api.GraphQL
             container.RegisterScoped<ISecurityService, SecurityService>();
             container.RegisterScoped<IControlPanelService, ControlPanelService>();
             container.RegisterScoped<ICpuService, CpuService>();
+            container.RegisterScoped<IChipsetService, ChipsetService>();
 
             //Registers all services required for the Application layer
             container.RegisterFrom<AppCompositionRoot>();
 
             container.RegisterSingleton<IConfiguration>(factory => configuration);
-            container.RegisterSingleton<ILogger>(factory => NLogBuilder.ConfigureNLog("Configuration/nlog.config").GetCurrentClassLogger());
+            container.RegisterSingleton<ILogger>(factory => logger);
         }
 
         /// <summary>
