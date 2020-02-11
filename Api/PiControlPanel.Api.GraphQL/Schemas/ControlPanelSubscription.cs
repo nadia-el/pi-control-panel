@@ -11,9 +11,9 @@
 
     public class ControlPanelSubscription : ObjectGraphType
     {
-        public ControlPanelSubscription(IControlPanelService controlPanelService, ILogger logger)
+        public ControlPanelSubscription(ICpuService cpuService, ILogger logger)
         {
-            FieldSubscribe<CpuType>(
+            FieldSubscribe<CpuTemperatureType>(
                 "Cpu",
                 resolve: context =>
                 {
@@ -26,7 +26,7 @@
                     GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return controlPanelService.GetCpuObservable(businessContext);
+                    return cpuService.GetCpuObservable(businessContext);
                 });
         }
     }

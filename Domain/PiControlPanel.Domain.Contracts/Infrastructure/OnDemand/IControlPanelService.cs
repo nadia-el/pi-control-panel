@@ -7,12 +7,6 @@
 
     public interface IControlPanelService
     {
-        Task<Cpu> GetCpuAsync(BusinessContext context);
-
-        void PublishCpu();
-
-        IObservable<Cpu> GetCpuObservable(BusinessContext context);
-
         Task<bool> ShutdownAsync(BusinessContext context);
     }
 }

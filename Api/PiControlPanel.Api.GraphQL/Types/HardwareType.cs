@@ -7,17 +7,17 @@
 
     public class HardwareType : ObjectGraphType
     {
-        public HardwareType(IControlPanelService controlPanelService, ILogger logger)
+        public HardwareType(ICpuService cpuService, ILogger logger)
         {
             Field<CpuType>()
                 .Name("Cpu")
                 .ResolveAsync(async context =>
                 {
-                    logger.Info("Cpu type");
+                    logger.Info("Cpu field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await controlPanelService.GetCpuAsync(businessContext);
+                    return await cpuService.GetAsync(businessContext);
                 });
         }
     }

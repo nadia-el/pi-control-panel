@@ -130,6 +130,7 @@ namespace PiControlPanel.Api.GraphQL
 
             container.RegisterScoped<ISecurityService, SecurityService>();
             container.RegisterScoped<IControlPanelService, ControlPanelService>();
+            container.RegisterScoped<ICpuService, CpuService>();
 
             //Registers all services required for the Application layer
             container.RegisterFrom<AppCompositionRoot>();

@@ -9,12 +9,12 @@
 
     public class HardwareWorker : BackgroundService
     {
-        private readonly IControlPanelService controlPanelService;
+        private readonly ICpuService cpuService;
         private readonly ILogger logger;
 
-        public HardwareWorker(IControlPanelService controlPanelService, ILogger logger)
+        public HardwareWorker(ICpuService cpuService, ILogger logger)
         {
-            this.controlPanelService = controlPanelService;
+            this.cpuService = cpuService;
             this.logger = logger;
         }
 
@@ -23,7 +23,7 @@
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.Info($"Worker running at: {DateTimeOffset.Now}");
-                this.controlPanelService.PublishCpu();
+                this.cpuService.PublishTemperature();
                 await Task.Delay(5000, stoppingToken);
             }
         }
