@@ -3,7 +3,7 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Cpu;
     using System;
     using System.Threading.Tasks;
     using Infra = PiControlPanel.Domain.Contracts.Infrastructure;
@@ -29,6 +29,18 @@
         {
             logger.Info("Application layer -> GetTemperatureAsync");
             return onDemandService.GetTemperatureAsync(context);
+        }
+
+        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context)
+        {
+            logger.Info("Application layer -> GetAverageLoadAsync");
+            return onDemandService.GetAverageLoadAsync(context);
+        }
+
+        public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)
+        {
+            logger.Info("Application layer -> GetRealTimeLoadAsync");
+            return onDemandService.GetRealTimeLoadAsync(context);
         }
 
         public IObservable<Cpu> GetObservable(BusinessContext context)

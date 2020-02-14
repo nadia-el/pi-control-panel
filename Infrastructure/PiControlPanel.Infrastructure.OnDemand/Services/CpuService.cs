@@ -4,11 +4,12 @@
     using System.Linq;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Models;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Cpu;
     using PiControlPanel.Infrastructure.Common;
 
     public class CpuService : ICpuService
@@ -34,6 +35,20 @@
             logger.Info("Infra layer -> GetTemperatureAsync");
             var temperature = this.GetTemperature();
             return Task.FromResult(temperature);
+        }
+
+        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context)
+        {
+            logger.Info("Infra layer -> GetAverageLoadAsync");
+            var averageLoad = this.GetAverageLoad();
+            return Task.FromResult(averageLoad);
+        }
+
+        public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)
+        {
+            logger.Info("Infra layer -> GetRealTimeLoadAsync");
+            var realTimeLoad = this.GetRealTimeLoad();
+            return Task.FromResult(realTimeLoad);
         }
 
         public void PublishStatus()
@@ -80,6 +95,39 @@
             }
             logger.Warn($"Could not parse temperature: '{temperatureResult}'");
             return 0.0;
+        }
+
+        private CpuAverageLoad GetAverageLoad()
+        {
+            var result = Constants.TopCommand.Bash();
+            logger.Debug($"Result of Top from command: '{result}'");
+            string[] lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+            var averageLoadInfo = lines.First(l => l.Contains("load average:"));
+            var regex = new Regex(@"load average: (?<lastMinute>\d+.\d{2}), (?<last5Minutes>\d+.\d{2}), (?<last15Minutes>\d+.\d{2})$");
+            var groups = regex.Match(averageLoadInfo).Groups;
+            return new CpuAverageLoad()
+            {
+                LastMinute = double.Parse(groups["lastMinute"].Value),
+                Last5Minutes = double.Parse(groups["last5Minutes"].Value),
+                Last15Minutes = double.Parse(groups["last15Minutes"].Value)
+            };
+        }
+
+        private CpuRealTimeLoad GetRealTimeLoad()
+        {
+            var result = Constants.TopCommand.Bash();
+            logger.Debug($"Result of Top from command: '{result}'");
+            string[] lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+            var realTimeLoadInfo = lines.First(l => l.StartsWith("%Cpu(s):"));
+            var regex = new Regex(@"^%Cpu\(s\):\s*(?<user>\d{1,3}.\d{1}) us,\s*(?<kernel>\d{1,3}.\d{1}) sy, .*$");
+            var groups = regex.Match(realTimeLoadInfo).Groups;
+            return new CpuRealTimeLoad()
+            {
+                User = double.Parse(groups["user"].Value),
+                Kernel = double.Parse(groups["kernel"].Value)
+            };
         }
     }
 }

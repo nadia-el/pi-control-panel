@@ -10,7 +10,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using PiControlPanel.Api.GraphQL.Schemas;
-    using PiControlPanel.Api.GraphQL.Types;
+    using PiControlPanel.Api.GraphQL.Types.Output;
 
     public static class CustomServiceCollectionExtensions
     {

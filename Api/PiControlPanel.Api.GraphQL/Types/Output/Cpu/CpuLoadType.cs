@@ -1,35 +1,33 @@
-﻿namespace PiControlPanel.Api.GraphQL.Types
+﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
 
-    public class HardwareType : ObjectGraphType
+    public class CpuLoadType : ObjectGraphType
     {
-        public HardwareType(ICpuService cpuService, IChipsetService chipsetService,
-            ILogger logger)
+        public CpuLoadType(ICpuService cpuService, ILogger logger)
         {
-            Field<CpuType>()
-                .Name("Cpu")
+            Field<CpuAverageLoadType>()
+                .Name("Average")
                 .ResolveAsync(async context =>
                 {
-                    logger.Info("Cpu field");
+                    logger.Info("Average Load field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await cpuService.GetAsync(businessContext);
+                    return await cpuService.GetAverageLoadAsync(businessContext);
                 });
-
-            Field<ChipsetType>()
-                .Name("Chipset")
+            Field<CpuRealTimeLoadType>()
+                .Name("RealTime")
                 .ResolveAsync(async context =>
                 {
-                    logger.Info("Chipset field");
+                    logger.Info("Real Time Load field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await chipsetService.GetAsync(businessContext);
+                    return await cpuService.GetRealTimeLoadAsync(businessContext);
                 });
         }
     }

@@ -4,7 +4,7 @@
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
-    using PiControlPanel.Api.GraphQL.Types;
+    using PiControlPanel.Api.GraphQL.Types.Output;
     using PiControlPanel.Api.GraphQL.Types.Input;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Contracts.Constants;

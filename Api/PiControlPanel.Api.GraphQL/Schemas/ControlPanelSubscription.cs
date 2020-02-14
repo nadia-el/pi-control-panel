@@ -5,9 +5,9 @@
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
-    using PiControlPanel.Api.GraphQL.Types;
+    using PiControlPanel.Api.GraphQL.Types.Output.Cpu;
     using PiControlPanel.Domain.Contracts.Application;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public class ControlPanelSubscription : ObjectGraphType
     {

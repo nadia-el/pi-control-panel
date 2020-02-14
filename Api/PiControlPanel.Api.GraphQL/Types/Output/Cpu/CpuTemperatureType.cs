@@ -1,7 +1,7 @@
-﻿namespace PiControlPanel.Api.GraphQL.Types
+﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
     using global::GraphQL.Types;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public class CpuTemperatureType : ObjectGraphType<Cpu>
     {
