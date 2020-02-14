@@ -37,10 +37,10 @@
             return Task.FromResult(temperature);
         }
 
-        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context)
+        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
         {
             logger.Info("Infra layer -> GetAverageLoadAsync");
-            var averageLoad = this.GetAverageLoad();
+            var averageLoad = this.GetAverageLoad(cores);
             return Task.FromResult(averageLoad);
         }
 
@@ -97,7 +97,7 @@
             return 0.0;
         }
 
-        private CpuAverageLoad GetAverageLoad()
+        private CpuAverageLoad GetAverageLoad(int cores)
         {
             var result = Constants.TopCommand.Bash();
             logger.Debug($"Result of Top from command: '{result}'");
@@ -108,9 +108,9 @@
             var groups = regex.Match(averageLoadInfo).Groups;
             return new CpuAverageLoad()
             {
-                LastMinute = double.Parse(groups["lastMinute"].Value),
-                Last5Minutes = double.Parse(groups["last5Minutes"].Value),
-                Last15Minutes = double.Parse(groups["last15Minutes"].Value)
+                LastMinute = (100 * double.Parse(groups["lastMinute"].Value)) / cores,
+                Last5Minutes = (100 * double.Parse(groups["last5Minutes"].Value)) / cores,
+                Last15Minutes = (100 * double.Parse(groups["last15Minutes"].Value)) / cores
             };
         }
 

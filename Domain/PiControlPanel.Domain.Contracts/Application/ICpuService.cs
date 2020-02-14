@@ -11,7 +11,7 @@
 
         Task<double> GetTemperatureAsync(BusinessContext context);
 
-        Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context);
+        Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores);
 
         Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context);
 

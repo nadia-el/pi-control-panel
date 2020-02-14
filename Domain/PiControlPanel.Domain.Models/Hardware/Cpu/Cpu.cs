@@ -8,6 +8,8 @@
 
         public string Model { get; set; }
 
-        public CpuLoad Load { get; set; }
+        public CpuAverageLoad AverageLoad { get; set; }
+
+        public CpuRealTimeLoad RealTimeLoad { get; set; }
     }
 }

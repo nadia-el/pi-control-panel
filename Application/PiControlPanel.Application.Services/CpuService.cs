@@ -31,10 +31,11 @@
             return onDemandService.GetTemperatureAsync(context);
         }
 
-        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context)
+        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
         {
             logger.Info("Application layer -> GetAverageLoadAsync");
-            return onDemandService.GetAverageLoadAsync(context);
+            logger.Debug($"Number of cores for average load calculation is {cores}.");
+            return onDemandService.GetAverageLoadAsync(context, cores);
         }
 
         public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)

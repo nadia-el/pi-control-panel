@@ -1,5 +1,6 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
+    using global::GraphQL.DataLoader;
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
@@ -8,20 +9,39 @@
 
     public class CpuType : ObjectGraphType<Cpu>
     {
-        public CpuType(ICpuService cpuService, ILogger logger)
+        public CpuType(IDataLoaderContextAccessor accessor, ICpuService cpuService,
+            ILogger logger)
         {
             Field(x => x.Cores);
             Field(x => x.Model);
-            Field<CpuLoadType>()
-                .Name("Load")
-                .Resolve(context =>
-                {
-                    logger.Info("Load field");
 
-                    // Retuning empty object to make GraphQL resolve the CpuLoadType fields
-                    // https://graphql-dotnet.github.io/docs/getting-started/query-organization/
-                    return new { };
+            Field<CpuAverageLoadType, CpuAverageLoad>()
+                .Name("AverageLoad")
+                .ResolveAsync(context =>
+                {
+                    logger.Info("Average Load field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    var cores = context.Source.Cores;
+                    var loader = accessor.Context.GetOrAddLoader(
+                        "GetAverageLoadAsync",
+                        () => cpuService.GetAverageLoadAsync(businessContext, cores));
+
+                    return loader.LoadAsync();
                 });
+
+            Field<CpuRealTimeLoadType>()
+                .Name("RealTimeLoad")
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("Real Time Load field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    return await cpuService.GetRealTimeLoadAsync(businessContext);
+                });
+
             Field<FloatGraphType>()
                 .Name("Temperature")
                 .ResolveAsync(async context =>
