@@ -56,5 +56,17 @@
 
             return Task.FromResult(true);
         }
+
+        public Task<bool> IsSuperUserAsync(UserAccount userAccount)
+        {
+            logger.Info("Infra layer -> IsSuperUserAsync");
+
+            var groupsCommand = string.Format(
+                Constants.GroupsCommand,
+                userAccount.Username);
+            var result = groupsCommand.Bash();
+            logger.Debug($"Result of Groups from command: '{result}'");
+            return Task.FromResult(result.Contains(" sudo "));
+        }
     }
 }

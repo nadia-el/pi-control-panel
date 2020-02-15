@@ -96,12 +96,13 @@ namespace PiControlPanel.Api.GraphQL
                 settings.AddPolicy(AuthorizationPolicyName.AuthenticatedPolicy,
                     p => p
                         .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
-                        .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString }));
-                settings.AddPolicy(AuthorizationPolicyName.IndividualPolicy,
+                        .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString })
+                        .RequireClaim(ClaimTypes.Role, new string[] { Roles.User }));
+                settings.AddPolicy(AuthorizationPolicyName.SuperUserPolicy,
                     p => p
                         .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
                         .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString })
-                        .RequireClaim(ClaimTypes.Role, new string[] { Roles.Individual }));
+                        .RequireClaim(ClaimTypes.Role, new string[] { Roles.SuperUser }));
             });
 
             services.AddHealthChecks();

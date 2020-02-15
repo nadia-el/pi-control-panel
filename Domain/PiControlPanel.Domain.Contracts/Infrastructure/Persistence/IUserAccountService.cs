@@ -7,5 +7,7 @@
     public interface IUserAccountService
     {
         Task<bool> ValidateAsync(UserAccount userAccount);
+
+        Task<bool> IsSuperUserAsync(UserAccount userAccount);
     }
 }

@@ -27,27 +27,6 @@
             this.logger = logger;
         }
 
-        public ClaimsIdentity CreateClaimsIdentity(UserAccount userAccount)
-        {
-            logger.Info("Application layer -> CreateClaimsIdentity");
-            var identity = new ClaimsIdentity();
-
-            if (userAccount != null)
-            {
-                logger.Info($"Creating claims for user {userAccount.Username}");
-                identity.AddClaim(new Claim(CustomClaimTypes.Username, userAccount.Username));
-                identity.AddClaim(new Claim(CustomClaimTypes.IsAnonymous, false.ToString()));
-                identity.AddClaim(new Claim(CustomClaimTypes.IsAuthenticated, true.ToString()));
-                identity.AddClaim(new Claim(ClaimTypes.Role, Roles.Individual));
-            }
-            else
-            {
-                identity.AddClaim(new Claim(CustomClaimTypes.IsAnonymous, true.ToString()));
-            }
-
-            return identity;
-        }
-
         public async Task<string> GenerateJsonWebTokenAsync(UserAccount userAccount)
         {
             if (userAccount == null ||
@@ -65,14 +44,42 @@
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claimsIdentity = await this.CreateClaimsIdentityAsync(userAccount);
 
             var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
                 configuration["Jwt:Audience"],
-                CreateClaimsIdentity(userAccount).Claims,
+                claimsIdentity.Claims,
                 expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async Task<ClaimsIdentity> CreateClaimsIdentityAsync(UserAccount userAccount)
+        {
+            logger.Info("Application layer -> CreateClaimsIdentityAsync");
+            var identity = new ClaimsIdentity();
+
+            if (userAccount != null)
+            {
+                logger.Info($"Creating claims for user {userAccount.Username}");
+                identity.AddClaim(new Claim(CustomClaimTypes.Username, userAccount.Username));
+                identity.AddClaim(new Claim(CustomClaimTypes.IsAnonymous, false.ToString()));
+                identity.AddClaim(new Claim(CustomClaimTypes.IsAuthenticated, true.ToString()));
+                identity.AddClaim(new Claim(ClaimTypes.Role, Roles.User));
+
+                var isSuperUser = await this.userAccountService.IsSuperUserAsync(userAccount);
+                if (isSuperUser)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, Roles.SuperUser));
+                }
+            }
+            else
+            {
+                identity.AddClaim(new Claim(CustomClaimTypes.IsAnonymous, true.ToString()));
+            }
+
+            return identity;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public static class AuthorizationPolicyName
     {
-        public const string IndividualPolicy = nameof(IndividualPolicy);
+        public const string SuperUserPolicy = nameof(SuperUserPolicy);
         public const string AuthenticatedPolicy = nameof(AuthenticatedPolicy);
     }
 }

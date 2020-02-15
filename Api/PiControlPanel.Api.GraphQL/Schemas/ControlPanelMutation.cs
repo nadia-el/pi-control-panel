@@ -23,7 +23,8 @@
 
                     await controlPanelService.ShutdownAsync(businessContext);
                     return true;
-                });
+                })
+                .AuthorizeWith(AuthorizationPolicyName.SuperUserPolicy);
         }
     }
 }

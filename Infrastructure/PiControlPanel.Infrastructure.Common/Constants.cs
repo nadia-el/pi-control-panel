@@ -12,5 +12,6 @@
         public const string GetMemGpuCommand = "vcgencmd get_mem gpu";
         public const string TopCommand = "top -bc -n 1";
         public const string HostnamectlCommand = "hostnamectl";
+        public const string GroupsCommand = "groups {0}";
     }
 }

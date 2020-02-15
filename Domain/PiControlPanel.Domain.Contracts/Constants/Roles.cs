@@ -2,6 +2,7 @@
 {
     public static class Roles
     {
-        public static string Individual = nameof(Individual);
+        public static string User = nameof(User);
+        public static string SuperUser = nameof(SuperUser);
     }
 }
