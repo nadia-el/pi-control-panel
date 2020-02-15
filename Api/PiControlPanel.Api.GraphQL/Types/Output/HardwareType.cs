@@ -9,7 +9,7 @@
     public class HardwareType : ObjectGraphType
     {
         public HardwareType(IChipsetService chipsetService, ICpuService cpuService,
-            IMemoryService memoryService, IGpuService gpuService,
+            IMemoryService memoryService, IGpuService gpuService, IDiskService diskService,
             ILogger logger)
         {
             Field<ChipsetType>()
@@ -54,6 +54,17 @@
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
                     return await gpuService.GetAsync(businessContext);
+                });
+
+            Field<DiskType>()
+                .Name("Disk")
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("Disk field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    return await diskService.GetAsync(businessContext);
                 });
         }
     }

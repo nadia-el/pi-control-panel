@@ -135,6 +135,7 @@ namespace PiControlPanel.Api.GraphQL
             container.RegisterScoped<ICpuService, CpuService>();
             container.RegisterScoped<IMemoryService, MemoryService>();
             container.RegisterScoped<IGpuService, GpuService>();
+            container.RegisterScoped<IDiskService, DiskService>();
 
             //Registers all services required for the Application layer
             container.RegisterFrom<AppCompositionRoot>();
@@ -147,7 +148,7 @@ namespace PiControlPanel.Api.GraphQL
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
         /// <param name="app">IApplicationBuilder.</param>
-        /// <param name="env">IWebHostEnvironment.</param>
+        /// <param name="webHostEnvironment">IWebHostEnvironment.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
             app.UseIf(
