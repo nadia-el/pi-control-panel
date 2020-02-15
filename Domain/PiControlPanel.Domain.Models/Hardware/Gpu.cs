@@ -2,6 +2,6 @@
 {
     public class Gpu
     {
-        public Memory Memory { get; set; }
+        public int Memory { get; set; }
     }
 }

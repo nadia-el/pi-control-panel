@@ -8,9 +8,20 @@
 
     public class HardwareType : ObjectGraphType
     {
-        public HardwareType(ICpuService cpuService, IChipsetService chipsetService,
-            ILogger logger)
+        public HardwareType(IChipsetService chipsetService, ICpuService cpuService,
+            IMemoryService memoryService, ILogger logger)
         {
+            Field<ChipsetType>()
+                .Name("Chipset")
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("Chipset field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    return await chipsetService.GetAsync(businessContext);
+                });
+
             Field<CpuType>()
                 .Name("Cpu")
                 .ResolveAsync(async context =>
@@ -22,15 +33,15 @@
                     return await cpuService.GetAsync(businessContext);
                 });
 
-            Field<ChipsetType>()
-                .Name("Chipset")
+            Field<MemoryType>()
+                .Name("Memory")
                 .ResolveAsync(async context =>
                 {
-                    logger.Info("Chipset field");
+                    logger.Info("Memory field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await chipsetService.GetAsync(businessContext);
+                    return await memoryService.GetAsync(businessContext);
                 });
         }
     }

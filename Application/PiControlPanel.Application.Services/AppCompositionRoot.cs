@@ -19,8 +19,9 @@
         public void Compose(IServiceRegistry serviceRegistry)
         {
             serviceRegistry.RegisterScoped<IControlPanelService, Infrastructure.OnDemand.Services.ControlPanelService>();
-            serviceRegistry.RegisterScoped<ICpuService, Infrastructure.OnDemand.Services.CpuService>();
             serviceRegistry.RegisterScoped<IChipsetService, Infrastructure.OnDemand.Services.ChipsetService>();
+            serviceRegistry.RegisterScoped<ICpuService, Infrastructure.OnDemand.Services.CpuService>();
+            serviceRegistry.RegisterScoped<IMemoryService, Infrastructure.OnDemand.Services.MemoryService>();
             serviceRegistry.RegisterScoped<IUserAccountService, Infrastructure.Persistence.Services.UserAccountService>();
             serviceRegistry.RegisterSingleton<ISubject<Cpu>>(factory => new ReplaySubject<Cpu>(1));
         }
