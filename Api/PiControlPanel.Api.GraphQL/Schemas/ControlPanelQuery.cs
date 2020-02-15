@@ -27,15 +27,15 @@
                     return await securityService.GenerateJsonWebTokenAsync(userAccount);
                 });
 
-            Field<HardwareType>(
-                "Hardware",
+            Field<RaspberryPiType>(
+                "RaspberryPi",
                 resolve: context =>
                 {
-                    logger.Info("Hardware query");
+                    logger.Info("RaspberryPi query");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    // Retuning empty object to make GraphQL resolve the HardwareType fields
+                    // Retuning empty object to make GraphQL resolve the RaspberryPiType fields
                     // https://graphql-dotnet.github.io/docs/getting-started/query-organization/
                     return new { };
                 })

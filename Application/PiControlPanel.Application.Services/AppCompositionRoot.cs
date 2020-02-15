@@ -24,6 +24,7 @@
             serviceRegistry.RegisterScoped<IMemoryService, Infrastructure.OnDemand.Services.MemoryService>();
             serviceRegistry.RegisterScoped<IGpuService, Infrastructure.OnDemand.Services.GpuService>();
             serviceRegistry.RegisterScoped<IDiskService, Infrastructure.OnDemand.Services.DiskService>();
+            serviceRegistry.RegisterScoped<IOsService, Infrastructure.OnDemand.Services.OsService>();
             serviceRegistry.RegisterScoped<IUserAccountService, Infrastructure.Persistence.Services.UserAccountService>();
             serviceRegistry.RegisterSingleton<ISubject<Cpu>>(factory => new ReplaySubject<Cpu>(1));
         }

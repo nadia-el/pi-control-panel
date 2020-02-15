@@ -11,5 +11,6 @@
         public const string FreeCommand = "free --mega";
         public const string GetMemGpuCommand = "vcgencmd get_mem gpu";
         public const string TopCommand = "top -bc -n 1";
+        public const string HostnamectlCommand = "hostnamectl";
     }
 }

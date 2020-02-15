@@ -49,7 +49,7 @@
             container.RegisterScoped<IDocumentWriter, DocumentWriter>();
 
             container.RegisterScoped<ControlPanelQuery>();
-            container.RegisterScoped<HardwareType>();
+            container.RegisterScoped<RaspberryPiType>();
             container.RegisterScoped<ControlPanelMutation>();
             container.RegisterScoped<ControlPanelSubscription>();
             container.RegisterScoped<ControlPanelSchema>();

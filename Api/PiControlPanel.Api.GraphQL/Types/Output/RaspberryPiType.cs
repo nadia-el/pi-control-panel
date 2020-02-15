@@ -6,11 +6,11 @@
     using PiControlPanel.Api.GraphQL.Types.Output.Cpu;
     using PiControlPanel.Domain.Contracts.Application;
 
-    public class HardwareType : ObjectGraphType
+    public class RaspberryPiType : ObjectGraphType
     {
-        public HardwareType(IChipsetService chipsetService, ICpuService cpuService,
+        public RaspberryPiType(IChipsetService chipsetService, ICpuService cpuService,
             IMemoryService memoryService, IGpuService gpuService, IDiskService diskService,
-            ILogger logger)
+            IOsService osService, ILogger logger)
         {
             Field<ChipsetType>()
                 .Name("Chipset")
@@ -65,6 +65,17 @@
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
                     return await diskService.GetAsync(businessContext);
+                });
+
+            Field<OsType>()
+                .Name("Os")
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("Os field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    return await osService.GetAsync(businessContext);
                 });
         }
     }
