@@ -18,7 +18,7 @@
         private readonly IUserAccountService userAccountService;
         private readonly IConfiguration configuration;
         private readonly ILogger logger;
-
+        
         public SecurityService(IUserAccountService userAccountService,
             IConfiguration configuration, ILogger logger)
         {

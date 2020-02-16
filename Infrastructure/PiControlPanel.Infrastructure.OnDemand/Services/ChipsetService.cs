@@ -5,10 +5,11 @@
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
-    using PiControlPanel.Infrastructure.Common;
 
     public class ChipsetService : IChipsetService
     {
@@ -28,7 +29,7 @@
 
         private Chipset GetChipset()
         {
-            var result = Constants.CatProcCpuInfoCommand.Bash();
+            var result = BashCommands.CatProcCpuInfo.Bash();
             logger.Debug($"Result of CatProcCpuInfo from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);

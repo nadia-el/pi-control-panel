@@ -5,10 +5,11 @@
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
-    using PiControlPanel.Infrastructure.Common;
 
     public class OsService : IOsService
     {
@@ -28,7 +29,7 @@
 
         private Os GetOs()
         {
-            var result = Constants.HostnamectlCommand.Bash();
+            var result = BashCommands.Hostnamectl.Bash();
             logger.Debug($"Result of Hostnamectl from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);

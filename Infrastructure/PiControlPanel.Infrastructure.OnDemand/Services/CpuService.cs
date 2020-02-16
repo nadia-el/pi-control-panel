@@ -7,10 +7,11 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
-    using PiControlPanel.Infrastructure.Common;
 
     public class CpuService : ICpuService
     {
@@ -66,7 +67,7 @@
 
         private Cpu GetCpu()
         {
-            var result = Constants.CatProcCpuInfoCommand.Bash();
+            var result = BashCommands.CatProcCpuInfo.Bash();
             logger.Debug($"Result of CatProcCpuInfo from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
@@ -84,7 +85,7 @@
 
         private double GetTemperature()
         {
-            var result = Constants.MeasureTempCommand.Bash();
+            var result = BashCommands.MeasureTemp.Bash();
             logger.Debug($"Result of GetTemperature from command: '{result}'");
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");
@@ -99,7 +100,7 @@
 
         private CpuAverageLoad GetAverageLoad(int cores)
         {
-            var result = Constants.TopCommand.Bash();
+            var result = BashCommands.Top.Bash();
             logger.Debug($"Result of Top from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
@@ -116,7 +117,7 @@
 
         private CpuRealTimeLoad GetRealTimeLoad()
         {
-            var result = Constants.TopCommand.Bash();
+            var result = BashCommands.Top.Bash();
             logger.Debug($"Result of Top from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);

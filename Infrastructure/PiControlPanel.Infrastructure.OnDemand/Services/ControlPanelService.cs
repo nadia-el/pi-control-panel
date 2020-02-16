@@ -2,9 +2,10 @@
 {
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
-    using PiControlPanel.Infrastructure.Common;
     
     public class ControlPanelService : IControlPanelService
     {
@@ -18,7 +19,7 @@
         public Task<bool> ShutdownAsync(BusinessContext context)
         {
             logger.Info("Infra layer -> ShutdownAsync");
-            var result = Constants.ShutdownCommand.Bash();
+            var result = BashCommands.SudoShutdown.Bash();
             logger.Debug($"Result of ShutdownAsync from command: '{result}'");
             return Task.FromResult(true);
         }

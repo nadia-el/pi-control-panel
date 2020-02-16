@@ -1,7 +1,5 @@
 ﻿namespace PiControlPanel.Domain.Models
 {
-    using System;
-
     /// <summary>
     /// Business context containing data required for any business flow.
     /// </summary>

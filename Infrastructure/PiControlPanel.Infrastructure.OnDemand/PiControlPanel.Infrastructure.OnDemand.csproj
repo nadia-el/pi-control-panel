@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Contracts\PiControlPanel.Domain.Contracts.csproj" />
-    <ProjectReference Include="..\PiControlPanel.Infrastructure.Common\PiControlPanel.Infrastructure.Common.csproj" />
   </ItemGroup>
 
 </Project>

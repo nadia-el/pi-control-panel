@@ -3,9 +3,10 @@
     using System;
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
-    using PiControlPanel.Infrastructure.Common;
 
     public class UserAccountService : IUserAccountService
     {
@@ -21,7 +22,7 @@
             logger.Info("Infra layer -> ValidateAsync");
 
             var catEtcShadowCommand = string.Format(
-                Constants.CatEtcShadowCommand,
+                BashCommands.SudoCatEtcShadow,
                 userAccount.Username);
             var loginInfo = catEtcShadowCommand.Bash();
             logger.Debug($"Result of CatEtcShadowCommand: '{loginInfo}'");
@@ -41,13 +42,12 @@
 
             var passwordInfo = parsedLoginInfo[1].Split('$');
             var openSslPasswdCommand = string.Format(
-                Constants.OpenSslPasswdCommand,
+                BashCommands.OpenSslPasswd,
                 passwordInfo[1],
                 passwordInfo[2],
                 userAccount.Password);
             var hashedPassword = openSslPasswdCommand.Bash();
             logger.Debug($"Result of OpenSslPasswdCommand: '{hashedPassword}'");
-            //if (!parsedLoginInfo[1].Equals(hashedPassword))
             if (!string.Equals(parsedLoginInfo[1], hashedPassword, StringComparison.InvariantCultureIgnoreCase))
             {
                 logger.Error($"Hashed password {hashedPassword} different from existing hashed password {parsedLoginInfo[1]}");
@@ -62,7 +62,7 @@
             logger.Info("Infra layer -> IsSuperUserAsync");
 
             var groupsCommand = string.Format(
-                Constants.GroupsCommand,
+                BashCommands.Groups,
                 userAccount.Username);
             var result = groupsCommand.Bash();
             logger.Debug($"Result of Groups from command: '{result}'");

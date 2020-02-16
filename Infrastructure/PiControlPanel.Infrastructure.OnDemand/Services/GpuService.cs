@@ -2,10 +2,11 @@
 {
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
-    using PiControlPanel.Infrastructure.Common;
 
     public class GpuService : IGpuService
     {
@@ -25,7 +26,7 @@
 
         private Gpu GetGpu()
         {
-            var result = Constants.GetMemGpuCommand.Bash();
+            var result = BashCommands.GetMemGpu.Bash();
             logger.Debug($"Result of GetMemGpu from command: '{result}'");
             string gpu = result.Replace("gpu=", string.Empty).Replace("M", string.Empty);
             logger.Debug($"Gpu memory: '{gpu}'MB");

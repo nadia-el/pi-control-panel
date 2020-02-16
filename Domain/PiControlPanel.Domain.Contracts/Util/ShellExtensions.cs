@@ -1,9 +1,9 @@
-﻿namespace PiControlPanel.Infrastructure.Common
+﻿namespace PiControlPanel.Domain.Contracts.Util
 {
     using System;
     using System.Diagnostics;
 
-    public static class ShellHelper
+    public static class ShellExtensions
     {
         public static string Bash(this string cmd)
         {
@@ -20,6 +20,7 @@
                     CreateNoWindow = true
                 }
             };
+
             process.Start();
             string result = process.StandardOutput.ReadToEnd();
             process.WaitForExit();

@@ -6,10 +6,11 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using NLog;
+    using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
+    using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
-    using PiControlPanel.Infrastructure.Common;
 
     public class MemoryService : IMemoryService
     {
@@ -29,7 +30,7 @@
 
         private Memory GetMemory()
         {
-            var result = Constants.FreeCommand.Bash();
+            var result = BashCommands.Free.Bash();
             logger.Debug($"Result of Free from command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
