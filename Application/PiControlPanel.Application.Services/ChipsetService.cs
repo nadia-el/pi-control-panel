@@ -20,7 +20,7 @@
 
         public Task<Chipset> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> ChipsetService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
     }

@@ -18,9 +18,9 @@
 
         public Task<bool> ShutdownAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> ShutdownAsync");
+            logger.Info("Infra layer -> ControlPanelService -> ShutdownAsync");
             var result = BashCommands.SudoShutdown.Bash();
-            logger.Debug($"Result of ShutdownAsync from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.SudoShutdown}' command: '{result}'");
             return Task.FromResult(true);
         }
     }

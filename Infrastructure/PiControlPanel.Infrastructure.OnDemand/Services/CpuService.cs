@@ -26,49 +26,49 @@
 
         public Task<Cpu> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> CpuService -> GetAsync");
             var cpu = this.GetCpu();
             return Task.FromResult(cpu);
         }
 
         public Task<double> GetTemperatureAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetTemperatureAsync");
+            logger.Info("Infra layer -> CpuService -> GetTemperatureAsync");
             var temperature = this.GetTemperature();
             return Task.FromResult(temperature);
         }
 
         public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
         {
-            logger.Info("Infra layer -> GetAverageLoadAsync");
+            logger.Info("Infra layer -> CpuService -> GetAverageLoadAsync");
             var averageLoad = this.GetAverageLoad(cores);
             return Task.FromResult(averageLoad);
         }
 
         public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetRealTimeLoadAsync");
+            logger.Info("Infra layer -> CpuService -> GetRealTimeLoadAsync");
             var realTimeLoad = this.GetRealTimeLoad();
             return Task.FromResult(realTimeLoad);
         }
 
         public void PublishStatus()
         {
-            logger.Info("Infra layer -> PublishStatus");
+            logger.Info("Infra layer -> CpuService -> PublishStatus");
             var temperature = this.GetTemperature();
             this.cpuSubject.OnNext(new Cpu() { Temperature = temperature });
         }
 
         public IObservable<Cpu> GetObservable(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetObservable");
+            logger.Info("Infra layer -> CpuService -> GetObservable");
             return this.cpuSubject.AsObservable();
         }
 
         private Cpu GetCpu()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
-            logger.Debug($"Result of CatProcCpuInfo from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var cores = lines.Count(line => line.StartsWith("processor"));
@@ -86,7 +86,7 @@
         private double GetTemperature()
         {
             var result = BashCommands.MeasureTemp.Bash();
-            logger.Debug($"Result of GetTemperature from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.MeasureTemp}' command: '{result}'");
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");
             double temperature;
@@ -101,7 +101,7 @@
         private CpuAverageLoad GetAverageLoad(int cores)
         {
             var result = BashCommands.Top.Bash();
-            logger.Debug($"Result of Top from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.Top}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var averageLoadInfo = lines.First(l => l.Contains("load average:"));
@@ -118,7 +118,7 @@
         private CpuRealTimeLoad GetRealTimeLoad()
         {
             var result = BashCommands.Top.Bash();
-            logger.Debug($"Result of Top from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.Top}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var realTimeLoadInfo = lines.First(l => l.StartsWith("%Cpu(s):"));

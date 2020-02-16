@@ -19,7 +19,7 @@
 
         public Task<Gpu> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> GpuService -> GetAsync");
             var gpu = this.GetGpu();
             return Task.FromResult(gpu);
         }
@@ -27,7 +27,7 @@
         private Gpu GetGpu()
         {
             var result = BashCommands.GetMemGpu.Bash();
-            logger.Debug($"Result of GetMemGpu from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.GetMemGpu}' command: '{result}'");
             string gpu = result.Replace("gpu=", string.Empty).Replace("M", string.Empty);
             logger.Debug($"Gpu memory: '{gpu}'MB");
             return new Gpu()

@@ -20,7 +20,7 @@
 
         public Task<Disk> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> DiskService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
     }

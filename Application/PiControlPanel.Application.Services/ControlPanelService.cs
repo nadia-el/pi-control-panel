@@ -19,7 +19,7 @@
 
         public Task<bool> ShutdownAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> ShutdownAsync");
+            logger.Info("Application layer -> ControlPanelService -> ShutdownAsync");
             return onDemandService.ShutdownAsync(context);
         }
     }

@@ -21,32 +21,32 @@
 
         public Task<Cpu> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> CpuService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
 
         public Task<double> GetTemperatureAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetTemperatureAsync");
+            logger.Info("Application layer -> CpuService -> GetTemperatureAsync");
             return onDemandService.GetTemperatureAsync(context);
         }
 
         public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
         {
-            logger.Info("Application layer -> GetAverageLoadAsync");
+            logger.Info("Application layer -> CpuService -> GetAverageLoadAsync");
             logger.Debug($"Number of cores for average load calculation is {cores}.");
             return onDemandService.GetAverageLoadAsync(context, cores);
         }
 
         public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetRealTimeLoadAsync");
+            logger.Info("Application layer -> CpuService -> GetRealTimeLoadAsync");
             return onDemandService.GetRealTimeLoadAsync(context);
         }
 
         public IObservable<Cpu> GetObservable(BusinessContext context)
         {
-            logger.Info("Application layer -> GetObservable");
+            logger.Info("Application layer -> CpuService -> GetObservable");
             return onDemandService.GetObservable(context);
         }
     }

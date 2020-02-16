@@ -29,6 +29,7 @@
 
         public async Task<string> GenerateJsonWebTokenAsync(UserAccount userAccount)
         {
+            logger.Info("Application layer -> SecurityService -> GenerateJsonWebTokenAsync");
             if (userAccount == null ||
                 string.IsNullOrWhiteSpace(userAccount.Username) ||
                 string.IsNullOrWhiteSpace(userAccount.Password))
@@ -57,7 +58,6 @@
 
         private async Task<ClaimsIdentity> CreateClaimsIdentityAsync(UserAccount userAccount)
         {
-            logger.Info("Application layer -> CreateClaimsIdentityAsync");
             var identity = new ClaimsIdentity();
 
             if (userAccount != null)
@@ -76,6 +76,7 @@
             }
             else
             {
+                logger.Info("Creating claims for anonymous user");
                 identity.AddClaim(new Claim(CustomClaimTypes.IsAnonymous, true.ToString()));
             }
 

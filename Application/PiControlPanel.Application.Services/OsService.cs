@@ -20,7 +20,7 @@
 
         public Task<Os> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> OsService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
     }

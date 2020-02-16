@@ -20,7 +20,7 @@
 
         public Task<Memory> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> MemoryService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
     }

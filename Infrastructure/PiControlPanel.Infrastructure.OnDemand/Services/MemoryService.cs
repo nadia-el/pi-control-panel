@@ -23,7 +23,7 @@
 
         public Task<Memory> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> MemoryService -> GetAsync");
             var memory = this.GetMemory();
             return Task.FromResult(memory);
         }
@@ -31,7 +31,7 @@
         private Memory GetMemory()
         {
             var result = BashCommands.Free.Bash();
-            logger.Debug($"Result of Free from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.Free}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var memoryInfo = lines.First(l => l.StartsWith("Mem:"));

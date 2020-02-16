@@ -22,7 +22,7 @@
 
         public Task<Disk> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> DiskService -> GetAsync");
             var disk = this.GetDisk();
             return Task.FromResult(disk);
         }
@@ -30,7 +30,7 @@
         private Disk GetDisk()
         {
             var result = BashCommands.Df.Bash();
-            logger.Debug($"Result of Df from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.Df}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var diskInfo = lines.First(l => l.StartsWith("/dev/") && l.Contains("ext4"));

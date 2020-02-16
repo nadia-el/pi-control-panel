@@ -22,7 +22,7 @@
 
         public Task<Chipset> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> ChipsetService -> GetAsync");
             var chipset = this.GetChipset();
             return Task.FromResult(chipset);
         }
@@ -30,7 +30,7 @@
         private Chipset GetChipset()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
-            logger.Debug($"Result of CatProcCpuInfo from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var version = lines.Last(line => line.StartsWith("Hardware"))

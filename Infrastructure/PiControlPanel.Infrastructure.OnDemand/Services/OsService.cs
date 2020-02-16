@@ -22,7 +22,7 @@
 
         public Task<Os> GetAsync(BusinessContext context)
         {
-            logger.Info("Infra layer -> GetAsync");
+            logger.Info("Infra layer -> OsService -> GetAsync");
             var os = this.GetOs();
             return Task.FromResult(os);
         }
@@ -30,7 +30,7 @@
         private Os GetOs()
         {
             var result = BashCommands.Hostnamectl.Bash();
-            logger.Debug($"Result of Hostnamectl from command: '{result}'");
+            logger.Debug($"Result of '{BashCommands.Hostnamectl}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 

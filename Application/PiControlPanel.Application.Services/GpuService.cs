@@ -20,7 +20,7 @@
 
         public Task<Gpu> GetAsync(BusinessContext context)
         {
-            logger.Info("Application layer -> GetAsync");
+            logger.Info("Application layer -> GpuService -> GetAsync");
             return onDemandService.GetAsync(context);
         }
     }
