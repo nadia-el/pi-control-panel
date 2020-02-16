@@ -1,0 +1,17 @@
+[Unit]
+Description=Pi Control Panel service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+Restart=always
+RestartSec=1
+WorkingDirectory=/home/picontrolpanel
+User=picontrolpanel
+Environment=ASPNETCORE_URLS=http://+:8080
+Environment=ASPNETCORE_ENVIRONMENT=Development
+ExecStart=dotnet /home/picontrolpanel/PiControlPanel.Api.GraphQL.dll
+
+[Install]
+WantedBy=multi-user.target
