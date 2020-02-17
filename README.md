@@ -15,10 +15,10 @@ sudo useradd -m picontrolpanel
 sudo passwd picontrolpanel
 sudo usermod -aG sudo picontrolpanel
 echo 'picontrolpanel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
-sudo usermod -aG video picontrolpane
+sudo usermod -aG video picontrolpanel
 ````
 
-## Running on Raspeberry Pi
+## Running on Raspberry Pi
 1. Publish the porject targeting ARM and copy the files to /home/picontrolpanel
 2. Run as process
 ````bash
@@ -32,19 +32,32 @@ sudo cp picontrolpanel.service /etc/systemd/system/picontrolpanel.service
 sudo chmod 644 /etc/systemd/system/picontrolpanel.service
 sudo systemctl enable picontrolpanel
 ````
+4. Access http://<<ip_of_raspberry_pi>>:8080/
 
-## Running on Docker
-1. Open terminal on the root of the solution
-2. Build the image
-````command
-docker-compose build
+### Available operations
+
+#### Login Query
+
+Query:
+````graphql
+query Login($userAccount: UserAccountInputType) {
+  login(userAccount: $userAccount)
+}
 ````
-3. Run the container
-````command
-docker-compose up -d
+
+Query variables:
+````graphql
+{
+  "userAccount": {
+    "username": "pi",
+    "password": "raspberry"
+  }
+}
 ````
-### Limitations when running on Docker
-* Available operations:
+
+#### RaspberryPi Query
+
+Query:
 ````graphql
 query Q {
   raspberryPi {
@@ -90,5 +103,140 @@ query Q {
       hostname
     }
   }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+#### Cpu Subscription
+
+Query:
+````graphql
+subscription S {
+    cpu {
+      temperature
+    }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+#### Shutdown Mutation
+Returns true, but doesn't actually shut the container down.
+
+Query:
+````graphql
+mutation M {
+  shutdown
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+## Running on Docker
+1. Open terminal on the root of the solution
+2. Build the image
+````command
+docker-compose build
+````
+3. Run the container
+````command
+docker-compose up -d
+````
+4. Access http://localhost:8080/
+
+### Available operations when running on Docker
+
+#### Login Query
+
+Query:
+````graphql
+query Login($userAccount: UserAccountInputType) {
+  login(userAccount: $userAccount)
+}
+````
+
+Query variables:
+````graphql
+{
+  "userAccount": {
+    "username": "pi",
+    "password": "raspberry"
+  }
+}
+````
+
+#### RaspberryPi Query
+
+Query:
+````graphql
+query Q {
+  raspberryPi {
+    cpu {
+      cores
+      model
+      averageLoad {
+        lastMinute
+        last5Minutes
+        last15Minutes
+      }
+      realTimeLoad {
+        kernel
+        user
+        total
+      }
+    }
+    disk {
+      fileSystem
+      type
+      total
+      used
+      available
+    }
+    memory {
+      total
+      used
+      available
+    }
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+#### Shutdown Mutation
+Returns true, but doesn't actually shut the container down.
+
+Query:
+````graphql
+mutation M {
+  shutdown
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
 }
 ````
