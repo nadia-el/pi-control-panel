@@ -39,7 +39,56 @@ sudo systemctl enable picontrolpanel
 ````command
 docker-compose build
 ````
-2. Run the container
+3. Run the container
 ````command
 docker-compose up -d
+````
+### Limitations when running on Docker
+* Available operations:
+````graphql
+query Q {
+  raspberryPi {
+    chipset {
+      model
+      revision
+      serial
+      version
+    }
+    cpu {
+      cores
+      model
+      temperature
+      averageLoad {
+        lastMinute
+        last5Minutes
+        last15Minutes
+      }
+      realTimeLoad {
+        kernel
+        user
+        total
+      }
+    }
+    disk {
+      fileSystem
+      type
+      total
+      used
+      available
+    }
+    memory {
+      total
+      used
+      available
+    }
+    gpu {
+      memory
+    }
+    os {
+      name
+      kernel
+      hostname
+    }
+  }
+}
 ````
