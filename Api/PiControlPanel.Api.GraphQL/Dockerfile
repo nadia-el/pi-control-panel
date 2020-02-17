@@ -5,7 +5,6 @@ RUN apt-get update && apt-get -y install sudo procps
 RUN useradd -m pi
 RUN echo pi:raspberry | chpasswd
 RUN usermod -aG sudo pi
-RUN echo 'pi ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 WORKDIR /app
 EXPOSE 80
 

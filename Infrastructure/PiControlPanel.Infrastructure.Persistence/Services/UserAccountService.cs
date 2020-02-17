@@ -66,7 +66,7 @@
                 userAccount.Username);
             var result = groupsCommand.Bash();
             logger.Debug($"Result of '{groupsCommand}' command: '{result}'");
-            return Task.FromResult(result.Contains(" sudo "));
+            return Task.FromResult(result.Contains(" sudo ") || result.EndsWith(" sudo"));
         }
     }
 }
