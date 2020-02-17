@@ -18,7 +18,7 @@ echo 'picontrolpanel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo usermod -aG video picontrolpane
 ````
 
-## Running
+## Running on Raspeberry Pi
 1. Publish the porject targeting ARM and copy the files to /home/picontrolpanel
 2. Run as process
 ````bash
@@ -31,4 +31,15 @@ dotnet PiControlPanel.Api.GraphQL.dll
 sudo cp picontrolpanel.service /etc/systemd/system/picontrolpanel.service
 sudo chmod 644 /etc/systemd/system/picontrolpanel.service
 sudo systemctl enable picontrolpanel
+````
+
+## Running on Docker
+1. Open terminal on the root of the solution
+2. Build the image
+````command
+docker-compose build
+````
+2. Run the container
+````command
+docker-compose up -d
 ````
