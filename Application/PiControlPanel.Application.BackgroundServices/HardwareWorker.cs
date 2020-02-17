@@ -26,6 +26,7 @@
         {
             var workerInterval = int.Parse(configuration["Worker:Interval"]);
             logger.Info($"Worker configured to run at interval of {workerInterval} ms");
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.Trace($"Worker running at: {DateTimeOffset.Now}");

@@ -1,5 +1,6 @@
 namespace PiControlPanel.Api.GraphQL
 {
+    using System;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -119,7 +120,15 @@ namespace PiControlPanel.Api.GraphQL
                 options.AllowSynchronousIO = true;
             });
 
-            services.AddHostedService<HardwareWorker>();
+            // If running from Docker, don't start the backgroud service
+            if (isRunningInContainer)
+            {
+                logger.Warn("Running in Docker, not creating HardwareWorker background service.");
+            }
+            else
+            {
+                services.AddHostedService<HardwareWorker>();
+            }
         }
 
         /// <summary>
@@ -175,5 +184,15 @@ namespace PiControlPanel.Api.GraphQL
                 .UseHealthChecks("/healthcheck")
                 .UseGraphQL<ControlPanelSchema>();
         }
+
+        /// <value>Property <c>isRunningInContainer</c> represents if running the application inside a Docker container.</value>
+        private bool isRunningInContainer
+        {
+            get
+            {
+                return true.ToString().Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), StringComparison.InvariantCultureIgnoreCase);
+            } 
+        }
+
     }
 }
