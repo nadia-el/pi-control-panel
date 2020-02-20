@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+
+  picontrolpanel.api.graphql:
+    build:
+      dockerfile: Docker/Dockerfile.pi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production

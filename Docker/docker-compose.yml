@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+
+  picontrolpanel.api.graphql:
+    image: raspberry/picontrolpanel:dev
+    container_name: raspberry_picontrolpanel
+    build:
+      context: ../.
+    ports:
+      - '8080:80'

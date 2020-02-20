@@ -3,13 +3,8 @@ version: '3.7'
 services:
 
   picontrolpanel.api.graphql:
-    image: raspberry/picontrolpanel:dev
-    container_name: raspberry_picontrolpanel
     build:
-      context: .
-      dockerfile: Api/PiControlPanel.Api.GraphQL/Dockerfile
-    ports:
-      - '8080:80'
+      dockerfile: Docker/Dockerfile
     environment:
       - TZ=America/Toronto
       - ASPNETCORE_ENVIRONMENT=Development
