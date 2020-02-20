@@ -19,7 +19,7 @@ sudo usermod -aG video picontrolpanel
 ````
 
 ## Running on Raspberry Pi
-1. Publish the porject targeting ARM and copy the files to /home/picontrolpanel
+1. Publish the project targeting ARM and copy the files to /home/picontrolpanel
 2. Run as process
 ````bash
 export ASPNETCORE_URLS=http://+:8080
@@ -148,8 +148,20 @@ HTTP Headers:
 }
 ````
 
-## Running on Docker
-1. Open terminal on the root of the solution
+## Running on Docker (Raspberry Pi)
+1. Open terminal inside the solutions /Docker directory
+2. Build the image
+````command
+docker-compose -f docker-compose.yml -f docker-compose.pi.yml build
+````
+3. Run the container
+````command
+docker-compose -f docker-compose.yml -f docker-compose.pi.yml up -d
+````
+4. Access http://<<ip_of_raspberry_pi>>:8080/
+
+## Running on Docker (outside of Raspberry Pi)
+1. Open terminal inside the solutions /Docker directory
 2. Build the image
 ````command
 docker-compose build
