@@ -18,7 +18,9 @@ echo 'picontrolpanel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo usermod -aG video picontrolpanel
 ````
 
-## Running on Raspberry Pi
+## Running
+
+### Running on Raspberry Pi
 1. Publish the project targeting ARM and copy the files to /home/picontrolpanel
 2. Run as process
 ````bash
@@ -34,9 +36,9 @@ sudo systemctl enable picontrolpanel
 ````
 4. Access http://<<ip_of_raspberry_pi>>:8080/
 
-### Available operations
+#### Available operations
 
-#### Login Query
+##### Login Query
 
 Query:
 ````graphql
@@ -55,7 +57,7 @@ Query variables:
 }
 ````
 
-#### RaspberryPi Query
+##### RaspberryPi Query
 
 Query:
 ````graphql
@@ -113,7 +115,7 @@ HTTP Headers:
 }
 ````
 
-#### Cpu Subscription
+##### Cpu Subscription
 
 Query:
 ````graphql
@@ -131,7 +133,7 @@ HTTP Headers:
 }
 ````
 
-#### Shutdown Mutation
+##### Shutdown Mutation
 Returns true, but doesn't actually shut the container down.
 
 Query:
@@ -148,19 +150,22 @@ HTTP Headers:
 }
 ````
 
-## Running on Docker (Raspberry Pi)
-1. Open terminal inside the solutions /Docker directory
-2. Build the image
-````command
-docker-compose -f docker-compose.yml -f docker-compose.pi.yml build
+### Running on Docker (Raspberry Pi)
+````bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+rm get-docker.sh
+sudo usermod -aG docker picontrolpanel
+sudo apt-get install docker-compose
+apt-get -y install git
+GIT
+cd Docker
+docker-compose -f docker-compose.pi.yml build
+docker-compose -f docker-compose.pi.yml up -d
 ````
-3. Run the container
-````command
-docker-compose -f docker-compose.yml -f docker-compose.pi.yml up -d
-````
-4. Access http://<<ip_of_raspberry_pi>>:8080/
+Access http://<<ip_of_raspberry_pi>>:8081/
 
-## Running on Docker (outside of Raspberry Pi)
+### Running on Docker (outside of Raspberry Pi)
 1. Open terminal inside the solutions /Docker directory
 2. Build the image
 ````command
@@ -172,9 +177,9 @@ docker-compose up -d
 ````
 4. Access http://localhost:8080/
 
-### Available operations when running on Docker
+#### Available operations when running on Docker
 
-#### Login Query
+##### Login Query
 
 Query:
 ````graphql
@@ -193,7 +198,7 @@ Query variables:
 }
 ````
 
-#### RaspberryPi Query
+##### RaspberryPi Query
 
 Query:
 ````graphql
@@ -236,7 +241,7 @@ HTTP Headers:
 }
 ````
 
-#### Shutdown Mutation
+##### Shutdown Mutation
 Returns true, but doesn't actually shut the container down.
 
 Query:
