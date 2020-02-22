@@ -1,13 +1,4 @@
-# pi-control-panel
-
-## .Net Core Installation
-````bash
-mkdir dotnet
-wget https://download.visualstudio.microsoft.com/download/pr/da60c9fc-c329-42d6-afaf-b8ef2bbadcf3/14655b5928319349e78da3327874592a/aspnetcore-runtime-3.1.1-linux-arm.tar.gz
-sudo mkdir -p /usr/share/dotnet
-sudo tar -zxf aspnetcore-runtime-3.1.1-linux-arm.tar.gz -C /usr/share/dotnet/
-sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
-````
+# Pi Control Panel
 
 ## Create user to run the app
 ````bash
@@ -22,19 +13,27 @@ sudo usermod -aG video picontrolpanel
 
 ### Running on Raspberry Pi
 1. Publish the project targeting ARM and copy the files to /home/picontrolpanel
-2. Run as process
+2. .Net Core Installation
+````bash
+mkdir dotnet
+wget https://download.visualstudio.microsoft.com/download/pr/da60c9fc-c329-42d6-afaf-b8ef2bbadcf3/14655b5928319349e78da3327874592a/aspnetcore-runtime-3.1.1-linux-arm.tar.gz
+sudo mkdir -p /usr/share/dotnet
+sudo tar -zxf aspnetcore-runtime-3.1.1-linux-arm.tar.gz -C /usr/share/dotnet/
+sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+````
+3. Run as process
 ````bash
 export ASPNETCORE_URLS=http://+:8080
 export ASPNETCORE_ENVIRONMENT=Development
 dotnet PiControlPanel.Api.GraphQL.dll
 ````
-3. Or run as service
+4. Or run as service
 ````bash
 sudo cp picontrolpanel.service /etc/systemd/system/picontrolpanel.service
 sudo chmod 644 /etc/systemd/system/picontrolpanel.service
 sudo systemctl enable picontrolpanel
 ````
-4. Access http://<<ip_of_raspberry_pi>>:8080/
+5. Access http://<<ip_of_raspberry_pi>>:8080/
 
 #### Available operations
 
@@ -166,7 +165,7 @@ docker-compose -f docker-compose.pi.yml up -d
 Access http://<<ip_of_raspberry_pi>>:8081/
 
 ### Running on Docker (outside of Raspberry Pi)
-1. Open terminal inside the solutions /Docker directory
+1. Open terminal inside the solution's /Docker directory
 2. Build the image
 ````command
 docker-compose build
