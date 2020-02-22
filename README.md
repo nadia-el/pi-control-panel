@@ -158,8 +158,8 @@ rm get-docker.sh
 sudo usermod -aG docker picontrolpanel
 sudo apt-get install docker-compose
 apt-get -y install git
-GIT
-cd Docker
+git clone https://github.com/rembertmagri/pi-control-panel.git
+cd pi-control-panel/Docker/
 docker-compose -f docker-compose.pi.yml build
 docker-compose -f docker-compose.pi.yml up -d
 ````
