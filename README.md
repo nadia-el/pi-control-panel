@@ -149,7 +149,9 @@ HTTP Headers:
 }
 ````
 
-### Running on Docker (Raspberry Pi)
+### Running on Docker
+
+#### Docker on Raspberry Pi
 ````bash
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
@@ -164,7 +166,7 @@ docker-compose -f docker-compose.pi.yml up -d
 ````
 Access http://<<ip_of_raspberry_pi>>:8081/
 
-### Running on Docker (outside of Raspberry Pi)
+#### Docker outside Raspberry Pi
 1. Open terminal inside the solution's /Docker directory
 2. Build the image
 ````command
