@@ -18,6 +18,8 @@ COPY ["Domain/PiControlPanel.Domain.Contracts/PiControlPanel.Domain.Contracts.cs
 COPY ["Domain/PiControlPanel.Domain.Models/PiControlPanel.Domain.Models.csproj", "Domain/PiControlPanel.Domain.Models/"]
 COPY ["Infrastructure/PiControlPanel.Infrastructure.OnDemand/PiControlPanel.Infrastructure.OnDemand.csproj", "Infrastructure/PiControlPanel.Infrastructure.OnDemand/"]
 COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence/PiControlPanel.Infrastructure.Persistence.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence/"]
+COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence.Contracts/PiControlPanel.Infrastructure.Persistence.Contracts.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence.Contracts/"]
+COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence.Entities/PiControlPanel.Infrastructure.Persistence.Entities.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence.Entities/"]
 RUN dotnet restore "Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj"
 COPY . .
 WORKDIR "/src/Api/PiControlPanel.Api.GraphQL"
