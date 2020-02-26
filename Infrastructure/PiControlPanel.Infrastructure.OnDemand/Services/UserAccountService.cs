@@ -1,10 +1,10 @@
-﻿namespace PiControlPanel.Infrastructure.Persistence.Services
+﻿namespace PiControlPanel.Infrastructure.OnDemand.Services
 {
     using System;
     using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Constants;
-    using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
+    using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models;
 

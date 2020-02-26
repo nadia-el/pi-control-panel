@@ -8,7 +8,6 @@
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
 
     public class ChipsetService : IChipsetService
@@ -20,7 +19,7 @@
             this.logger = logger;
         }
 
-        public Task<Chipset> GetAsync(BusinessContext context)
+        public Task<Chipset> GetAsync()
         {
             logger.Info("Infra layer -> ChipsetService -> GetAsync");
             var chipset = this.GetChipset();
@@ -33,6 +32,7 @@
             logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
+
             var version = lines.Last(line => line.StartsWith("Hardware"))
                 .Split(':')[1].Trim();
             logger.Debug($"Chipset version: '{version}'");
@@ -45,6 +45,7 @@
             var model = lines.Last(line => line.StartsWith("Model"))
                 .Split(':')[1].Trim();
             logger.Debug($"Chipset model: '{model}'");
+
             return new Chipset()
             {
                 Version = version,

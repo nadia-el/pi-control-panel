@@ -20,7 +20,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await chipsetService.GetAsync(businessContext);
+                    return await chipsetService.GetAsync();
                 });
 
             Field<CpuType>()

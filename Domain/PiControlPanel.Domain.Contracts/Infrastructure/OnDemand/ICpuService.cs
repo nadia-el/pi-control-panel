@@ -9,13 +9,13 @@
     {
         Task<Cpu> GetAsync(BusinessContext context);
 
-        Task<double> GetTemperatureAsync(BusinessContext context);
+        Task<double> GetTemperatureAsync();
 
         Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores);
 
         Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context);
 
-        void PublishStatus();
+        void PublishStatus(double temperature);
 
         IObservable<Cpu> GetObservable(BusinessContext context);
     }

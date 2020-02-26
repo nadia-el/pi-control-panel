@@ -127,7 +127,7 @@ namespace PiControlPanel.Api.GraphQL
             }
             else
             {
-                services.AddHostedService<HardwareWorker>();
+                services.AddHostedService<ControlPanelWorker>();
             }
         }
 
@@ -168,7 +168,7 @@ namespace PiControlPanel.Api.GraphQL
                         .UseDeveloperExceptionPage()
                         .UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/" }));
 
-            // enables Access-Control-Allow-Origin (angular calling webapi methods)
+            // Enables Access-Control-Allow-Origin (angular calling webapi methods)
             app.UseCors(builder => builder
                .WithOrigins("http://localhost:54532")
                .AllowAnyMethod()

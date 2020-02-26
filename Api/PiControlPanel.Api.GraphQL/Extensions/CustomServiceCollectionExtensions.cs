@@ -45,11 +45,11 @@
             // Sets LightInject as GraphQL's dependency resolver
             container.RegisterSingleton<IDependencyResolver>(s => new FuncDependencyResolver(container.GetInstance));
 
-            container.RegisterScoped<IDocumentExecuter, DocumentExecuter>();
-            container.RegisterScoped<IDocumentWriter, DocumentWriter>();
+            container.RegisterSingleton<IDocumentExecuter, DocumentExecuter>();
+            container.RegisterSingleton<IDocumentWriter, DocumentWriter>();
 
-            container.RegisterScoped<ControlPanelQuery>();
             container.RegisterScoped<RaspberryPiType>();
+            container.RegisterScoped<ControlPanelQuery>();
             container.RegisterScoped<ControlPanelMutation>();
             container.RegisterScoped<ControlPanelSubscription>();
             container.RegisterScoped<ControlPanelSchema>();

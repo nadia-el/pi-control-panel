@@ -31,7 +31,7 @@
             return Task.FromResult(cpu);
         }
 
-        public Task<double> GetTemperatureAsync(BusinessContext context)
+        public Task<double> GetTemperatureAsync()
         {
             logger.Info("Infra layer -> CpuService -> GetTemperatureAsync");
             var temperature = this.GetTemperature();
@@ -52,10 +52,9 @@
             return Task.FromResult(realTimeLoad);
         }
 
-        public void PublishStatus()
+        public void PublishStatus(double temperature)
         {
             logger.Info("Infra layer -> CpuService -> PublishStatus");
-            var temperature = this.GetTemperature();
             this.cpuSubject.OnNext(new Cpu() { Temperature = temperature });
         }
 
@@ -71,11 +70,13 @@
             logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
+
             var cores = lines.Count(line => line.StartsWith("processor"));
             logger.Debug($"Number of cores: '{cores}'");
             var model = lines.Last(line => line.StartsWith("model name"))
                 .Split(':')[1].Trim();
             logger.Debug($"Cpu model: '{model}'");
+
             return new Cpu()
             {
                 Cores = cores,
@@ -87,8 +88,10 @@
         {
             var result = BashCommands.MeasureTemp.Bash();
             logger.Debug($"Result of '{BashCommands.MeasureTemp}' command: '{result}'");
+
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");
+
             double temperature;
             if (double.TryParse(temperatureResult, out temperature))
             {
@@ -104,9 +107,11 @@
             logger.Debug($"Result of '{BashCommands.Top}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
+
             var averageLoadInfo = lines.First(l => l.Contains("load average:"));
             var regex = new Regex(@"load average: (?<lastMinute>\d+.\d{2}), (?<last5Minutes>\d+.\d{2}), (?<last15Minutes>\d+.\d{2})$");
             var groups = regex.Match(averageLoadInfo).Groups;
+
             return new CpuAverageLoad()
             {
                 LastMinute = (100 * double.Parse(groups["lastMinute"].Value)) / cores,
@@ -121,9 +126,11 @@
             logger.Debug($"Result of '{BashCommands.Top}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
+
             var realTimeLoadInfo = lines.First(l => l.StartsWith("%Cpu(s):"));
             var regex = new Regex(@"^%Cpu\(s\):\s*(?<user>\d{1,3}.\d{1}) us,\s*(?<kernel>\d{1,3}.\d{1}) sy, .*$");
             var groups = regex.Match(realTimeLoadInfo).Groups;
+
             return new CpuRealTimeLoad()
             {
                 User = double.Parse(groups["user"].Value),

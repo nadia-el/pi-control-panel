@@ -10,7 +10,7 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Contracts.Constants;
-    using PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
+    using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Models;
 
     public class SecurityService : ISecurityService

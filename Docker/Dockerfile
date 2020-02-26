@@ -1,6 +1,6 @@
 # Base Stage
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-RUN apt-get update && apt-get -y install sudo procps
+RUN apt-get update && apt-get -yq install sudo procps sqlite3
 	# Create pi user
 RUN useradd -m pi
 RUN echo pi:raspberry | chpasswd

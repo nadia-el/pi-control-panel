@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence
+﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.OnDemand
 {
     using PiControlPanel.Domain.Models;
     using System.Threading.Tasks;

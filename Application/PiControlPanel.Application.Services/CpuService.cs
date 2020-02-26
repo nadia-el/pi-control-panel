@@ -28,7 +28,7 @@
         public Task<double> GetTemperatureAsync(BusinessContext context)
         {
             logger.Info("Application layer -> CpuService -> GetTemperatureAsync");
-            return onDemandService.GetTemperatureAsync(context);
+            return onDemandService.GetTemperatureAsync();
         }
 
         public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)

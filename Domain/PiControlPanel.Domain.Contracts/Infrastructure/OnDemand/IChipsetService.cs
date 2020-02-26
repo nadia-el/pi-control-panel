@@ -6,6 +6,6 @@
 
     public interface IChipsetService
     {
-        Task<Chipset> GetAsync(BusinessContext context);
+        Task<Chipset> GetAsync();
     }
 }
