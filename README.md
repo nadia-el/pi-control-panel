@@ -1,13 +1,4 @@
-# pi-control-panel
-
-## .Net Core Installation
-````bash
-mkdir dotnet
-wget https://download.visualstudio.microsoft.com/download/pr/da60c9fc-c329-42d6-afaf-b8ef2bbadcf3/14655b5928319349e78da3327874592a/aspnetcore-runtime-3.1.1-linux-arm.tar.gz
-sudo mkdir -p /usr/share/dotnet
-sudo tar -zxf aspnetcore-runtime-3.1.1-linux-arm.tar.gz -C /usr/share/dotnet/
-sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
-````
+# Pi Control Panel
 
 ## Create user to run the app
 ````bash
@@ -18,25 +9,35 @@ echo 'picontrolpanel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo usermod -aG video picontrolpanel
 ````
 
-## Running on Raspberry Pi
+## Running
+
+### Running on Raspberry Pi
 1. Publish the project targeting ARM and copy the files to /home/picontrolpanel
-2. Run as process
+2. .Net Core Installation
+````bash
+mkdir dotnet
+wget https://download.visualstudio.microsoft.com/download/pr/da60c9fc-c329-42d6-afaf-b8ef2bbadcf3/14655b5928319349e78da3327874592a/aspnetcore-runtime-3.1.1-linux-arm.tar.gz
+sudo mkdir -p /usr/share/dotnet
+sudo tar -zxf aspnetcore-runtime-3.1.1-linux-arm.tar.gz -C /usr/share/dotnet/
+sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+````
+3. Run as process
 ````bash
 export ASPNETCORE_URLS=http://+:8080
 export ASPNETCORE_ENVIRONMENT=Development
 dotnet PiControlPanel.Api.GraphQL.dll
 ````
-3. Or run as service
+4. Or run as service
 ````bash
 sudo cp picontrolpanel.service /etc/systemd/system/picontrolpanel.service
 sudo chmod 644 /etc/systemd/system/picontrolpanel.service
 sudo systemctl enable picontrolpanel
 ````
-4. Access http://<<ip_of_raspberry_pi>>:8080/
+5. Access http://<<ip_of_raspberry_pi>>:8080/
 
-### Available operations
+#### Available operations
 
-#### Login Query
+##### Login Query
 
 Query:
 ````graphql
@@ -55,7 +56,7 @@ Query variables:
 }
 ````
 
-#### RaspberryPi Query
+##### RaspberryPi Query
 
 Query:
 ````graphql
@@ -113,7 +114,7 @@ HTTP Headers:
 }
 ````
 
-#### Cpu Subscription
+##### Cpu Subscription
 
 Query:
 ````graphql
@@ -131,7 +132,7 @@ HTTP Headers:
 }
 ````
 
-#### Shutdown Mutation
+##### Shutdown Mutation
 Returns true, but doesn't actually shut the container down.
 
 Query:
@@ -148,20 +149,25 @@ HTTP Headers:
 }
 ````
 
-## Running on Docker (Raspberry Pi)
-1. Open terminal inside the solutions /Docker directory
-2. Build the image
-````command
-docker-compose -f docker-compose.yml -f docker-compose.pi.yml build
-````
-3. Run the container
-````command
-docker-compose -f docker-compose.yml -f docker-compose.pi.yml up -d
-````
-4. Access http://<<ip_of_raspberry_pi>>:8080/
+### Running on Docker
 
-## Running on Docker (outside of Raspberry Pi)
-1. Open terminal inside the solutions /Docker directory
+#### Docker on Raspberry Pi
+````bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+rm get-docker.sh
+sudo usermod -aG docker picontrolpanel
+sudo apt-get install docker-compose
+apt-get -y install git
+git clone https://github.com/rembertmagri/pi-control-panel.git
+cd pi-control-panel/Docker/
+docker-compose -f docker-compose.pi.yml build
+docker-compose -f docker-compose.pi.yml up -d
+````
+Access http://<<ip_of_raspberry_pi>>:8081/
+
+#### Docker outside Raspberry Pi
+1. Open terminal inside the solution's /Docker directory
 2. Build the image
 ````command
 docker-compose build
@@ -172,9 +178,9 @@ docker-compose up -d
 ````
 4. Access http://localhost:8080/
 
-### Available operations when running on Docker
+#### Available operations when running on Docker
 
-#### Login Query
+##### Login Query
 
 Query:
 ````graphql
@@ -193,7 +199,7 @@ Query variables:
 }
 ````
 
-#### RaspberryPi Query
+##### RaspberryPi Query
 
 Query:
 ````graphql
@@ -236,7 +242,7 @@ HTTP Headers:
 }
 ````
 
-#### Shutdown Mutation
+##### Shutdown Mutation
 Returns true, but doesn't actually shut the container down.
 
 Query:
