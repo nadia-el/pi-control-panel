@@ -74,7 +74,7 @@ query Q {
       temperature {
         value
         dateTime
-	  }
+      }
       averageLoad {
         lastMinute
         last5Minutes
