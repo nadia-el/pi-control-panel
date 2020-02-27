@@ -87,8 +87,8 @@ query Q($firstTemperatures: Int, $afterTemperatures: String) {
         total
         dateTime
       }
-	  temperatures(first: $firstTemperatures, after: $afterTemperatures) {
-	    items {
+      temperatures(first: $firstTemperatures, after: $afterTemperatures) {
+        items {
           value
           dateTime
         }
