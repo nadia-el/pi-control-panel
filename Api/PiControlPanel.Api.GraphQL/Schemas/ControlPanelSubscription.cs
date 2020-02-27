@@ -17,7 +17,7 @@
                 "CpuTemperature",
                 resolve: context =>
                 {
-                    return context.Source as Cpu;
+                    return context.Source;
                 },
                 subscribe: context =>
                 {
