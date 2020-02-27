@@ -2,6 +2,7 @@
 {
     using global::GraphQL.DataLoader;
     using global::GraphQL.Types;
+    using global::GraphQL.Relay.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
@@ -51,6 +52,20 @@
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
                     return await cpuService.GetLastTemperatureAsync();
+                });
+
+            Connection<CpuTemperatureType>()
+                .Name("Temperatures")
+                .Bidirectional()
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("Temperatures connection");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    var temperatures = await cpuService.GetTemperaturesAsync();
+
+                    return ConnectionUtils.ToConnection(temperatures, context);
                 });
         }
     }

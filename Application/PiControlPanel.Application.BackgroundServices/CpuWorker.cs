@@ -3,7 +3,6 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;

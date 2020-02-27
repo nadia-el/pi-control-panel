@@ -60,7 +60,7 @@ Query variables:
 
 Query:
 ````graphql
-query Q {
+query Q($firstTemperatures: Int, $afterTemperatures: String) {
   raspberryPi {
     chipset {
       model
@@ -87,6 +87,19 @@ query Q {
         total
         dateTime
       }
+	  temperatures(first: $firstTemperatures, after: $afterTemperatures) {
+	    items {
+          value
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
     }
     disk {
       fileSystem
@@ -109,6 +122,14 @@ query Q {
       hostname
     }
   }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstTemperatures": 20,
+  "afterTemperatures": null
 }
 ````
 
