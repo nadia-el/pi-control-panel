@@ -73,19 +73,19 @@ query Q {
       model
       temperature {
         value
-		dateTime
+        dateTime
 	  }
       averageLoad {
         lastMinute
         last5Minutes
         last15Minutes
-		dateTime
+        dateTime
       }
       realTimeLoad {
         kernel
         user
         total
-		dateTime
+        dateTime
       }
     }
     disk {
@@ -218,13 +218,13 @@ query Q {
         lastMinute
         last5Minutes
         last15Minutes
-		dateTime
+        dateTime
       }
       realTimeLoad {
         kernel
         user
         total
-		dateTime
+        dateTime
       }
     }
     disk {
