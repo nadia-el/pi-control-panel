@@ -11,6 +11,9 @@
                 cfg =>
                 {
                     cfg.CreateMap<Models.Chipset, Entities.Chipset>().ReverseMap();
+                    cfg.CreateMap<Models.Cpu.Cpu, Entities.Cpu.Cpu>().ReverseMap();
+                    cfg.CreateMap<Models.Cpu.CpuTemperature, Entities.Cpu.CpuTemperature>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                 }
             );
             return config;

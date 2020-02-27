@@ -12,6 +12,12 @@
     public interface IRepositoryBase<T> where T : class
     {
         /// <summary>
+        /// Returns all records
+        /// </summary>
+        /// <returns>returns IQueryable</returns>
+        IQueryable<T> GetAll();
+
+        /// <summary>
         /// Returns multiple records for the given where expression
         /// </summary>
         /// <param name="where">expression to filter the records</param>

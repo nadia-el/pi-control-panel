@@ -4,7 +4,6 @@
     using Microsoft.Extensions.Configuration;
     using NLog;
     using PiControlPanel.Infrastructure.Persistence.Contracts.Repositories;
-    using PiControlPanel.Infrastructure.Persistence.Entities;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -54,7 +53,11 @@
 
         #region Repositories
 
-        public IRepositoryBase<Chipset> ChipsetRepository => new RepositoryBase<Chipset>(this.dbContext, this.logger);
+        public IRepositoryBase<Entities.Chipset> ChipsetRepository => new RepositoryBase<Entities.Chipset>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Cpu.Cpu> CpuRepository => new RepositoryBase<Entities.Cpu.Cpu>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Cpu.CpuTemperature> CpuTemperatureRepository => new RepositoryBase<Entities.Cpu.CpuTemperature>(this.dbContext, this.logger);
 
         #endregion
     }

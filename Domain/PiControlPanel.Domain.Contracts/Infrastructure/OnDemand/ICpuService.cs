@@ -7,16 +7,16 @@
 
     public interface ICpuService
     {
-        Task<Cpu> GetAsync(BusinessContext context);
+        Task<Cpu> GetAsync();
 
-        Task<double> GetTemperatureAsync();
+        Task<CpuTemperature> GetTemperatureAsync();
+
+        IObservable<CpuTemperature> GetTemperatureObservable();
 
         Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores);
 
         Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context);
 
-        void PublishStatus(double temperature);
-
-        IObservable<Cpu> GetObservable(BusinessContext context);
+        void PublishTemperature(CpuTemperature temperature);
     }
 }

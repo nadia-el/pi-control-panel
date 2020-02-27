@@ -24,6 +24,13 @@
         }
 
         /// <inheritdoc/>
+        public IQueryable<TObject> GetAll()
+        {
+            logger.Debug("GetAll");
+            return dbSet.AsQueryable();
+        }
+
+        /// <inheritdoc/>
         public IQueryable<TObject> GetMany(Expression<Func<TObject, bool>> where)
         {
             logger.Debug("GetMany");

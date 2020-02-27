@@ -25,6 +25,8 @@
         {
             serviceRegistry.RegisterScoped<IUnitOfWork, UnitOfWork>();
             serviceRegistry.RegisterScoped<Contracts.Persistence.IChipsetService, Persistence.ChipsetService>();
+            serviceRegistry.RegisterScoped<Contracts.Persistence.ICpuService, Persistence.CpuService>();
+
             serviceRegistry.RegisterScoped<Contracts.OnDemand.IControlPanelService, OnDemand.ControlPanelService>();
             serviceRegistry.RegisterScoped<Contracts.OnDemand.IChipsetService, OnDemand.ChipsetService>();
             serviceRegistry.RegisterScoped<Contracts.OnDemand.ICpuService, OnDemand.CpuService>();
@@ -33,8 +35,9 @@
             serviceRegistry.RegisterScoped<Contracts.OnDemand.IDiskService, OnDemand.DiskService>();
             serviceRegistry.RegisterScoped<Contracts.OnDemand.IOsService, OnDemand.OsService>();
             serviceRegistry.RegisterScoped<Contracts.OnDemand.IUserAccountService, OnDemand.UserAccountService>();
-            serviceRegistry.RegisterScoped<IMapper>(c => new AutoMapperConfiguration().GetIMapper());
-            serviceRegistry.RegisterSingleton<ISubject<Cpu>>(factory => new ReplaySubject<Cpu>(1));
+            
+            serviceRegistry.RegisterSingleton<IMapper>(factory => new AutoMapperConfiguration().GetIMapper());
+            serviceRegistry.RegisterSingleton<ISubject<CpuTemperature>>(factory => new ReplaySubject<CpuTemperature>(1));
         }
     }
 }

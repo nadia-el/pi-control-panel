@@ -42,7 +42,7 @@
                     return await cpuService.GetRealTimeLoadAsync(businessContext);
                 });
 
-            Field<FloatGraphType>()
+            Field<CpuTemperatureType>()
                 .Name("Temperature")
                 .ResolveAsync(async context =>
                 {
@@ -50,7 +50,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await cpuService.GetTemperatureAsync(businessContext);
+                    return await cpuService.GetLastTemperatureAsync();
                 });
         }
     }

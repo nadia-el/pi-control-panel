@@ -10,6 +10,7 @@
             Field(x => x.LastMinute);
             Field(x => x.Last5Minutes);
             Field(x => x.Last15Minutes);
+            Field<DateTimeGraphType>("dateTime");
         }
     }
 }

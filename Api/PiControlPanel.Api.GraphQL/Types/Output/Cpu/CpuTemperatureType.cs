@@ -3,11 +3,12 @@
     using global::GraphQL.Types;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
-    public class CpuTemperatureType : ObjectGraphType<Cpu>
+    public class CpuTemperatureType : ObjectGraphType<CpuTemperature>
     {
         public CpuTemperatureType()
         {
-            Field(x => x.Temperature);
+            Field("value", x => x.Temperature);
+            Field<DateTimeGraphType>("dateTime");
         }
     }
 }

@@ -15,27 +15,33 @@
 
     public class CpuService : ICpuService
     {
-        private readonly ISubject<Cpu> cpuSubject;
+        private readonly ISubject<CpuTemperature> cpuTemperatureSubject;
         private readonly ILogger logger;
 
-        public CpuService(ISubject<Cpu> cpuSubject, ILogger logger)
+        public CpuService(ISubject<CpuTemperature> cpuTemperatureSubject, ILogger logger)
         {
-            this.cpuSubject = cpuSubject;
+            this.cpuTemperatureSubject = cpuTemperatureSubject;
             this.logger = logger;
         }
 
-        public Task<Cpu> GetAsync(BusinessContext context)
+        public Task<Cpu> GetAsync()
         {
             logger.Info("Infra layer -> CpuService -> GetAsync");
             var cpu = this.GetCpu();
             return Task.FromResult(cpu);
         }
 
-        public Task<double> GetTemperatureAsync()
+        public Task<CpuTemperature> GetTemperatureAsync()
         {
             logger.Info("Infra layer -> CpuService -> GetTemperatureAsync");
             var temperature = this.GetTemperature();
             return Task.FromResult(temperature);
+        }
+
+        public IObservable<CpuTemperature> GetTemperatureObservable()
+        {
+            logger.Info("Infra layer -> CpuService -> GetTemperatureObservable");
+            return this.cpuTemperatureSubject.AsObservable();
         }
 
         public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
@@ -52,16 +58,10 @@
             return Task.FromResult(realTimeLoad);
         }
 
-        public void PublishStatus(double temperature)
+        public void PublishTemperature(CpuTemperature temperature)
         {
-            logger.Info("Infra layer -> CpuService -> PublishStatus");
-            this.cpuSubject.OnNext(new Cpu() { Temperature = temperature });
-        }
-
-        public IObservable<Cpu> GetObservable(BusinessContext context)
-        {
-            logger.Info("Infra layer -> CpuService -> GetObservable");
-            return this.cpuSubject.AsObservable();
+            logger.Info("Infra layer -> CpuService -> PublishTemperature");
+            this.cpuTemperatureSubject.OnNext(temperature);
         }
 
         private Cpu GetCpu()
@@ -84,7 +84,7 @@
             };
         }
 
-        private double GetTemperature()
+        private CpuTemperature GetTemperature()
         {
             var result = BashCommands.MeasureTemp.Bash();
             logger.Debug($"Result of '{BashCommands.MeasureTemp}' command: '{result}'");
@@ -95,10 +95,14 @@
             double temperature;
             if (double.TryParse(temperatureResult, out temperature))
             {
-                return temperature;
+                return new CpuTemperature()
+                {
+                    Temperature = temperature,
+                    DateTime = DateTime.Now
+                };
             }
             logger.Warn($"Could not parse temperature: '{temperatureResult}'");
-            return 0.0;
+            return null;
         }
 
         private CpuAverageLoad GetAverageLoad(int cores)
@@ -116,7 +120,8 @@
             {
                 LastMinute = (100 * double.Parse(groups["lastMinute"].Value)) / cores,
                 Last5Minutes = (100 * double.Parse(groups["last5Minutes"].Value)) / cores,
-                Last15Minutes = (100 * double.Parse(groups["last15Minutes"].Value)) / cores
+                Last15Minutes = (100 * double.Parse(groups["last15Minutes"].Value)) / cores,
+                DateTime = DateTime.Now
             };
         }
 
@@ -134,7 +139,8 @@
             return new CpuRealTimeLoad()
             {
                 User = double.Parse(groups["user"].Value),
-                Kernel = double.Parse(groups["kernel"].Value)
+                Kernel = double.Parse(groups["kernel"].Value),
+                DateTime = DateTime.Now
             };
         }
     }

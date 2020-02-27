@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
-    using PiControlPanel.Infrastructure.Persistence.Entities;
 
     public class ControlPanelDbContext : DbContext
     {
@@ -14,7 +13,11 @@
             Database.EnsureCreated();
         }
 
-        public DbSet<Chipset> Chipset { get; set; }
+        public DbSet<Entities.Chipset> Chipset { get; set; }
+
+        public DbSet<Entities.Cpu.Cpu> Cpu { get; set; }
+
+        public DbSet<Entities.Cpu.CpuTemperature> CpuTemperature { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

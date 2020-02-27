@@ -123,11 +123,12 @@ namespace PiControlPanel.Api.GraphQL
             // If running from Docker, don't start the backgroud service
             if (isRunningInContainer)
             {
-                logger.Warn("Running in Docker, not creating HardwareWorker background service.");
+                logger.Warn("Running in Docker, not creating Worker background services.");
             }
             else
             {
-                services.AddHostedService<ControlPanelWorker>();
+                services.AddHostedService<ChipsetWorker>();
+                services.AddHostedService<CpuWorker>();
             }
         }
 

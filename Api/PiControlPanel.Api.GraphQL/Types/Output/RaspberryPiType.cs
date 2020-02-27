@@ -31,7 +31,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await cpuService.GetAsync(businessContext);
+                    return await cpuService.GetAsync();
                 });
 
             Field<MemoryType>()

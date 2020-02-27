@@ -10,6 +10,7 @@
             Field(x => x.Kernel);
             Field(x => x.User);
             Field(x => x.Total);
+            Field<DateTimeGraphType>("dateTime");
         }
     }
 }
