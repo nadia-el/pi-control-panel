@@ -29,7 +29,7 @@
             }
             catch(Exception ex)
             {
-                logger.Error(ex, "error running ControlPanelWorker");
+                logger.Error(ex, "error running ChipsetWorker");
             }
             finally
             {

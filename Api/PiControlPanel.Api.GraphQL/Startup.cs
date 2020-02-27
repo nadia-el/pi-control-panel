@@ -120,16 +120,17 @@ namespace PiControlPanel.Api.GraphQL
                 options.AllowSynchronousIO = true;
             });
 
-            // If running from Docker, don't start the backgroud service
-            if (isRunningInContainer)
+            if (!isRunningInContainer)
             {
-                logger.Warn("Running in Docker, not creating Worker background services.");
+                services.AddHostedService<ChipsetWorker>();
+                services.AddHostedService<CpuTemperatureWorker>();
             }
             else
             {
-                services.AddHostedService<ChipsetWorker>();
-                services.AddHostedService<CpuWorker>();
+                logger.Warn("Running on Docker, not creating incompatible background services.");
             }
+
+            services.AddHostedService<CpuWorker>();
         }
 
         /// <summary>

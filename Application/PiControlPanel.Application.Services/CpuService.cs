@@ -46,7 +46,7 @@
 
         public IObservable<CpuTemperature> GetTemperatureObservable()
         {
-            logger.Info("Application layer -> CpuService -> GetObservable");
+            logger.Info("Application layer -> CpuService -> GetTemperatureObservable");
             return this.onDemandService.GetTemperatureObservable();
         }
 

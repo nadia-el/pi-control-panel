@@ -14,14 +14,14 @@
         public ControlPanelSubscription(ICpuService cpuService, ILogger logger)
         {
             FieldSubscribe<CpuTemperatureType>(
-                "Cpu",
+                "CpuTemperature",
                 resolve: context =>
                 {
                     return context.Source as Cpu;
                 },
                 subscribe: context =>
                 {
-                    logger.Info("Cpu subscription");
+                    logger.Info("CpuTemperature subscription");
                     MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
                     GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
                     var businessContext = graphQLUserContext.GetBusinessContext();

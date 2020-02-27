@@ -71,16 +71,21 @@ query Q {
     cpu {
       cores
       model
-      temperature
+      temperature {
+        value
+		dateTime
+	  }
       averageLoad {
         lastMinute
         last5Minutes
         last15Minutes
+		dateTime
       }
       realTimeLoad {
         kernel
         user
         total
+		dateTime
       }
     }
     disk {
@@ -119,8 +124,9 @@ HTTP Headers:
 Query:
 ````graphql
 subscription S {
-    cpu {
-      temperature
+    cpuTemperature {
+      value
+      dateTime
     }
 }
 ````
@@ -212,11 +218,13 @@ query Q {
         lastMinute
         last5Minutes
         last15Minutes
+		dateTime
       }
       realTimeLoad {
         kernel
         user
         total
+		dateTime
       }
     }
     disk {

@@ -11,16 +11,13 @@
     public class CpuWorker : BackgroundService
     {
         private readonly ICpuService cpuService;
-        private readonly IConfiguration configuration;
         private readonly ILogger logger;
 
         public CpuWorker(
             ICpuService cpuService,
-            IConfiguration configuration,
             ILogger logger)
         {
             this.cpuService = cpuService;
-            this.configuration = configuration;
             this.logger = logger;
         }
 
@@ -30,20 +27,10 @@
             {
                 logger.Info("CpuWorker started");
                 await cpuService.SaveAsync();
-
-                var workerInterval = int.Parse(configuration["Worker:Interval"]);
-                logger.Info($"CpuWorker configured to run at interval of {workerInterval} ms");
-
-                while (!stoppingToken.IsCancellationRequested)
-                {
-                    logger.Trace($"CpuWorker running at: {DateTimeOffset.Now}");
-                    await this.cpuService.SaveTemperatureAsync();
-                    await Task.Delay(workerInterval, stoppingToken);
-                }
             }
             catch(Exception ex)
             {
-                logger.Error(ex, "error running ControlPanelWorker");
+                logger.Error(ex, "error running CpuWorker");
             }
             finally
             {
