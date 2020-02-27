@@ -26,7 +26,7 @@
                     GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return cpuService.GetTemperatureObservable(businessContext);
+                    return cpuService.GetTemperatureObservable();
                 });
         }
     }
