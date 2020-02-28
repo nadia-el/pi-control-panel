@@ -60,7 +60,7 @@ Query variables:
 
 Query:
 ````graphql
-query Q($firstTemperatures: Int, $afterTemperatures: String) {
+query Q {
   raspberryPi {
     chipset {
       model
@@ -87,19 +87,6 @@ query Q($firstTemperatures: Int, $afterTemperatures: String) {
         total
         dateTime
       }
-	  temperatures(first: $firstTemperatures, after: $afterTemperatures) {
-	    items {
-          value
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
-      }
     }
     disk {
       fileSystem
@@ -122,14 +109,6 @@ query Q($firstTemperatures: Int, $afterTemperatures: String) {
       hostname
     }
   }
-}
-````
-
-Query variables:
-````graphql
-{
-  "firstTemperatures": 20,
-  "afterTemperatures": null
 }
 ````
 
@@ -278,6 +257,134 @@ Query:
 ````graphql
 mutation M {
   shutdown
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+## GraphQL Connections
+
+Besides the above mentioned query fields, these are the supported GraphQL connection fields. They return paginated lists and can be used with the other fields in the same request.
+
+### Cpu Temperatures
+
+Query:
+````graphql
+query Q($firstTemperatures: Int, $afterTemperatures: String) {
+  raspberryPi {
+    cpu {
+      temperatures(first: $firstTemperatures, after: $afterTemperatures) {
+        items {
+          value
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstTemperatures": 20,
+  "afterTemperatures": null
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+### Cpu Average Loads
+
+Query:
+````graphql
+query Q($firstAverageLoads: Int, $afterAverageLoads: String) {
+  raspberryPi {
+    cpu {
+      averageLoads(first: $firstAverageLoads, after: $afterAverageLoads) {
+        items {
+          lastMinute
+          last5Minutes
+          last15Minutes
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstAverageLoads": 20,
+  "afterAverageLoads": null
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+### Cpu Real-time Loads
+
+Query:
+````graphql
+query Q($firstRealTimeLoads: Int, $afterRealTimeLoads: String) {
+  raspberryPi {
+    cpu {
+      realTimeLoads(first: $firstRealTimeLoads, after: $afterRealTimeLoads) {
+        items {
+          kernel
+          user
+          total
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstRealTimeLoads": 20,
+  "afterRealTimeLoads": null
 }
 ````
 
