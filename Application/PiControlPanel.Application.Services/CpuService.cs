@@ -82,6 +82,12 @@
             return await this.persistenceRealTimeLoadService.GetAllAsync();
         }
 
+        public Task<double> GetTotalRealTimeLoadAsync(CpuRealTimeLoad cpuRealTimeLoad)
+        {
+            logger.Info("Application layer -> CpuService -> GetTotalRealTimeLoad");
+            return Task.FromResult(cpuRealTimeLoad.Kernel + cpuRealTimeLoad.User);
+        }
+
         public async Task SaveAsync()
         {
             logger.Info("Application layer -> CpuService -> SaveAsync");

@@ -23,6 +23,8 @@
 
         Task<IEnumerable<CpuRealTimeLoad>> GetRealTimeLoadsAsync();
 
+        Task<double> GetTotalRealTimeLoadAsync(CpuRealTimeLoad cpuRealTimeLoad);
+
         Task SaveAsync();
 
         Task SaveTemperatureAsync();

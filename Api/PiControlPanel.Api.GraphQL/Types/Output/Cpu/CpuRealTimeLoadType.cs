@@ -1,16 +1,36 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
+    using global::GraphQL.DataLoader;
     using global::GraphQL.Types;
+    using NLog;
+    using PiControlPanel.Api.GraphQL.Extensions;
+    using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public class CpuRealTimeLoadType : ObjectGraphType<CpuRealTimeLoad>
     {
-        public CpuRealTimeLoadType()
+        public CpuRealTimeLoadType(IDataLoaderContextAccessor accessor,
+            ICpuService cpuService,
+            ILogger logger)
         {
+            Field<DateTimeGraphType>("dateTime");
             Field(x => x.Kernel);
             Field(x => x.User);
-            Field(x => x.Total);
-            Field<DateTimeGraphType>("dateTime");
+            Field<FloatGraphType, double>()
+                .Name("Total")
+                .ResolveAsync(context =>
+                {
+                    logger.Info("Total field");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    var cpuRealTimeLoad = context.Source;
+                    var loader = accessor.Context.GetOrAddLoader(
+                        "GetTotalRealTimeLoadAsync",
+                        () => cpuService.GetTotalRealTimeLoadAsync(cpuRealTimeLoad));
+
+                    return loader.LoadAsync();
+                });
         }
     }
 }

@@ -8,8 +8,6 @@
 
         public double User { get; set; }
 
-        public double Total { get { return Kernel + User; } }
-
         public DateTime DateTime { get; set; }
     }
 }
