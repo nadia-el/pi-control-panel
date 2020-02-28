@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public interface ICpuService
@@ -13,9 +12,9 @@
 
         IObservable<CpuTemperature> GetTemperatureObservable();
 
-        Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores);
+        Task<CpuAverageLoad> GetAverageLoadAsync(int cores);
 
-        Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context);
+        Task<CpuRealTimeLoad> GetRealTimeLoadAsync();
 
         void PublishTemperature(CpuTemperature temperature);
     }

@@ -10,7 +10,6 @@
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public class CpuService : ICpuService
@@ -44,14 +43,14 @@
             return this.cpuTemperatureSubject.AsObservable();
         }
 
-        public Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores)
+        public Task<CpuAverageLoad> GetAverageLoadAsync(int cores)
         {
             logger.Info("Infra layer -> CpuService -> GetAverageLoadAsync");
             var averageLoad = this.GetAverageLoad(cores);
             return Task.FromResult(averageLoad);
         }
 
-        public Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context)
+        public Task<CpuRealTimeLoad> GetRealTimeLoadAsync()
         {
             logger.Info("Infra layer -> CpuService -> GetRealTimeLoadAsync");
             var realTimeLoad = this.GetRealTimeLoad();

@@ -1,6 +1,5 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
-    using global::GraphQL.DataLoader;
     using global::GraphQL.Types;
     using global::GraphQL.Relay.Types;
     using NLog;
@@ -10,26 +9,34 @@
 
     public class CpuType : ObjectGraphType<Cpu>
     {
-        public CpuType(IDataLoaderContextAccessor accessor, ICpuService cpuService,
-            ILogger logger)
+        public CpuType(ICpuService cpuService, ILogger logger)
         {
             Field(x => x.Cores);
             Field(x => x.Model);
 
-            Field<CpuAverageLoadType, CpuAverageLoad>()
+            Field<CpuAverageLoadType>()
                 .Name("AverageLoad")
-                .ResolveAsync(context =>
+                .ResolveAsync(async context =>
                 {
                     logger.Info("Average Load field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var cores = context.Source.Cores;
-                    var loader = accessor.Context.GetOrAddLoader(
-                        "GetAverageLoadAsync",
-                        () => cpuService.GetAverageLoadAsync(businessContext, cores));
+                    return await cpuService.GetLastAverageLoadAsync();
+                });
 
-                    return loader.LoadAsync();
+            Connection<CpuAverageLoadType>()
+                .Name("AverageLoads")
+                .Bidirectional()
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("AverageLoads connection");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    var averageLoads = await cpuService.GetAverageLoadsAsync();
+
+                    return ConnectionUtils.ToConnection(averageLoads, context);
                 });
 
             Field<CpuRealTimeLoadType>()
@@ -40,7 +47,21 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await cpuService.GetRealTimeLoadAsync(businessContext);
+                    return await cpuService.GetLastRealTimeLoadAsync();
+                });
+
+            Connection<CpuRealTimeLoadType>()
+                .Name("RealTimeLoads")
+                .Bidirectional()
+                .ResolveAsync(async context =>
+                {
+                    logger.Info("AverageLoads connection");
+                    GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    var realTimeLoads = await cpuService.GetRealTimeLoadsAsync();
+
+                    return ConnectionUtils.ToConnection(realTimeLoads, context);
                 });
 
             Field<CpuTemperatureType>()

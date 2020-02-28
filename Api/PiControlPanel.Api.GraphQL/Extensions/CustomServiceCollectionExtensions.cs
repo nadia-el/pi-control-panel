@@ -48,11 +48,11 @@
             container.RegisterSingleton<IDocumentExecuter, DocumentExecuter>();
             container.RegisterSingleton<IDocumentWriter, DocumentWriter>();
 
-            container.RegisterScoped<RaspberryPiType>();
-            container.RegisterScoped<ControlPanelQuery>();
-            container.RegisterScoped<ControlPanelMutation>();
-            container.RegisterScoped<ControlPanelSubscription>();
-            container.RegisterScoped<ControlPanelSchema>();
+            container.Register<RaspberryPiType>();
+            container.Register<ControlPanelQuery>();
+            container.Register<ControlPanelMutation>();
+            container.Register<ControlPanelSubscription>();
+            container.Register<ControlPanelSchema>();
 
             return container;
         }

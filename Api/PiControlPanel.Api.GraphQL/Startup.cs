@@ -131,6 +131,8 @@ namespace PiControlPanel.Api.GraphQL
             }
 
             services.AddHostedService<CpuWorker>();
+            services.AddHostedService<CpuAverageLoadWorker>();
+            services.AddHostedService<CpuRealTimeLoadWorker>();
         }
 
         /// <summary>
@@ -139,16 +141,18 @@ namespace PiControlPanel.Api.GraphQL
         /// <param name="container">LightInject service container</param>
         public void ConfigureContainer(IServiceContainer container)
         {
+            container.SetDefaultLifetime<PerScopeLifetime>();
+
             container.AddGraphQLServicesDependency();
 
-            container.RegisterScoped<ISecurityService, SecurityService>();
-            container.RegisterScoped<IControlPanelService, ControlPanelService>();
-            container.RegisterScoped<IChipsetService, ChipsetService>();
-            container.RegisterScoped<ICpuService, CpuService>();
-            container.RegisterScoped<IMemoryService, MemoryService>();
-            container.RegisterScoped<IGpuService, GpuService>();
-            container.RegisterScoped<IDiskService, DiskService>();
-            container.RegisterScoped<IOsService, OsService>();
+            container.Register<ISecurityService, SecurityService>();
+            container.Register<IControlPanelService, ControlPanelService>();
+            container.Register<IChipsetService, ChipsetService>();
+            container.Register<ICpuService, CpuService>();
+            container.Register<IMemoryService, MemoryService>();
+            container.Register<IGpuService, GpuService>();
+            container.Register<IDiskService, DiskService>();
+            container.Register<IOsService, OsService>();
 
             //Registers all services required for the Application layer
             container.RegisterFrom<AppCompositionRoot>();

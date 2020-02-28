@@ -19,6 +19,10 @@
 
         public DbSet<Entities.Cpu.CpuTemperature> CpuTemperature { get; set; }
 
+        public DbSet<Entities.Cpu.CpuAverageLoad> CpuAverageLoad { get; set; }
+
+        public DbSet<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoad { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

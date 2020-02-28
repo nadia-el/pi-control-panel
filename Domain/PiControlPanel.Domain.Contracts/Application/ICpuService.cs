@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
     public interface ICpuService
@@ -16,12 +15,20 @@
 
         IObservable<CpuTemperature> GetTemperatureObservable();
 
-        Task<CpuAverageLoad> GetAverageLoadAsync(BusinessContext context, int cores);
+        Task<CpuAverageLoad> GetLastAverageLoadAsync();
 
-        Task<CpuRealTimeLoad> GetRealTimeLoadAsync(BusinessContext context);
+        Task<IEnumerable<CpuAverageLoad>> GetAverageLoadsAsync();
+
+        Task<CpuRealTimeLoad> GetLastRealTimeLoadAsync();
+
+        Task<IEnumerable<CpuRealTimeLoad>> GetRealTimeLoadsAsync();
 
         Task SaveAsync();
 
         Task SaveTemperatureAsync();
+
+        Task SaveAverageLoadAsync();
+
+        Task SaveRealTimeLoadAsync();
     }
 }

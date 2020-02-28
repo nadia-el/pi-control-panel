@@ -8,13 +8,13 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
 
-    public class CpuTemperatureWorker : BackgroundService
+    public class CpuRealTimeLoadWorker : BackgroundService
     {
         private readonly ICpuService cpuService;
         private readonly IConfiguration configuration;
         private readonly ILogger logger;
 
-        public CpuTemperatureWorker(
+        public CpuRealTimeLoadWorker(
             ICpuService cpuService,
             IConfiguration configuration,
             ILogger logger)
@@ -28,24 +28,24 @@
         {
             try
             {
-                logger.Info("CpuTemperatureWorker started");
+                logger.Info("CpuRealTimeLoadWorker started");
                 var workerInterval = int.Parse(configuration["Worker:Interval"]);
-                logger.Info($"CpuTemperatureWorker configured to run at interval of {workerInterval} ms");
+                logger.Info($"CpuRealTimeLoadWorker configured to run at interval of {workerInterval} ms");
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Trace($"CpuTemperatureWorker running at: {DateTimeOffset.Now}");
-                    await this.cpuService.SaveTemperatureAsync();
+                    logger.Trace($"CpuRealTimeLoadWorker running at: {DateTimeOffset.Now}");
+                    await this.cpuService.SaveRealTimeLoadAsync();
                     await Task.Delay(workerInterval, stoppingToken);
                 }
             }
             catch(Exception ex)
             {
-                logger.Error(ex, "error running CpuTemperatureWorker");
+                logger.Error(ex, "error running CpuRealTimeLoadWorker");
             }
             finally
             {
-                logger.Info("CpuTemperatureWorker ended");
+                logger.Info("CpuRealTimeLoadWorker ended");
             }
         }
     }

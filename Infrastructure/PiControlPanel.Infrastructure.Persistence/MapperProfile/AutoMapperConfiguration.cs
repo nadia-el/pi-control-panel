@@ -14,6 +14,10 @@
                     cfg.CreateMap<Models.Cpu.Cpu, Entities.Cpu.Cpu>().ReverseMap();
                     cfg.CreateMap<Models.Cpu.CpuTemperature, Entities.Cpu.CpuTemperature>()
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Cpu.CpuAverageLoad, Entities.Cpu.CpuAverageLoad>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Cpu.CpuRealTimeLoad, Entities.Cpu.CpuRealTimeLoad>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                 }
             );
             return config;

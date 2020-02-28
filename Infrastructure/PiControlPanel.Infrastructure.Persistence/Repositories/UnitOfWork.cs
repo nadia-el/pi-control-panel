@@ -59,6 +59,10 @@
 
         public IRepositoryBase<Entities.Cpu.CpuTemperature> CpuTemperatureRepository => new RepositoryBase<Entities.Cpu.CpuTemperature>(this.dbContext, this.logger);
 
+        public IRepositoryBase<Entities.Cpu.CpuAverageLoad> CpuAverageLoadRepository => new RepositoryBase<Entities.Cpu.CpuAverageLoad>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoadRepository => new RepositoryBase<Entities.Cpu.CpuRealTimeLoad>(this.dbContext, this.logger);
+
         #endregion
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence
+﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence.Cpu
 {
     using PiControlPanel.Domain.Models.Hardware.Cpu;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface ICpuService
@@ -15,11 +14,5 @@
         Task UpdateAsync(Cpu cpu);
 
         Task RemoveAsync(Cpu cpu);
-
-        Task<CpuTemperature> GetLastTemperatureAsync();
-
-        Task<IEnumerable<CpuTemperature>> GetTemperaturesAsync();
-
-        Task AddTemperatureAsync(CpuTemperature cpuTemperature);
     }
 }
