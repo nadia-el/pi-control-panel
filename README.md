@@ -92,8 +92,11 @@ query Q {
       fileSystem
       type
       total
-      used
-      available
+      status {
+        used
+        available
+        dateTime
+      }
     }
     memory {
       total
@@ -231,8 +234,11 @@ query Q {
       fileSystem
       type
       total
-      used
-      available
+      status {
+        used
+        available
+        dateTime
+      }
     }
     memory {
       total
@@ -385,6 +391,53 @@ Query variables:
 {
   "firstRealTimeLoads": 20,
   "afterRealTimeLoads": null
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+### Disk Statuses
+
+Query:
+````graphql
+# Write your query or mutation here
+query Q($firstDiskStatuses: Int, $afterDiskStatuses: String) {
+  raspberryPi {
+    disk {
+      status {
+        used
+        available
+        dateTime
+      }
+      statuses(first: $firstDiskStatuses, after: $afterDiskStatuses) {
+	    items {
+          used
+          available
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstDiskStatuses": 20,
+  "afterDiskStatuses": null
 }
 ````
 
