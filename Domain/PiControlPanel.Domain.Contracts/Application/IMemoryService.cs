@@ -1,11 +1,19 @@
 ﻿namespace PiControlPanel.Domain.Contracts.Application
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using PiControlPanel.Domain.Models;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Memory;
 
     public interface IMemoryService
     {
-        Task<Memory> GetAsync(BusinessContext context);
+        Task<Memory> GetAsync();
+
+        Task<MemoryStatus> GetLastStatusAsync();
+
+        Task<IEnumerable<MemoryStatus>> GetStatusesAsync();
+
+        Task SaveAsync();
+
+        Task SaveStatusAsync();
     }
 }

@@ -33,6 +33,8 @@
             serviceRegistry.Register<Contracts.Persistence.IOsService, Persistence.OsService>();
             serviceRegistry.Register<Contracts.Persistence.Disk.IDiskService, Persistence.Disk.DiskService>();
             serviceRegistry.Register<Contracts.Persistence.Disk.IDiskStatusService, Persistence.Disk.DiskStatusService>();
+            serviceRegistry.Register<Contracts.Persistence.Memory.IMemoryService, Persistence.Memory.MemoryService>();
+            serviceRegistry.Register<Contracts.Persistence.Memory.IMemoryStatusService, Persistence.Memory.MemoryStatusService>();
 
             serviceRegistry.Register<Contracts.OnDemand.IControlPanelService, OnDemand.ControlPanelService>();
             serviceRegistry.Register<Contracts.OnDemand.IChipsetService, OnDemand.ChipsetService>();

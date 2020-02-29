@@ -9,8 +9,7 @@
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
-    using PiControlPanel.Domain.Models;
-    using PiControlPanel.Domain.Models.Hardware;
+    using PiControlPanel.Domain.Models.Hardware.Memory;
 
     public class MemoryService : IMemoryService
     {
@@ -21,11 +20,18 @@
             this.logger = logger;
         }
 
-        public Task<Memory> GetAsync(BusinessContext context)
+        public Task<Memory> GetAsync()
         {
             logger.Info("Infra layer -> MemoryService -> GetAsync");
             var memory = this.GetMemory();
             return Task.FromResult(memory);
+        }
+
+        public Task<MemoryStatus> GetStatusAsync()
+        {
+            logger.Info("Infra layer -> MemoryService -> GetStatusAsync");
+            var memoryStatus = this.GetMemoryStatus();
+            return Task.FromResult(memoryStatus);
         }
 
         private Memory GetMemory()
@@ -38,14 +44,30 @@
             var regex = new Regex(@"^Mem:\s*(?<total>\d*)\s*(?<used>\d*)\s*(?<free>\d*)\s*.*$");
             var groups = regex.Match(memoryInfo).Groups;
             var total = int.Parse(groups["total"].Value);
-            var used = int.Parse(groups["used"].Value);
-            var free = int.Parse(groups["free"].Value);
-            logger.Debug($"Total memory: '{total}'KB, Used memory: '{used}'KB, Free memory: '{free}'KB");
+            logger.Debug($"Total memory: '{total}'KB");
             return new Memory()
             {
-                Total = total,
+                Total = total
+            };
+        }
+
+        private MemoryStatus GetMemoryStatus()
+        {
+            var result = BashCommands.Free.Bash();
+            logger.Debug($"Result of '{BashCommands.Free}' command: '{result}'");
+            string[] lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+            var memoryInfo = lines.First(l => l.StartsWith("Mem:"));
+            var regex = new Regex(@"^Mem:\s*(?<total>\d*)\s*(?<used>\d*)\s*(?<free>\d*)\s*.*$");
+            var groups = regex.Match(memoryInfo).Groups;
+            var used = int.Parse(groups["used"].Value);
+            var free = int.Parse(groups["free"].Value);
+            logger.Debug($"Used memory: '{used}'KB, Free memory: '{free}'KB");
+            return new MemoryStatus()
+            {
                 Used = used,
-                Available = free
+                Available = free,
+                DateTime = DateTime.Now
             };
         }
     }

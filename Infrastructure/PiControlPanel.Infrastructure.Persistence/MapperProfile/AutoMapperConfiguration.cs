@@ -18,15 +18,20 @@
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                     cfg.CreateMap<Models.Cpu.CpuRealTimeLoad, Entities.Cpu.CpuRealTimeLoad>()
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
-                    cfg.CreateMap<Models.Gpu, Entities.Gpu>().ReverseMap();
-                    cfg.CreateMap<Models.Os, Entities.Os>().ReverseMap();
+                    cfg.CreateMap<Models.Gpu, Entities.Gpu>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Os, Entities.Os>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                     cfg.CreateMap<Models.Disk.Disk, Entities.Disk.Disk>().ReverseMap();
                     cfg.CreateMap<Models.Disk.DiskStatus, Entities.Disk.DiskStatus>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Memory.Memory, Entities.Memory.Memory>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Memory.MemoryStatus, Entities.Memory.MemoryStatus>()
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                 }
             );
             return config;
-
         }
 
         public IMapper GetIMapper()

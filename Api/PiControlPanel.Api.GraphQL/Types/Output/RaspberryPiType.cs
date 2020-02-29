@@ -41,7 +41,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await memoryService.GetAsync(businessContext);
+                    return await memoryService.GetAsync();
                 });
 
             Field<GpuType>()

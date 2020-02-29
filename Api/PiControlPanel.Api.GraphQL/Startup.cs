@@ -136,6 +136,7 @@ namespace PiControlPanel.Api.GraphQL
             services.AddHostedService<CpuAverageLoadWorker>();
             services.AddHostedService<CpuRealTimeLoadWorker>();
             services.AddHostedService<DiskWorker>();
+            services.AddHostedService<MemoryWorker>();
         }
 
         /// <summary>

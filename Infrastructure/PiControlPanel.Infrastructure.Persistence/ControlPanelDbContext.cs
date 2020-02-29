@@ -31,6 +31,10 @@
 
         public DbSet<Entities.Disk.DiskStatus> DiskStatus { get; set; }
 
+        public DbSet<Entities.Memory.Memory> Memory { get; set; }
+
+        public DbSet<Entities.Memory.MemoryStatus> MemoryStatus { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

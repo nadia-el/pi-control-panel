@@ -70,6 +70,11 @@
         public IRepositoryBase<Entities.Disk.Disk> DiskRepository => new RepositoryBase<Entities.Disk.Disk>(this.dbContext, this.logger);
 
         public IRepositoryBase<Entities.Disk.DiskStatus> DiskStatusRepository => new RepositoryBase<Entities.Disk.DiskStatus>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Memory.Memory> MemoryRepository => new RepositoryBase<Entities.Memory.Memory>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Memory.MemoryStatus> MemoryStatusRepository => new RepositoryBase<Entities.Memory.MemoryStatus>(this.dbContext, this.logger);
+
         #endregion
     }
 }

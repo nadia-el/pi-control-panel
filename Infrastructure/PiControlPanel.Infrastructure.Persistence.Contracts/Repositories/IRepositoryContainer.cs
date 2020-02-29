@@ -19,5 +19,9 @@
         IRepositoryBase<Entities.Disk.Disk> DiskRepository { get; }
 
         IRepositoryBase<Entities.Disk.DiskStatus> DiskStatusRepository { get; }
+
+        IRepositoryBase<Entities.Memory.Memory> MemoryRepository { get; }
+
+        IRepositoryBase<Entities.Memory.MemoryStatus> MemoryStatusRepository { get; }
     }
 }
