@@ -3,7 +3,6 @@
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
-    using PiControlPanel.Api.GraphQL.Types.Output.Cpu;
     using PiControlPanel.Domain.Contracts.Application;
 
     public class RaspberryPiType : ObjectGraphType
@@ -23,7 +22,7 @@
                     return await chipsetService.GetAsync();
                 });
 
-            Field<CpuType>()
+            Field<Cpu.CpuType>()
                 .Name("Cpu")
                 .ResolveAsync(async context =>
                 {
@@ -56,7 +55,7 @@
                     return await gpuService.GetAsync();
                 });
 
-            Field<DiskType>()
+            Field<Disk.DiskType>()
                 .Name("Disk")
                 .ResolveAsync(async context =>
                 {
@@ -64,7 +63,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await diskService.GetAsync(businessContext);
+                    return await diskService.GetAsync();
                 });
 
             Field<OsType>()

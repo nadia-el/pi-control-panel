@@ -20,6 +20,9 @@
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                     cfg.CreateMap<Models.Gpu, Entities.Gpu>().ReverseMap();
                     cfg.CreateMap<Models.Os, Entities.Os>().ReverseMap();
+                    cfg.CreateMap<Models.Disk.Disk, Entities.Disk.Disk>().ReverseMap();
+                    cfg.CreateMap<Models.Disk.DiskStatus, Entities.Disk.DiskStatus>()
+                        .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                 }
             );
             return config;

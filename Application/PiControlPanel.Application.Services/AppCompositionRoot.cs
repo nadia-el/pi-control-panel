@@ -31,6 +31,8 @@
             serviceRegistry.Register<Contracts.Persistence.Cpu.ICpuRealTimeLoadService, Persistence.Cpu.CpuRealTimeLoadService>();
             serviceRegistry.Register<Contracts.Persistence.IGpuService, Persistence.GpuService>();
             serviceRegistry.Register<Contracts.Persistence.IOsService, Persistence.OsService>();
+            serviceRegistry.Register<Contracts.Persistence.Disk.IDiskService, Persistence.Disk.DiskService>();
+            serviceRegistry.Register<Contracts.Persistence.Disk.IDiskStatusService, Persistence.Disk.DiskStatusService>();
 
             serviceRegistry.Register<Contracts.OnDemand.IControlPanelService, OnDemand.ControlPanelService>();
             serviceRegistry.Register<Contracts.OnDemand.IChipsetService, OnDemand.ChipsetService>();

@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.Domain.Models.Hardware
+﻿namespace PiControlPanel.Domain.Models.Hardware.Disk
 {
     public class Disk
     {
@@ -7,9 +7,5 @@
         public string Type { get; set; }
 
         public int Total { get; set; }
-
-        public int Used { get; set; }
-
-        public int Available { get; set; }
     }
 }

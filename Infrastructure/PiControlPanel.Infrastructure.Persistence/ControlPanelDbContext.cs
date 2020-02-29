@@ -27,6 +27,10 @@
 
         public DbSet<Entities.Os> Os { get; set; }
 
+        public DbSet<Entities.Disk.Disk> Disk { get; set; }
+
+        public DbSet<Entities.Disk.DiskStatus> DiskStatus { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

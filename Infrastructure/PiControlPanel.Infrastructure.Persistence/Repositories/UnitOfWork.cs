@@ -67,6 +67,9 @@
 
         public IRepositoryBase<Entities.Os> OsRepository => new RepositoryBase<Entities.Os>(this.dbContext, this.logger);
 
+        public IRepositoryBase<Entities.Disk.Disk> DiskRepository => new RepositoryBase<Entities.Disk.Disk>(this.dbContext, this.logger);
+
+        public IRepositoryBase<Entities.Disk.DiskStatus> DiskStatusRepository => new RepositoryBase<Entities.Disk.DiskStatus>(this.dbContext, this.logger);
         #endregion
     }
 }
