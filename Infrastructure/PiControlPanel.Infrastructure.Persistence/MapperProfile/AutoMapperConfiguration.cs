@@ -18,6 +18,7 @@
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
                     cfg.CreateMap<Models.Cpu.CpuRealTimeLoad, Entities.Cpu.CpuRealTimeLoad>()
                         .ForMember(x => x.ID, opt => opt.Ignore()).ReverseMap();
+                    cfg.CreateMap<Models.Gpu, Entities.Gpu>().ReverseMap();
                 }
             );
             return config;

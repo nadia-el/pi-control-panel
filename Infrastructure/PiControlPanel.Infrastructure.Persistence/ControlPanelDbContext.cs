@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using System;
 
     public class ControlPanelDbContext : DbContext
     {
@@ -22,6 +23,8 @@
         public DbSet<Entities.Cpu.CpuAverageLoad> CpuAverageLoad { get; set; }
 
         public DbSet<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoad { get; set; }
+
+        public DbSet<Entities.Gpu> Gpu { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

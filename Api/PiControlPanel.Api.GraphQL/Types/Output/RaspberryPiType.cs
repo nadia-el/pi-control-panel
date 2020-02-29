@@ -53,7 +53,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await gpuService.GetAsync(businessContext);
+                    return await gpuService.GetAsync();
                 });
 
             Field<DiskType>()

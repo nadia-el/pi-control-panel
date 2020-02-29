@@ -63,6 +63,8 @@
 
         public IRepositoryBase<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoadRepository => new RepositoryBase<Entities.Cpu.CpuRealTimeLoad>(this.dbContext, this.logger);
 
+        public IRepositoryBase<Entities.Gpu> GpuRepository => new RepositoryBase<Entities.Gpu>(this.dbContext, this.logger);
+
         #endregion
     }
 }

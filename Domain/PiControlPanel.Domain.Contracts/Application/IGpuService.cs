@@ -1,11 +1,12 @@
 ﻿namespace PiControlPanel.Domain.Contracts.Application
 {
     using System.Threading.Tasks;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
 
     public interface IGpuService
     {
-        Task<Gpu> GetAsync(BusinessContext context);
+        Task<Gpu> GetAsync();
+
+        Task SaveAsync();
     }
 }
