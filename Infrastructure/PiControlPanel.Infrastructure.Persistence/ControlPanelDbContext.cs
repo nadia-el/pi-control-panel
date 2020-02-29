@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
-    using System;
 
     public class ControlPanelDbContext : DbContext
     {
@@ -25,6 +24,8 @@
         public DbSet<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoad { get; set; }
 
         public DbSet<Entities.Gpu> Gpu { get; set; }
+
+        public DbSet<Entities.Os> Os { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -8,7 +8,6 @@
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
-    using PiControlPanel.Domain.Models;
     using PiControlPanel.Domain.Models.Hardware;
 
     public class OsService : IOsService
@@ -20,7 +19,7 @@
             this.logger = logger;
         }
 
-        public Task<Os> GetAsync(BusinessContext context)
+        public Task<Os> GetAsync()
         {
             logger.Info("Infra layer -> OsService -> GetAsync");
             var os = this.GetOs();

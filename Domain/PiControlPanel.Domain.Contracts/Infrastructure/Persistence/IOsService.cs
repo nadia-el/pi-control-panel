@@ -3,14 +3,14 @@
     using PiControlPanel.Domain.Models.Hardware;
     using System.Threading.Tasks;
 
-    public interface IGpuService
+    public interface IOsService
     {
-        Task<Gpu> GetAsync();
+        Task<Os> GetAsync();
 
-        Task AddAsync(Gpu gpu);
+        Task AddAsync(Os os);
 
-        Task UpdateAsync(Gpu gpu);
+        Task UpdateAsync(Os os);
 
-        Task RemoveAsync(Gpu gpu);
+        Task RemoveAsync(Os os);
     }
 }

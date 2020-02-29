@@ -6,6 +6,6 @@
 
     public interface IOsService
     {
-        Task<Os> GetAsync(BusinessContext context);
+        Task<Os> GetAsync();
     }
 }

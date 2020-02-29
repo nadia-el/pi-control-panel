@@ -65,6 +65,8 @@
 
         public IRepositoryBase<Entities.Gpu> GpuRepository => new RepositoryBase<Entities.Gpu>(this.dbContext, this.logger);
 
+        public IRepositoryBase<Entities.Os> OsRepository => new RepositoryBase<Entities.Os>(this.dbContext, this.logger);
+
         #endregion
     }
 }

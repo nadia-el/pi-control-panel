@@ -13,5 +13,7 @@
         IRepositoryBase<Entities.Cpu.CpuRealTimeLoad> CpuRealTimeLoadRepository { get; }
 
         IRepositoryBase<Entities.Gpu> GpuRepository { get; }
+
+        IRepositoryBase<Entities.Os> OsRepository { get; }
     }
 }

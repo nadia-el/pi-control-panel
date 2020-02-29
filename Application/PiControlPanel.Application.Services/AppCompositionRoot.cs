@@ -30,6 +30,7 @@
             serviceRegistry.Register<Contracts.Persistence.Cpu.ICpuAverageLoadService, Persistence.Cpu.CpuAverageLoadService>();
             serviceRegistry.Register<Contracts.Persistence.Cpu.ICpuRealTimeLoadService, Persistence.Cpu.CpuRealTimeLoadService>();
             serviceRegistry.Register<Contracts.Persistence.IGpuService, Persistence.GpuService>();
+            serviceRegistry.Register<Contracts.Persistence.IOsService, Persistence.OsService>();
 
             serviceRegistry.Register<Contracts.OnDemand.IControlPanelService, OnDemand.ControlPanelService>();
             serviceRegistry.Register<Contracts.OnDemand.IChipsetService, OnDemand.ChipsetService>();

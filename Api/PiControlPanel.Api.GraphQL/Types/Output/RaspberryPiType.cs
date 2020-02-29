@@ -75,7 +75,7 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await osService.GetAsync(businessContext);
+                    return await osService.GetAsync();
                 });
         }
     }

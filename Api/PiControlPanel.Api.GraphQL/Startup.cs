@@ -125,6 +125,7 @@ namespace PiControlPanel.Api.GraphQL
                 services.AddHostedService<ChipsetWorker>();
                 services.AddHostedService<CpuTemperatureWorker>();
                 services.AddHostedService<GpuWorker>();
+                services.AddHostedService<OsWorker>();
             }
             else
             {
