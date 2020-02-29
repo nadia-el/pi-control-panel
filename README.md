@@ -100,8 +100,11 @@ query Q {
     }
     memory {
       total
-      used
-      available
+      status {
+        used
+      	available
+        dateTime
+      }
     }
     gpu {
       memory
@@ -242,8 +245,11 @@ query Q {
     }
     memory {
       total
-      used
-      available
+      status {
+        used
+      	available
+        dateTime
+      }
     }
   }
 }
@@ -405,7 +411,6 @@ HTTP Headers:
 
 Query:
 ````graphql
-# Write your query or mutation here
 query Q($firstDiskStatuses: Int, $afterDiskStatuses: String) {
   raspberryPi {
     disk {
@@ -438,6 +443,52 @@ Query variables:
 {
   "firstDiskStatuses": 20,
   "afterDiskStatuses": null
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+### Memory Statuses
+
+Query:
+````graphql
+query Q($firstMemoryStatuses: Int, $afterMemoryStatuses: String) {
+  raspberryPi {
+    memory {
+      status {
+        used
+        available
+        dateTime
+      }
+      statuses(first: $firstMemoryStatuses, after: $afterMemoryStatuses) {
+	    items {
+          used
+          available
+          dateTime
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+          hasPreviousPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstMemoryStatuses": 40,
+  "afterMemoryStatuses": null
 }
 ````
 
