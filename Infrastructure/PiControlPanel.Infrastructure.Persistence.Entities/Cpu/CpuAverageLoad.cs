@@ -11,15 +11,15 @@
         public Guid ID { get; set; }
 
         [Required]
-        [Range(0, 100)]
+        [Range(0, int.MaxValue)]
         public double LastMinute { get; set; }
 
         [Required]
-        [Range(0, 100)]
+        [Range(0, int.MaxValue)]
         public double Last5Minutes { get; set; }
 
         [Required]
-        [Range(0, 100)]
+        [Range(0, int.MaxValue)]
         public double Last15Minutes { get; set; }
     }
 }
