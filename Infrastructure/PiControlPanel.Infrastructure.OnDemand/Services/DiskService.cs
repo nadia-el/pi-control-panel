@@ -10,20 +10,11 @@
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware.Disk;
 
-    public class DiskService : IDiskService
+    public class DiskService : BaseService<Disk>, IDiskService
     {
-        private readonly ILogger logger;
-
         public DiskService(ILogger logger)
+            : base(logger)
         {
-            this.logger = logger;
-        }
-
-        public Task<Disk> GetAsync()
-        {
-            logger.Info("Infra layer -> DiskService -> GetAsync");
-            var disk = this.GetDisk();
-            return Task.FromResult(disk);
         }
 
         public Task<DiskStatus> GetStatusAsync()
@@ -33,7 +24,7 @@
             return Task.FromResult(diskStatus);
         }
 
-        private Disk GetDisk()
+        protected override Disk GetModel()
         {
             var result = BashCommands.Df.Bash();
             logger.Debug($"Result of '{BashCommands.Df}' command: '{result}'");
@@ -42,6 +33,7 @@
             var diskInfo = lines.First(l => l.StartsWith("/dev/") && l.Contains("ext4"));
             var regex = new Regex(@"^(?<filesystem>\S*)\s*(?<type>\S*)\s*(?<total>\S*)\s*(?<used>\S*)\s*(?<free>\S*).*$");
             var groups = regex.Match(diskInfo).Groups;
+
             return new Disk()
             {
                 FileSystem = groups["filesystem"].Value,

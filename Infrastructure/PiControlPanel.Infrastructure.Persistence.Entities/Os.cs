@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Os
+    public class Os : BaseEntity
     {
         [Key]
         [DefaultValue(0)]

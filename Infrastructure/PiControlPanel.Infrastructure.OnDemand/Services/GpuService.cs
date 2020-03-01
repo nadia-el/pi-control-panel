@@ -1,29 +1,19 @@
 ﻿namespace PiControlPanel.Infrastructure.OnDemand.Services
 {
-    using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware;
 
-    public class GpuService : IGpuService
+    public class GpuService : BaseService<Gpu>, IGpuService
     {
-        private readonly ILogger logger;
-
         public GpuService(ILogger logger)
+            : base(logger)
         {
-            this.logger = logger;
         }
 
-        public Task<Gpu> GetAsync()
-        {
-            logger.Info("Infra layer -> GpuService -> GetAsync");
-            var gpu = this.GetGpu();
-            return Task.FromResult(gpu);
-        }
-
-        private Gpu GetGpu()
+        protected override Gpu GetModel()
         {
             var result = BashCommands.GetMemGpu.Bash();
             logger.Debug($"Result of '{BashCommands.GetMemGpu}' command: '{result}'");

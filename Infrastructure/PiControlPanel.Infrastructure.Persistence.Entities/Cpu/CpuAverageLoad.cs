@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class CpuAverageLoad
+    public class CpuAverageLoad : BaseTimedEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,9 +21,5 @@
         [Required]
         [Range(0, 100)]
         public double Last15Minutes { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateTime { get; set; }
     }
 }

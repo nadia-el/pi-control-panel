@@ -1,15 +1,8 @@
 ﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence.Cpu
 {
     using PiControlPanel.Domain.Models.Hardware.Cpu;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
-    public interface ICpuTemperatureService
+    public interface ICpuTemperatureService : IBaseTimedObjectService<CpuTemperature>
     {
-        Task<CpuTemperature> GetLastAsync();
-
-        Task<IEnumerable<CpuTemperature>> GetAllAsync();
-
-        Task AddAsync(CpuTemperature cpuTemperature);
     }
 }

@@ -3,16 +3,8 @@
     using PiControlPanel.Domain.Models.Hardware;
     using System.Threading.Tasks;
 
-    public interface IChipsetService
+    public interface IChipsetService : IBaseService<Chipset>
     {
-        Task<Chipset> GetAsync();
-
         Task<Chipset> GetAsync(string serial);
-
-        Task AddAsync(Chipset chipset);
-
-        Task UpdateAsync(Chipset chipset);
-
-        Task RemoveAsync(Chipset chipset);
     }
 }

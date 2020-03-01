@@ -5,10 +5,8 @@
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
-    public interface ICpuService
+    public interface ICpuService : IBaseService<Cpu>
     {
-        Task<Cpu> GetAsync();
-
         Task<CpuTemperature> GetLastTemperatureAsync();
 
         Task<IEnumerable<CpuTemperature>> GetTemperaturesAsync();
@@ -24,8 +22,6 @@
         Task<IEnumerable<CpuRealTimeLoad>> GetRealTimeLoadsAsync();
 
         Task<double> GetTotalRealTimeLoadAsync(CpuRealTimeLoad cpuRealTimeLoad);
-
-        Task SaveAsync();
 
         Task SaveTemperatureAsync();
 

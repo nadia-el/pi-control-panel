@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Chipset
+    public class Chipset : BaseEntity
     {
         [Key]
         [StringLength(50, MinimumLength = 3)]

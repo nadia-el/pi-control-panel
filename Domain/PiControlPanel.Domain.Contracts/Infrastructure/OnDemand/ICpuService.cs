@@ -4,10 +4,8 @@
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
-    public interface ICpuService
+    public interface ICpuService : IBaseService<Cpu>
     {
-        Task<Cpu> GetAsync();
-
         Task<CpuTemperature> GetTemperatureAsync();
 
         IObservable<CpuTemperature> GetTemperatureObservable();

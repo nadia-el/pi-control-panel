@@ -3,16 +3,8 @@
     using PiControlPanel.Domain.Models.Hardware.Cpu;
     using System.Threading.Tasks;
 
-    public interface ICpuService
+    public interface ICpuService : IBaseService<Cpu>
     {
-        Task<Cpu> GetAsync();
-
         Task<Cpu> GetAsync(string model);
-
-        Task AddAsync(Cpu cpu);
-
-        Task UpdateAsync(Cpu cpu);
-
-        Task RemoveAsync(Cpu cpu);
     }
 }

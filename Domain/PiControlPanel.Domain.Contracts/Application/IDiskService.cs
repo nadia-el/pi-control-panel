@@ -4,15 +4,11 @@
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware.Disk;
 
-    public interface IDiskService
+    public interface IDiskService : IBaseService<Disk>
     {
-        Task<Disk> GetAsync();
-
         Task<DiskStatus> GetLastStatusAsync();
 
         Task<IEnumerable<DiskStatus>> GetStatusesAsync();
-
-        Task SaveAsync();
 
         Task SaveStatusAsync();
 

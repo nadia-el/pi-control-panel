@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Memory
+    public class Memory : BaseEntity
     {
         [Key]
         [DefaultValue(0)]

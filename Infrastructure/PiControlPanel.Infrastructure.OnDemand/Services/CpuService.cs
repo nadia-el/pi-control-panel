@@ -12,22 +12,14 @@
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
-    public class CpuService : ICpuService
+    public class CpuService : BaseService<Cpu>, ICpuService
     {
         private readonly ISubject<CpuTemperature> cpuTemperatureSubject;
-        private readonly ILogger logger;
 
         public CpuService(ISubject<CpuTemperature> cpuTemperatureSubject, ILogger logger)
+            : base(logger)
         {
             this.cpuTemperatureSubject = cpuTemperatureSubject;
-            this.logger = logger;
-        }
-
-        public Task<Cpu> GetAsync()
-        {
-            logger.Info("Infra layer -> CpuService -> GetAsync");
-            var cpu = this.GetCpu();
-            return Task.FromResult(cpu);
         }
 
         public Task<CpuTemperature> GetTemperatureAsync()
@@ -63,7 +55,7 @@
             this.cpuTemperatureSubject.OnNext(temperature);
         }
 
-        private Cpu GetCpu()
+        protected override Cpu GetModel()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
             logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");

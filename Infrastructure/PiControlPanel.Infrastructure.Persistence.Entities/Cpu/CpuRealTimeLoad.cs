@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class CpuRealTimeLoad
+    public class CpuRealTimeLoad : BaseTimedEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,9 +17,5 @@
         [Required]
         [Range(0, 100)]
         public double User { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateTime { get; set; }
     }
 }

@@ -4,15 +4,11 @@
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware.Memory;
 
-    public interface IMemoryService
+    public interface IMemoryService : IBaseService<Memory>
     {
-        Task<Memory> GetAsync();
-
         Task<MemoryStatus> GetLastStatusAsync();
 
         Task<IEnumerable<MemoryStatus>> GetStatusesAsync();
-
-        Task SaveAsync();
 
         Task SaveStatusAsync();
     }

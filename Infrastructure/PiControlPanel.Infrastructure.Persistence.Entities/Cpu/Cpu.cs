@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Cpu
+    public class Cpu : BaseEntity
     {
         [Key]
         [StringLength(50, MinimumLength = 3)]

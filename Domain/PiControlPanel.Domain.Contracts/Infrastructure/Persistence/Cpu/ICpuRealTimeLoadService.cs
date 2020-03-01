@@ -1,15 +1,8 @@
 ﻿namespace PiControlPanel.Domain.Contracts.Infrastructure.Persistence.Cpu
 {
     using PiControlPanel.Domain.Models.Hardware.Cpu;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
-    public interface ICpuRealTimeLoadService
+    public interface ICpuRealTimeLoadService : IBaseTimedObjectService<CpuRealTimeLoad>
     {
-        Task<CpuRealTimeLoad> GetLastAsync();
-
-        Task<IEnumerable<CpuRealTimeLoad>> GetAllAsync();
-
-        Task AddAsync(CpuRealTimeLoad cpuRealTimeLoad);
     }
 }

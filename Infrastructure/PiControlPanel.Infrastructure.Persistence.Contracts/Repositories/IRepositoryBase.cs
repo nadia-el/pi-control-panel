@@ -1,5 +1,6 @@
 ﻿namespace PiControlPanel.Infrastructure.Persistence.Contracts.Repositories
 {
+    using PiControlPanel.Infrastructure.Persistence.Entities;
     using System;
     using System.Linq;
     using System.Linq.Expressions;
@@ -9,7 +10,7 @@
     /// Interface defining base data repository functionality. Any entity-specific features have to be added to derived interface.
     /// </summary>
     ///
-    public interface IRepositoryBase<T> where T : class
+    public interface IRepositoryBase<T> where T : BaseEntity
     {
         /// <summary>
         /// Returns all records

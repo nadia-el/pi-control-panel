@@ -7,8 +7,9 @@
     using Microsoft.EntityFrameworkCore;
     using NLog;
     using PiControlPanel.Infrastructure.Persistence.Contracts.Repositories;
-    
-    public class RepositoryBase<TObject> : IRepositoryBase<TObject> where TObject : class
+    using PiControlPanel.Infrastructure.Persistence.Entities;
+
+    public class RepositoryBase<TObject> : IRepositoryBase<TObject> where TObject : BaseEntity
     {
         private readonly ControlPanelDbContext context;
         private readonly ILogger logger;

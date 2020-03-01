@@ -1,12 +1,8 @@
 ﻿namespace PiControlPanel.Domain.Contracts.Application
 {
-    using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware;
 
-    public interface IGpuService
+    public interface IGpuService : IBaseService<Gpu>
     {
-        Task<Gpu> GetAsync();
-
-        Task SaveAsync();
     }
 }

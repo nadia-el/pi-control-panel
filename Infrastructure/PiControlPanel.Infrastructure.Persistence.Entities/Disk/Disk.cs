@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Disk
+    public class Disk : BaseEntity
     {
         [Key]
         [StringLength(50, MinimumLength = 3)]

@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Gpu
+    public class Gpu : BaseEntity
     {
         [Key]
         [DefaultValue(0)]

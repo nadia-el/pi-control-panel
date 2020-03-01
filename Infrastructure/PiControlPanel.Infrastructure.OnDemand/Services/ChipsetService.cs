@@ -3,30 +3,20 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware;
 
-    public class ChipsetService : IChipsetService
+    public class ChipsetService : BaseService<Chipset>, IChipsetService
     {
-        private readonly ILogger logger;
-
         public ChipsetService(ILogger logger)
+            : base(logger)
         {
-            this.logger = logger;
         }
 
-        public Task<Chipset> GetAsync()
-        {
-            logger.Info("Infra layer -> ChipsetService -> GetAsync");
-            var chipset = this.GetChipset();
-            return Task.FromResult(chipset);
-        }
-
-        private Chipset GetChipset()
+        protected override Chipset GetModel()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
             logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");

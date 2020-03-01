@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class CpuTemperature
+    public class CpuTemperature : BaseTimedEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,9 +13,5 @@
         [Required]
         [Range(-273, 473)]
         public int Temperature { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateTime { get; set; }
     }
 }

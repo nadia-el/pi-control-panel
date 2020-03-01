@@ -3,30 +3,20 @@
     using System;
     using System.Linq;
     using System.Reactive.Linq;
-    using System.Threading.Tasks;
     using NLog;
     using PiControlPanel.Domain.Contracts.Constants;
     using PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware;
 
-    public class OsService : IOsService
+    public class OsService : BaseService<Os>, IOsService
     {
-        private readonly ILogger logger;
-
         public OsService(ILogger logger)
+            : base(logger)
         {
-            this.logger = logger;
         }
 
-        public Task<Os> GetAsync()
-        {
-            logger.Info("Infra layer -> OsService -> GetAsync");
-            var os = this.GetOs();
-            return Task.FromResult(os);
-        }
-
-        private Os GetOs()
+        protected override Os GetModel()
         {
             var result = BashCommands.Hostnamectl.Bash();
             logger.Debug($"Result of '{BashCommands.Hostnamectl}' command: '{result}'");

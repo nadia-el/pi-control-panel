@@ -11,20 +11,11 @@
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware.Memory;
 
-    public class MemoryService : IMemoryService
+    public class MemoryService : BaseService<Memory>, IMemoryService
     {
-        private readonly ILogger logger;
-
         public MemoryService(ILogger logger)
+            : base(logger)
         {
-            this.logger = logger;
-        }
-
-        public Task<Memory> GetAsync()
-        {
-            logger.Info("Infra layer -> MemoryService -> GetAsync");
-            var memory = this.GetMemory();
-            return Task.FromResult(memory);
         }
 
         public Task<MemoryStatus> GetStatusAsync()
@@ -34,7 +25,7 @@
             return Task.FromResult(memoryStatus);
         }
 
-        private Memory GetMemory()
+        protected override Memory GetModel()
         {
             var result = BashCommands.Free.Bash();
             logger.Debug($"Result of '{BashCommands.Free}' command: '{result}'");

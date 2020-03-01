@@ -3,16 +3,8 @@
     using PiControlPanel.Domain.Models.Hardware.Disk;
     using System.Threading.Tasks;
 
-    public interface IDiskService
+    public interface IDiskService : IBaseService<Disk>
     {
-        Task<Disk> GetAsync();
-
         Task<Disk> GetAsync(string fileSystem);
-
-        Task AddAsync(Disk disk);
-
-        Task UpdateAsync(Disk disk);
-
-        Task RemoveAsync(Disk disk);
     }
 }

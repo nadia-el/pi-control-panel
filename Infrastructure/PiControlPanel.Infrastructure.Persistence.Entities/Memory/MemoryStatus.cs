@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class MemoryStatus
+    public class MemoryStatus : BaseTimedEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,9 +17,5 @@
         [Required]
         [Range(0, int.MaxValue)]
         public int Available { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateTime { get; set; }
     }
 }
