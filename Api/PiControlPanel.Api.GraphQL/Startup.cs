@@ -123,7 +123,7 @@ namespace PiControlPanel.Api.GraphQL
             if (!isRunningInContainer)
             {
                 services.AddHostedService<ChipsetWorker>();
-                services.AddHostedService<CpuTemperatureWorker>();
+                services.AddHostedService<CpuWorker>();
                 services.AddHostedService<GpuWorker>();
                 services.AddHostedService<OsWorker>();
             }
@@ -132,9 +132,6 @@ namespace PiControlPanel.Api.GraphQL
                 logger.Warn("Running on Docker, not creating incompatible background services.");
             }
 
-            services.AddHostedService<CpuWorker>();
-            services.AddHostedService<CpuAverageLoadWorker>();
-            services.AddHostedService<CpuRealTimeLoadWorker>();
             services.AddHostedService<DiskWorker>();
             services.AddHostedService<MemoryWorker>();
         }

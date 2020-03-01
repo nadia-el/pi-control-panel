@@ -9,14 +9,11 @@
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
 
-    public class CpuService : ICpuService
+    public class CpuService : BaseService<Cpu>, ICpuService
     {
-        private readonly Persistence.Cpu.ICpuService persistenceService;
         private readonly Persistence.Cpu.ICpuTemperatureService persistenceTemperatureService;
         private readonly Persistence.Cpu.ICpuAverageLoadService persistenceAverageLoadService;
         private readonly Persistence.Cpu.ICpuRealTimeLoadService persistenceRealTimeLoadService;
-        private readonly OnDemand.ICpuService onDemandService;
-        private readonly ILogger logger;
 
         public CpuService(
             Persistence.Cpu.ICpuService persistenceService,
@@ -25,19 +22,11 @@
             Persistence.Cpu.ICpuRealTimeLoadService persistenceRealTimeLoadService,
             OnDemand.ICpuService onDemandService,
             ILogger logger)
+            : base(persistenceService, onDemandService, logger)
         {
-            this.persistenceService = persistenceService;
             this.persistenceTemperatureService = persistenceTemperatureService;
             this.persistenceAverageLoadService = persistenceAverageLoadService;
             this.persistenceRealTimeLoadService = persistenceRealTimeLoadService;
-            this.onDemandService = onDemandService;
-            this.logger = logger;
-        }
-
-        public Task<Cpu> GetAsync()
-        {
-            logger.Info("Application layer -> CpuService -> GetAsync");
-            return this.persistenceService.GetAsync();
         }
 
         public async Task<CpuTemperature> GetLastTemperatureAsync()
@@ -55,7 +44,7 @@
         public IObservable<CpuTemperature> GetTemperatureObservable()
         {
             logger.Info("Application layer -> CpuService -> GetTemperatureObservable");
-            return this.onDemandService.GetTemperatureObservable();
+            return ((OnDemand.ICpuService)this.onDemandService).GetTemperatureObservable();
         }
 
         public Task<CpuAverageLoad> GetLastAverageLoadAsync()
@@ -88,30 +77,12 @@
             return Task.FromResult(cpuRealTimeLoad.Kernel + cpuRealTimeLoad.User);
         }
 
-        public async Task SaveAsync()
-        {
-            logger.Info("Application layer -> CpuService -> SaveAsync");
-            var onDemandCpuInfo = await this.onDemandService.GetAsync();
-            var persistedCpuInfo = await this.persistenceService
-                .GetAsync(onDemandCpuInfo.Model);
-            if (persistedCpuInfo == null)
-            {
-                logger.Debug("Cpu info not set on DB, creating...");
-                await this.persistenceService.AddAsync(onDemandCpuInfo);
-            }
-            else
-            {
-                logger.Debug("Updating cpu info on DB...");
-                await this.persistenceService.UpdateAsync(onDemandCpuInfo);
-            }
-        }
-
         public async Task SaveTemperatureAsync()
         {
             logger.Info("Application layer -> CpuService -> SaveTemperatureAsync");
-            var temperature = await this.onDemandService.GetTemperatureAsync();
+            var temperature = await ((OnDemand.ICpuService)this.onDemandService).GetTemperatureAsync();
             
-            this.onDemandService.PublishTemperature(temperature);
+            ((OnDemand.ICpuService)this.onDemandService).PublishTemperature(temperature);
             await this.persistenceTemperatureService.AddAsync(temperature);
         }
 
@@ -125,15 +96,21 @@
                 return;
             }
 
-            var averageLoad = await this.onDemandService.GetAverageLoadAsync(cpu.Cores);
+            var averageLoad = await ((OnDemand.ICpuService)this.onDemandService).GetAverageLoadAsync(cpu.Cores);
             await this.persistenceAverageLoadService.AddAsync(averageLoad);
         }
 
         public async Task SaveRealTimeLoadAsync()
         {
             logger.Info("Application layer -> CpuService -> SaveRealTimeLoadAsync");
-            var realTimeLoad = await this.onDemandService.GetRealTimeLoadAsync();
+            var realTimeLoad = await ((OnDemand.ICpuService)this.onDemandService).GetRealTimeLoadAsync();
             await this.persistenceRealTimeLoadService.AddAsync(realTimeLoad);
+        }
+
+        protected async override Task<Cpu> GetPersistedInfoAsync(Cpu onDemandInfo)
+        {
+            return await ((Persistence.Cpu.ICpuService)this.persistenceService)
+                .GetAsync(onDemandInfo.Model);
         }
     }
 }

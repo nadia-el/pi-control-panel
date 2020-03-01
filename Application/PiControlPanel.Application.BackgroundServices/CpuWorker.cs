@@ -1,40 +1,27 @@
 ﻿namespace PiControlPanel.Application.BackgroundServices
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Configuration;
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
+    using PiControlPanel.Domain.Models.Hardware.Cpu;
 
-    public class CpuWorker : BackgroundService
+    public class CpuWorker : BaseWorker<Cpu>
     {
-        private readonly ICpuService cpuService;
-        private readonly ILogger logger;
-
         public CpuWorker(
             ICpuService cpuService,
+            IConfiguration configuration,
             ILogger logger)
+            : base(cpuService, configuration, logger)
         {
-            this.cpuService = cpuService;
-            this.logger = logger;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task SaveRecurring(CancellationToken stoppingToken)
         {
-            try
-            {
-                logger.Info("CpuWorker started");
-                await cpuService.SaveAsync();
-            }
-            catch(Exception ex)
-            {
-                logger.Error(ex, "error running CpuWorker");
-            }
-            finally
-            {
-                logger.Info("CpuWorker ended");
-            }
+            await ((ICpuService)this.service).SaveAverageLoadAsync();
+            await ((ICpuService)this.service).SaveRealTimeLoadAsync();
+            await ((ICpuService)this.service).SaveTemperatureAsync();
         }
     }
 }

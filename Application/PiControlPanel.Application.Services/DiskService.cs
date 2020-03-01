@@ -8,29 +8,18 @@
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
 
-    public class DiskService : IDiskService
+    public class DiskService : BaseService<Disk>, IDiskService
     {
-        private readonly Persistence.Disk.IDiskService persistenceService;
         private readonly Persistence.Disk.IDiskStatusService persistenceStatusService;
-        private readonly OnDemand.IDiskService onDemandService;
-        private readonly ILogger logger;
 
         public DiskService(
             Persistence.Disk.IDiskService persistenceService,
             Persistence.Disk.IDiskStatusService persistenceStatusService,
             OnDemand.IDiskService onDemandService,
             ILogger logger)
+            : base(persistenceService, onDemandService, logger)
         {
-            this.persistenceService = persistenceService;
             this.persistenceStatusService = persistenceStatusService;
-            this.onDemandService = onDemandService;
-            this.logger = logger;
-        }
-
-        public Task<Disk> GetAsync()
-        {
-            logger.Info("Application layer -> DiskService -> GetAsync");
-            return persistenceService.GetAsync();
         }
 
         public async Task<DiskStatus> GetLastStatusAsync()
@@ -45,29 +34,17 @@
             return await this.persistenceStatusService.GetAllAsync();
         }
 
-        public async Task SaveAsync()
-        {
-            logger.Info("Application layer -> DiskService -> SaveAsync");
-            var onDemandDiskInfo = await this.onDemandService.GetAsync();
-            var persistedDiskInfo = await this.persistenceService
-                .GetAsync(onDemandDiskInfo.FileSystem);
-            if (persistedDiskInfo == null)
-            {
-                logger.Debug("Disk info not set on DB, creating...");
-                await this.persistenceService.AddAsync(onDemandDiskInfo);
-            }
-            else
-            {
-                logger.Debug("Updating disk info on DB...");
-                await this.persistenceService.UpdateAsync(onDemandDiskInfo);
-            }
-        }
-
         public async Task SaveStatusAsync()
         {
             logger.Info("Application layer -> DiskService -> SaveStatusAsync");
-            var status = await this.onDemandService.GetStatusAsync();
+            var status = await ((OnDemand.IDiskService)this.onDemandService).GetStatusAsync();
             await this.persistenceStatusService.AddAsync(status);
+        }
+
+        protected override async Task<Disk> GetPersistedInfoAsync(Disk onDemandInfo)
+        {
+            return await ((Persistence.Disk.IDiskService)this.persistenceService)
+                .GetAsync(onDemandInfo.FileSystem);
         }
     }
 }
