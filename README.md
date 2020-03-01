@@ -217,22 +217,6 @@ Query:
 ````graphql
 query Q {
   raspberryPi {
-    cpu {
-      cores
-      model
-      averageLoad {
-        lastMinute
-        last5Minutes
-        last15Minutes
-        dateTime
-      }
-      realTimeLoad {
-        kernel
-        user
-        total
-        dateTime
-      }
-    }
     disk {
       fileSystem
       type
