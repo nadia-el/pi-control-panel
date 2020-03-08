@@ -13,7 +13,7 @@ sudo usermod -aG video picontrolpanel
 
 ### Running on Raspberry Pi
 1. Publish PiControlPanel.Api.GraphQL project targeting ARM and copy the files to /home/picontrolpanel
-2. Build PiControlPanel.Ui.Angular project navingating to the project folder and running
+2. Build PiControlPanel.Ui.Angular project navigating to the project folder and running
 ````bash
 ng build --prod
 ````
