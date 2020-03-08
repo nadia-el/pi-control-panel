@@ -41,6 +41,7 @@ sudo systemctl enable picontrolpanel
 7. Access http://<<ip_of_raspberry_pi>>:8080/
 
 #### Available operations
+To test the available operations directly, run the application as a process setting the environment to Development and accessing http://<<ip_of_raspberry_pi>>:8080/playground
 
 ##### Login Query
 
