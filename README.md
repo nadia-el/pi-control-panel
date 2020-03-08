@@ -13,7 +13,7 @@ sudo usermod -aG video picontrolpanel
 
 ### Running on Raspberry Pi
 1. Publish PiControlPanel.Api.GraphQL project targeting ARM and copy the files to /home/picontrolpanel
-2. Build PiControlPanel.Ui.Angular project navigating to the project folder and running
+2. Navigate to PiControlPanel.Ui.Angular project folder and build the client
 ````bash
 ng build --prod
 ````
@@ -29,7 +29,7 @@ sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 5. Run as process
 ````bash
 export ASPNETCORE_URLS=http://+:8080
-export ASPNETCORE_ENVIRONMENT=Development
+export ASPNETCORE_ENVIRONMENT=Production
 dotnet PiControlPanel.Api.GraphQL.dll
 ````
 6. Or run as service
