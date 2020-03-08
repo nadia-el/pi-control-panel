@@ -10,7 +10,7 @@ RestartSec=1
 WorkingDirectory=/home/picontrolpanel
 User=picontrolpanel
 Environment=ASPNETCORE_URLS=http://+:8080
-Environment=ASPNETCORE_ENVIRONMENT=Development
+Environment=ASPNETCORE_ENVIRONMENT=Production
 ExecStart=dotnet /home/picontrolpanel/PiControlPanel.Api.GraphQL.dll
 
 [Install]

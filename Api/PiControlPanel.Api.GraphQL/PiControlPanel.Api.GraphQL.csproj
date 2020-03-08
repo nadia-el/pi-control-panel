@@ -16,6 +16,7 @@
     <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />
     <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" Version="2.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
@@ -26,6 +27,10 @@
     <ProjectReference Include="..\..\Application\PiControlPanel.Application.Services\PiControlPanel.Application.Services.csproj" />
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Contracts\PiControlPanel.Domain.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Models\PiControlPanel.Domain.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Docker\" />
   </ItemGroup>
 
 </Project>

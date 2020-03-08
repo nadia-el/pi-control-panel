@@ -31,16 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Application.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{C3258F8D-3220-4835-85CA-3AA0F24029BE}"
 	ProjectSection(SolutionItems) = preProject
-		Docker\docker-compose.override.yml = Docker\docker-compose.override.yml
 		Docker\docker-compose.pi.yml = Docker\docker-compose.pi.yml
 		Docker\docker-compose.yml = Docker\docker-compose.yml
-		Docker\Dockerfile = Docker\Dockerfile
-		Docker\Dockerfile.pi = Docker\Dockerfile.pi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiControlPanel.Infrastructure.Persistence.Entities", "Infrastructure\PiControlPanel.Infrastructure.Persistence.Entities\PiControlPanel.Infrastructure.Persistence.Entities.csproj", "{75BA719A-D861-47E2-AC8F-E6C839B1D689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.Persistence.Entities", "Infrastructure\PiControlPanel.Infrastructure.Persistence.Entities\PiControlPanel.Infrastructure.Persistence.Entities.csproj", "{75BA719A-D861-47E2-AC8F-E6C839B1D689}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiControlPanel.Infrastructure.Persistence.Contracts", "Infrastructure\PiControlPanel.Infrastructure.Persistence.Contracts\PiControlPanel.Infrastructure.Persistence.Contracts.csproj", "{9A486103-437A-4630-B2C8-C80AC1A871F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.Persistence.Contracts", "Infrastructure\PiControlPanel.Infrastructure.Persistence.Contracts\PiControlPanel.Infrastructure.Persistence.Contracts.csproj", "{9A486103-437A-4630-B2C8-C80AC1A871F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

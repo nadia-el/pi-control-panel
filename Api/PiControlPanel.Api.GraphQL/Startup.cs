@@ -134,6 +134,12 @@ namespace PiControlPanel.Api.GraphQL
 
             services.AddHostedService<DiskWorker>();
             services.AddHostedService<MemoryWorker>();
+
+            // Configuring SPA Path
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "PiControlPanel.Ui.Angular/dist";
+            });
         }
 
         /// <summary>
@@ -171,16 +177,15 @@ namespace PiControlPanel.Api.GraphQL
         {
             app.UseIf(
                     !webHostEnvironment.IsProduction(),
-                    x => x
+                    a => a
                         .UseDeveloperExceptionPage()
-                        .UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/" }));
+                        .UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/playground" }));
 
             // Enables Access-Control-Allow-Origin (angular calling webapi methods)
             app.UseCors(builder => builder
-               .WithOrigins("http://localhost:54321")
+               .AllowAnyOrigin()
                .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials());
+               .AllowAnyHeader());
 
             // Add GraphQL web sockets middleware to the request pipeline (support for subscriptions)
             app.UseWebSockets();
@@ -190,6 +195,18 @@ namespace PiControlPanel.Api.GraphQL
                 .UseAuthentication()
                 .UseHealthChecks("/healthcheck")
                 .UseGraphQL<ControlPanelSchema>();
+
+            // Enables static files to serve Ui pages
+            app.UseStaticFiles();
+            if (!webHostEnvironment.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "PiControlPanel.Ui.Angular";
+            });
+
         }
 
         /// <value>Property <c>isRunningInContainer</c> represents if running the application inside a Docker container.</value>
