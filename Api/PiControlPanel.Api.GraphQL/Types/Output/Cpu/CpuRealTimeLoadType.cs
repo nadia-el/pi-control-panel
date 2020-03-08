@@ -6,6 +6,7 @@
     using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
+    using System;
 
     public class CpuRealTimeLoadType : ObjectGraphType<CpuRealTimeLoad>
     {
@@ -25,11 +26,11 @@
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
                     var cpuRealTimeLoad = context.Source;
-                    var loader = accessor.Context.GetOrAddLoader(
+                    var loader = accessor.Context.GetOrAddBatchLoader<DateTime, double>(
                         "GetTotalRealTimeLoadAsync",
-                        () => cpuService.GetTotalRealTimeLoadAsync(cpuRealTimeLoad));
+                        cpuService.GetTotalRealTimeLoadsAsync);
 
-                    return loader.LoadAsync();
+                    return loader.LoadAsync(cpuRealTimeLoad.DateTime);
                 });
         }
     }

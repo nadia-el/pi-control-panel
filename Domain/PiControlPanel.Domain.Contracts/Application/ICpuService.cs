@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
@@ -21,7 +22,8 @@
 
         Task<IEnumerable<CpuRealTimeLoad>> GetRealTimeLoadsAsync();
 
-        Task<double> GetTotalRealTimeLoadAsync(CpuRealTimeLoad cpuRealTimeLoad);
+        Task<IDictionary<DateTime, double>> GetTotalRealTimeLoadsAsync(
+            IEnumerable<DateTime> dateTimes, CancellationToken cancellationToken);
 
         Task SaveTemperatureAsync();
 

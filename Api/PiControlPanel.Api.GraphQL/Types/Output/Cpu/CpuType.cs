@@ -55,7 +55,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Info("AverageLoads connection");
+                    logger.Info("RealTimeLoads connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

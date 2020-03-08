@@ -5,6 +5,8 @@
     using PiControlPanel.Domain.Models.Hardware.Cpu;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
@@ -71,10 +73,12 @@
             return await this.persistenceRealTimeLoadService.GetAllAsync();
         }
 
-        public Task<double> GetTotalRealTimeLoadAsync(CpuRealTimeLoad cpuRealTimeLoad)
+        public async Task<IDictionary<DateTime, double>> GetTotalRealTimeLoadsAsync(
+            IEnumerable<DateTime> dateTimes, CancellationToken cancellationToken)
         {
             logger.Info("Application layer -> CpuService -> GetTotalRealTimeLoad");
-            return Task.FromResult(cpuRealTimeLoad.Kernel + cpuRealTimeLoad.User);
+            var realTimeLoads = await this.persistenceRealTimeLoadService.GetRealTimeLoadsAsync(dateTimes);
+            return realTimeLoads.ToDictionary(i => i.Key, i => i.Value.Kernel + i.Value.User);
         }
 
         public async Task SaveTemperatureAsync()

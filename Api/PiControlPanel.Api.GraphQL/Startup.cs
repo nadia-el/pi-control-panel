@@ -177,7 +177,7 @@ namespace PiControlPanel.Api.GraphQL
 
             // Enables Access-Control-Allow-Origin (angular calling webapi methods)
             app.UseCors(builder => builder
-               .WithOrigins("http://localhost:54532")
+               .WithOrigins("http://localhost:54321")
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials());
