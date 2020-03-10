@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{C3258F
 	ProjectSection(SolutionItems) = preProject
 		Docker\docker-compose.pi.yml = Docker\docker-compose.pi.yml
 		Docker\docker-compose.yml = Docker\docker-compose.yml
+		Docker\Dockerfile = Docker\Dockerfile
+		Docker\Dockerfile.pi = Docker\Dockerfile.pi
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PiControlPanel.Infrastructure.Persistence.Entities", "Infrastructure\PiControlPanel.Infrastructure.Persistence.Entities\PiControlPanel.Infrastructure.Persistence.Entities.csproj", "{75BA719A-D861-47E2-AC8F-E6C839B1D689}"

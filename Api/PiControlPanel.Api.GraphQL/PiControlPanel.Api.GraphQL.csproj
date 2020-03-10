@@ -29,8 +29,4 @@
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Models\PiControlPanel.Domain.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Docker\" />
-  </ItemGroup>
-
 </Project>

@@ -59,7 +59,7 @@ const routes: Routes = [
       provide: APOLLO_OPTIONS, deps: [HttpLink], useFactory: (httpLink: HttpLink) => {
         return {
           cache: new InMemoryCache(),
-          link: httpLink.create({ uri: 'http://192.168.2.251:8080/graphql' }) //TODO: pass as environment variable
+          link: httpLink.create({ uri: '/graphql' })
         }
       }
     }

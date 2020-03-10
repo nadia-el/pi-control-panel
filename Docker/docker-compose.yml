@@ -2,28 +2,17 @@ version: '3.7'
 
 services:
 
-  picontrolpanel.api.graphql:
-    image: raspberry/picontrolpanel-api:dev
-    container_name: raspberry_picontrolpanel_api
+  picontrolpanel:
+    image: raspberry/picontrolpanel:prod
+    container_name: raspberry_picontrolpanel
     build:
       context: ../.
-      dockerfile: Api/PiControlPanel.Api.GraphQL/Docker/Dockerfile
+      dockerfile: Docker/Dockerfile
     environment:
       - TZ=America/Toronto
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - '8080:80'
-
-  picontrolpanel.ui.angular:
-    image: raspberry/picontrolpanel-ui:dev
-    container_name: raspberry_picontrolpanel_ui
-    build:
-      context: ../.
-      dockerfile: Ui/PiControlPanel.Ui.Angular/Dockerfile
-    ports:
-      - '4200:4200'
-    depends_on:
-      - picontrolpanel.api.graphql
 
   portainer:
     image: portainer/portainer
