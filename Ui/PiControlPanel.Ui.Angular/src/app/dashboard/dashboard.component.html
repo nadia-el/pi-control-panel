@@ -4,7 +4,7 @@
       <div class="row d-flex justify-content-between">
         <h3>Raspberry Pi Control Panel</h3>
         <div class="btn-group" role="group" aria-label="Actions">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#realTimeModal">
+          <button type="button" class="btn btn-primary" (click)="openModal()">
             Real-Time info
           </button>
           <button type="button" class="btn btn-warning" (click)="logout()">
@@ -168,29 +168,5 @@
       </div>
     </div>
 
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="realTimeModal" tabindex="-1" role="dialog" aria-labelledby="realTimeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="realTimeModalLabel">Real-Time Information</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <ngx-charts-line-chart [legend]="true" [autoScale]="true"
-                               [xAxis]="true" [yAxis]="true"
-                               [showXAxisLabel]="true" [xAxisLabel]="'Datetime'"
-                               [timeline]="true" [results]="chartData" *ngIf="isChartDataReady()">
-        </ngx-charts-line-chart>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
   </div>
 </div>
