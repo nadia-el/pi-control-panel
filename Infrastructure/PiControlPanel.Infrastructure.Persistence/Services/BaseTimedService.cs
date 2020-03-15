@@ -37,7 +37,7 @@
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             var entities = await repository.GetAll()
-                .OrderByDescending(t => t.DateTime).ToListAsync();
+                .OrderBy(t => t.DateTime).ToListAsync();
             return mapper.Map<List<T>>(entities);
         }
 

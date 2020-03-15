@@ -6,13 +6,14 @@
     </button>
   </div>
   <div class="modal-body">
-    <ngx-charts-line-chart [legend]="true" [autoScale]="true"
-                           [xAxis]="true" [yAxis]="true"
-                           [showXAxisLabel]="true" [xAxisLabel]="'Datetime'"
-                           [timeline]="true" [results]="chartData" *ngIf="isChartDataReady()">
+    <ngx-charts-line-chart [legend]="true" [autoScale]="true" [xAxis]="true" [yAxis]="true"
+                           [showXAxisLabel]="true" [xAxisLabel]="'Datetime'" [timeline]="true"
+                           [results]="chartData" *ngIf="isChartDataReady()">
     </ngx-charts-line-chart>
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="loadPreviousPage()">Load Previous</button>
+    <button type="button" class="btn btn-secondary" (click)="loadNextPage()">Load Next</button>
     <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
   </div>
 </div>
