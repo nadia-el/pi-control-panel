@@ -20,6 +20,7 @@ COPY ["Infrastructure/PiControlPanel.Infrastructure.OnDemand/PiControlPanel.Infr
 COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence/PiControlPanel.Infrastructure.Persistence.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence/"]
 COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence.Contracts/PiControlPanel.Infrastructure.Persistence.Contracts.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence.Contracts/"]
 COPY ["Infrastructure/PiControlPanel.Infrastructure.Persistence.Entities/PiControlPanel.Infrastructure.Persistence.Entities.csproj", "Infrastructure/PiControlPanel.Infrastructure.Persistence.Entities/"]
+COPY ["External/GraphQL.Relay/GraphQL.Relay.csproj", "External/GraphQL.Relay/"]
 RUN dotnet restore "Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj"
 COPY . .
 WORKDIR "/src/Api/PiControlPanel.Api.GraphQL"
