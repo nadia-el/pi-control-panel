@@ -33,6 +33,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.13",
+    "apollo-link-ws": "^1.0.19",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.4.1",
     "core-js": "^3.3.3",
@@ -46,6 +47,7 @@
     "oidc-client": "^1.9.1",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.4",
+    "subscriptions-transport-ws": "^0.9.16",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {

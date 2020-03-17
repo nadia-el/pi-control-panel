@@ -80,7 +80,7 @@ export class CpuTemperatureService {
     return this.searchQueryResult;
   }
 
-  getNextPage(): any {
+  getNextPage() {
     if (this.searchQuery) {
       this.searchQuery.fetchMore({
         variables: {
@@ -156,7 +156,7 @@ export class CpuTemperatureService {
     return this.searchQueryResult;
   }
 
-  getPreviousPage(): any {
+  getPreviousPage() {
     if (this.searchQuery) {
       this.searchQuery.fetchMore({
         variables: {
@@ -183,6 +183,38 @@ export class CpuTemperatureService {
         })
       });
     }
+  }
+
+  subscribeToNewCpuTemperatures() {
+    this.searchQuery.subscribeToMore({
+      document: gql`
+      subscription CpuTemperature {
+        cpuTemperature {
+          value
+          dateTime
+        }
+      }`,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev;
+        }
+        const newCpuTemperature = subscriptionData.data.cpuTemperature;
+        return Object.assign({}, prev, {
+          raspberryPi: {
+            cpu: {
+              temperatures: {
+                items: [newCpuTemperature, ...prev.raspberryPi.cpu.temperatures.items],
+                pageInfo: prev.raspberryPi.cpu.temperatures.pageInfo,
+                totalCount: prev.raspberryPi.cpu.temperatures.totalCount + 1,
+                __typename: 'CpuTemperatureConnection'
+              },
+              __typename: 'CpuType'
+            },
+            __typename: 'RaspberryPiType'
+          }
+        });
+      }
+    });
   }
 
 }

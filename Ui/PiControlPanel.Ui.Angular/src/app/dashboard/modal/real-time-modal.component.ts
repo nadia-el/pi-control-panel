@@ -18,17 +18,12 @@ import { MemoryStatusService } from 'src/app/shared/services/memory-status.servi
 })
 export class RealTimeModalComponent implements OnInit, OnDestroy {
   errorMessage: string;
-
-  chartData = [
-    { name: "CPU Temperature", series: [] },
-    { name: "CPU Average Load (x100)", series: [] },
-    { name: "CPU Real-Time Load (%)", series: [] },
-    { name: "Memory Usage (%)", series: [] }
-  ];
-  temperatureDataReady = false;
-  averageLoadDataReady = false;
-  realTimeLoadDataReady = false;
-  memoryStatusDataReady = false;
+  
+  chartData: any[];
+  temperatureDataReady: boolean;
+  averageLoadDataReady: boolean;
+  realTimeLoadDataReady: boolean;
+  memoryStatusDataReady: boolean;
 
   cpuTemperatureBehaviorSubjectSubscription: Subscription;
   cpuAverageLoadBehaviorSubjectSubscription: Subscription;
@@ -42,6 +37,14 @@ export class RealTimeModalComponent implements OnInit, OnDestroy {
     private memoryStatusService: MemoryStatusService) { }
 
   ngOnInit() {
+    this.chartData = [
+      { name: "CPU Temperature", series: [] },
+      { name: "CPU Average Load (x100)", series: [] },
+      { name: "CPU Real-Time Load (%)", series: [] },
+      { name: "Memory Usage (%)", series: [] }
+    ];
+
+    this.temperatureDataReady = false;
     this.cpuTemperatureBehaviorSubjectSubscription = this.cpuTemperatureService.getLastCpuTemperatures()
       .subscribe(
       result => {
@@ -53,11 +56,15 @@ export class RealTimeModalComponent implements OnInit, OnDestroy {
         });
         this.chartData[0].series = orderBy(temperatureData, 'name');
         this.chartData = [...this.chartData];
+        if(!this.temperatureDataReady) {
+          this.cpuTemperatureService.subscribeToNewCpuTemperatures();
+        }
         this.temperatureDataReady = true;
       },
       error => this.errorMessage = <any>error
     );
 
+    this.averageLoadDataReady = false;
     this.cpuAverageLoadBehaviorSubjectSubscription = this.cpuAverageLoadService.getLastCpuAverageLoads()
       .subscribe(
         result => {
@@ -74,6 +81,7 @@ export class RealTimeModalComponent implements OnInit, OnDestroy {
         error => this.errorMessage = <any>error
       );
 
+    this.realTimeLoadDataReady = false;
     this.cpuRealTimeLoadBehaviorSubjectSubscription = this.cpuRealTimeLoadService.getLastCpuRealTimeLoads()
       .subscribe(
         result => {
@@ -90,6 +98,7 @@ export class RealTimeModalComponent implements OnInit, OnDestroy {
         error => this.errorMessage = <any>error
       );
 
+    this.memoryStatusDataReady = false;
     this.memoryStatusBehaviorSubjectSubscription = this.memoryStatusService.getLastMemoryStatuses()
       .subscribe(
         result => {

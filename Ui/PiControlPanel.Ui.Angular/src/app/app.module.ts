@@ -1,17 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { ApolloModule, Apollo, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 
 import { environment } from '../environments/environment';
@@ -29,6 +36,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, resolve: { raspberryPi: DashboardResolve } },
   { path: '**', redirectTo: '/home' },
 ];
+
+graphqlUri: () => new URL('/graphql', window.location.href);
 
 @NgModule({
   declarations: [
@@ -59,12 +68,33 @@ const routes: Routes = [
   ],
   providers: [
     DashboardResolve,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
-      provide: APOLLO_OPTIONS, deps: [HttpLink], useFactory: (httpLink: HttpLink) => {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: APOLLO_OPTIONS,
+      deps: [HttpLink],
+      useFactory: (httpLink: HttpLink) => {
         return {
           cache: new InMemoryCache(),
-          link: httpLink.create({ uri: '/graphql' })
+          link: split(
+            ({ query }) => {
+              const definition = getMainDefinition(query);
+              return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+            },
+            new WebSocketLink({
+              uri: `ws://${environment.graphqlEndpoint}/graphql`,
+              options: {
+                reconnect: true,
+                connectionParams: {
+                  Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+                }
+              }
+            }),
+            httpLink.create({ uri: `http://${environment.graphqlEndpoint}/graphql` }),
+          )
         }
       }
     }
