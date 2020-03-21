@@ -61,7 +61,7 @@
                         .GetAsync(e => e.ID == Guid.Parse(pagingInput.After));
                     if (afterEntity == null)
                     {
-                        throw new ArgumentOutOfRangeException("After", $"No entity found with id={pagingInput.Before}");
+                        throw new ArgumentOutOfRangeException("After", $"No entity found with id={pagingInput.After}");
                     }
                     totalSkipped = entities
                         .Count(e => e.DateTime <= afterEntity.DateTime);
