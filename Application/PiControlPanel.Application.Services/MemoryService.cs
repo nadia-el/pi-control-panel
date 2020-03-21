@@ -2,8 +2,8 @@
 {
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
+    using PiControlPanel.Domain.Models.Paging;
     using PiControlPanel.Domain.Models.Hardware.Memory;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
@@ -28,10 +28,10 @@
             return await this.persistenceStatusService.GetLastAsync();
         }
 
-        public async Task<IEnumerable<MemoryStatus>> GetStatusesAsync()
+        public async Task<PagingOutput<MemoryStatus>> GetStatusesAsync(PagingInput pagingInput)
         {
             logger.Info("Application layer -> MemoryService -> GetStatusesAsync");
-            return await this.persistenceStatusService.GetAllAsync();
+            return await this.persistenceStatusService.GetPageAsync(pagingInput);
         }
 
         public async Task SaveStatusAsync()

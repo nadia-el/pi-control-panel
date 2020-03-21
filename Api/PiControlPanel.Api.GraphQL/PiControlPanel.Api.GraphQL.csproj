@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>7d783840-9d10-484d-bffb-3901bccf7419</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileFile>../../Docker/Dockerfile</DockerfileFile>
+    <DockerfileContext>../..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +28,6 @@
     <ProjectReference Include="..\..\Application\PiControlPanel.Application.Services\PiControlPanel.Application.Services.csproj" />
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Contracts\PiControlPanel.Domain.Contracts.csproj" />
     <ProjectReference Include="..\..\Domain\PiControlPanel.Domain.Models\PiControlPanel.Domain.Models.csproj" />
-    <ProjectReference Include="..\..\External\GraphQL.Relay\GraphQL.Relay.csproj" />
   </ItemGroup>
 
 </Project>

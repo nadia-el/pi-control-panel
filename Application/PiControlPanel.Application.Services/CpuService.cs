@@ -3,6 +3,7 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
+    using PiControlPanel.Domain.Models.Paging;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -37,10 +38,10 @@
             return await this.persistenceTemperatureService.GetLastAsync();
         }
 
-        public async Task<IEnumerable<CpuTemperature>> GetTemperaturesAsync()
+        public async Task<PagingOutput<CpuTemperature>> GetTemperaturesAsync(PagingInput pagingInput)
         {
             logger.Info("Application layer -> CpuService -> GetTemperaturesAsync");
-            return await this.persistenceTemperatureService.GetAllAsync();
+            return await this.persistenceTemperatureService.GetPageAsync(pagingInput);
         }
 
         public IObservable<CpuTemperature> GetTemperatureObservable()
@@ -55,10 +56,10 @@
             return this.persistenceAverageLoadService.GetLastAsync();
         }
 
-        public async Task<IEnumerable<CpuAverageLoad>> GetAverageLoadsAsync()
+        public async Task<PagingOutput<CpuAverageLoad>> GetAverageLoadsAsync(PagingInput pagingInput)
         {
             logger.Info("Application layer -> CpuService -> GetAverageLoadsAsync");
-            return await this.persistenceAverageLoadService.GetAllAsync();
+            return await this.persistenceAverageLoadService.GetPageAsync(pagingInput);
         }
 
         public Task<CpuRealTimeLoad> GetLastRealTimeLoadAsync()
@@ -67,10 +68,10 @@
             return this.persistenceRealTimeLoadService.GetLastAsync();
         }
 
-        public async Task<IEnumerable<CpuRealTimeLoad>> GetRealTimeLoadsAsync()
+        public async Task<PagingOutput<CpuRealTimeLoad>> GetRealTimeLoadsAsync(PagingInput pagingInput)
         {
             logger.Info("Application layer -> CpuService -> GetRealTimeLoadsAsync");
-            return await this.persistenceRealTimeLoadService.GetAllAsync();
+            return await this.persistenceRealTimeLoadService.GetPageAsync(pagingInput);
         }
 
         public async Task<IDictionary<DateTime, double>> GetTotalRealTimeLoadsAsync(

@@ -1,6 +1,5 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Disk
 {
-    using global::GraphQL.Relay.Types;
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
@@ -35,9 +34,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var statuses = await diskService.GetStatusesAsync();
+                    var pagingInput = context.GetPagingInput();
+                    var statuses = await diskService.GetStatusesAsync(pagingInput);
 
-                    return ConnectionUtils.ToConnection(statuses, context);
+                    return statuses.ToConnection();
                 });
         }
     }

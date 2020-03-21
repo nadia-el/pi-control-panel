@@ -3,7 +3,7 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Disk;
-    using System.Collections.Generic;
+    using PiControlPanel.Domain.Models.Paging;
     using System.Threading.Tasks;
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
@@ -28,10 +28,10 @@
             return await this.persistenceStatusService.GetLastAsync();
         }
 
-        public async Task<IEnumerable<DiskStatus>> GetStatusesAsync()
+        public async Task<PagingOutput<DiskStatus>> GetStatusesAsync(PagingInput pagingInput)
         {
             logger.Info("Application layer -> DiskService -> GetStatusesAsync");
-            return await this.persistenceStatusService.GetAllAsync();
+            return await this.persistenceStatusService.GetPageAsync(pagingInput);
         }
 
         public async Task SaveStatusAsync()

@@ -1,6 +1,5 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output
 {
-    using global::GraphQL.Relay.Types;
     using global::GraphQL.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
@@ -33,9 +32,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var statuses = await memoryService.GetStatusesAsync();
+                    var pagingInput = context.GetPagingInput();
+                    var statuses = await memoryService.GetStatusesAsync(pagingInput);
 
-                    return ConnectionUtils.ToConnection(statuses, context);
+                    return statuses.ToConnection();
                 });
         }
     }

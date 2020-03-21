@@ -4,6 +4,8 @@
 
     public class BaseTimedObject
     {
+        public Guid ID { get; set; }
+
         public DateTime DateTime { get; set; }
     }
 }

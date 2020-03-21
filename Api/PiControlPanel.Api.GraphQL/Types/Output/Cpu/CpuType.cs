@@ -1,7 +1,6 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Types.Output.Cpu
 {
     using global::GraphQL.Types;
-    using global::GraphQL.Relay.Types;
     using NLog;
     using PiControlPanel.Api.GraphQL.Extensions;
     using PiControlPanel.Domain.Contracts.Application;
@@ -34,9 +33,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var averageLoads = await cpuService.GetAverageLoadsAsync();
+                    var pagingInput = context.GetPagingInput();
+                    var averageLoads = await cpuService.GetAverageLoadsAsync(pagingInput);
 
-                    return ConnectionUtils.ToConnection(averageLoads, context);
+                    return averageLoads.ToConnection();
                 });
 
             Field<CpuRealTimeLoadType>()
@@ -59,9 +59,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var realTimeLoads = await cpuService.GetRealTimeLoadsAsync();
+                    var pagingInput = context.GetPagingInput();
+                    var realTimeLoads = await cpuService.GetRealTimeLoadsAsync(pagingInput);
 
-                    return ConnectionUtils.ToConnection(realTimeLoads, context);
+                    return realTimeLoads.ToConnection();
                 });
 
             Field<CpuTemperatureType>()
@@ -84,9 +85,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    var temperatures = await cpuService.GetTemperaturesAsync();
+                    var pagingInput = context.GetPagingInput();
+                    var temperatures = await cpuService.GetTemperaturesAsync(pagingInput);
 
-                    return ConnectionUtils.ToConnection(temperatures, context);
+                    return temperatures.ToConnection();
                 });
         }
     }
