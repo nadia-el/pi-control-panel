@@ -88,8 +88,9 @@ graphqlUri: () => new URL('/graphql', window.location.href);
               uri: `ws://${environment.graphqlEndpoint}/graphql`,
               options: {
                 reconnect: true,
-                connectionParams: {
-                  Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+                connectionParams: () => {
+                  const token = localStorage.getItem('jwt_token');
+                  return token ? { 'Authorization': `Bearer ${token}` } : {};
                 }
               }
             }),
