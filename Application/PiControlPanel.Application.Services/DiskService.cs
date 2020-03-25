@@ -4,6 +4,7 @@
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Disk;
     using PiControlPanel.Domain.Models.Paging;
+    using System;
     using System.Threading.Tasks;
     using OnDemand = PiControlPanel.Domain.Contracts.Infrastructure.OnDemand;
     using Persistence = PiControlPanel.Domain.Contracts.Infrastructure.Persistence;
@@ -34,11 +35,19 @@
             return await this.persistenceStatusService.GetPageAsync(pagingInput);
         }
 
+        public IObservable<DiskStatus> GetStatusObservable()
+        {
+            logger.Info("Application layer -> DiskService -> GetStatusObservable");
+            return ((OnDemand.IDiskService)this.onDemandService).GetStatusObservable();
+        }
+
         public async Task SaveStatusAsync()
         {
             logger.Info("Application layer -> DiskService -> SaveStatusAsync");
             var status = await ((OnDemand.IDiskService)this.onDemandService).GetStatusAsync();
+
             await this.persistenceStatusService.AddAsync(status);
+            ((OnDemand.IDiskService)this.onDemandService).PublishStatus(status);
         }
 
         protected override async Task<Disk> GetPersistedInfoAsync(Disk onDemandInfo)
