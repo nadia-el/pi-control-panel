@@ -9,11 +9,13 @@
     using PiControlPanel.Api.GraphQL.Types.Output.Cpu;
     using PiControlPanel.Api.GraphQL.Types.Output.Disk;
     using PiControlPanel.Domain.Contracts.Application;
+    using PiControlPanel.Domain.Models.Hardware.Memory;
 
     public class ControlPanelSubscription : ObjectGraphType
     {
-        public ControlPanelSubscription(ICpuService cpuService, IMemoryService memoryService,
-            IDiskService diskService, ILogger logger)
+        public ControlPanelSubscription(ICpuService cpuService, IDiskService diskService,
+            IMemoryService<RandomAccessMemory, RandomAccessMemoryStatus> randomAccessMemoryService,
+            IMemoryService<SwapMemory, SwapMemoryStatus> swapMemoryService, ILogger logger)
         {
             FieldSubscribe<CpuAverageLoadType>(
                 "CpuAverageLoad",
@@ -63,20 +65,36 @@
                     return cpuService.GetTemperatureObservable();
                 });
 
-            FieldSubscribe<MemoryStatusType>(
-                "MemoryStatus",
+            FieldSubscribe<MemoryStatusType<RandomAccessMemoryStatus>>(
+                "RamStatus",
                 resolve: context =>
                 {
                     return context.Source;
                 },
                 subscribe: context =>
                 {
-                    logger.Info("MemoryStatus subscription");
+                    logger.Info("RamStatus subscription");
                     MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
                     GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return memoryService.GetStatusObservable();
+                    return randomAccessMemoryService.GetStatusObservable();
+                });
+
+            FieldSubscribe<MemoryStatusType<SwapMemoryStatus>>(
+                "SwapMemoryStatus",
+                resolve: context =>
+                {
+                    return context.Source;
+                },
+                subscribe: context =>
+                {
+                    logger.Info("SwapMemoryStatus subscription");
+                    MessageHandlingContext messageHandlingContext = context.UserContext.As<MessageHandlingContext>();
+                    GraphQLUserContext graphQLUserContext = messageHandlingContext.Get<GraphQLUserContext>("GraphQLUserContext");
+                    var businessContext = graphQLUserContext.GetBusinessContext();
+
+                    return swapMemoryService.GetStatusObservable();
                 });
 
             FieldSubscribe<DiskStatusType>(

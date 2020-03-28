@@ -3,13 +3,23 @@
     using global::GraphQL.Types;
     using PiControlPanel.Domain.Models.Hardware.Memory;
 
-    public class MemoryStatusType : ObjectGraphType<MemoryStatus>
+    public class MemoryStatusType<T> : ObjectGraphType<T>
+        where T : MemoryStatus
     {
         public MemoryStatusType()
         {
-            Field(x => x.Used);
-            Field(x => x.Available);
             Field<DateTimeGraphType>("dateTime");
+            Field(x => x.Used);
+            Field(x => x.Free);
+            Field<IntGraphType>(
+                "DiskCache",
+                resolve: context => {
+                    if(typeof(T) == typeof(RandomAccessMemoryStatus))
+                    {
+                        return (context.Source as RandomAccessMemoryStatus).DiskCache;
+                    }
+                    return 0;
+            });
         }
     }
 }
