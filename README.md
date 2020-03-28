@@ -13,12 +13,7 @@ sudo usermod -aG video picontrolpanel
 
 ### Running on Raspberry Pi
 1. Publish PiControlPanel.Api.GraphQL project targeting ARM and copy the files to /home/picontrolpanel
-2. Navigate to PiControlPanel.Ui.Angular project folder and build the client
-````bash
-ng build --prod
-````
-3. Copy the contents of the build (under the dist folder) to /home/picontrolpanel/PiControlPanel.Ui.Angular/dist
-4. .Net Core Installation
+2. .Net Core Installation
 ````bash
 mkdir dotnet
 wget https://download.visualstudio.microsoft.com/download/pr/da60c9fc-c329-42d6-afaf-b8ef2bbadcf3/14655b5928319349e78da3327874592a/aspnetcore-runtime-3.1.1-linux-arm.tar.gz
@@ -26,19 +21,19 @@ sudo mkdir -p /usr/share/dotnet
 sudo tar -zxf aspnetcore-runtime-3.1.1-linux-arm.tar.gz -C /usr/share/dotnet/
 sudo ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 ````
-5. Run as process
+3. Run as process
 ````bash
 export ASPNETCORE_URLS=http://+:8080
 export ASPNETCORE_ENVIRONMENT=Production
 dotnet PiControlPanel.Api.GraphQL.dll
 ````
-6. Or run as service
+4. Or run as service
 ````bash
 sudo cp picontrolpanel.service /etc/systemd/system/picontrolpanel.service
 sudo chmod 644 /etc/systemd/system/picontrolpanel.service
 sudo systemctl enable picontrolpanel
 ````
-7. Access http://<<ip_of_raspberry_pi>>:8080/
+5. Access http://<<ip_of_raspberry_pi>>:8080/
 
 #### Available operations
 To test the available operations directly, run the application as a process setting the environment to Development and accessing http://<<ip_of_raspberry_pi>>:8080/playground
