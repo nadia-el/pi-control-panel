@@ -7,6 +7,8 @@ sudo passwd picontrolpanel
 sudo usermod -aG sudo picontrolpanel
 echo 'picontrolpanel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo usermod -aG video picontrolpanel
+sudo mkdir /var/log/picontrolpanel
+sudo chown picontrolpanel /var/log/picontrolpanel
 ````
 
 ## Running
