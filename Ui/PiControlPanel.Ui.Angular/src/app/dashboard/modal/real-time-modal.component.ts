@@ -43,7 +43,7 @@ export class RealTimeModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.chartData = [
-      { name: "CPU Temperature", series: [] },
+      { name: "CPU Temperature (°C)", series: [] },
       { name: "CPU Average Load (x100)", series: [] },
       { name: "CPU Real-Time Load (%)", series: [] },
       { name: "RAM Usage (%)", series: [] },
