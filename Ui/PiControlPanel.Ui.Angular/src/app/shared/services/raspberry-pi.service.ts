@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { get } from 'lodash';
+import { get, isNil, orderBy } from 'lodash';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { IRaspberryPi } from '../interfaces/raspberry-pi';
@@ -101,7 +101,17 @@ export class RaspberryPiService {
         }`,
       fetchPolicy: 'network-only'
     }).pipe(
-      map(result => get(result.data, 'raspberryPi')),
+      map(result => {
+        var raspberryPi = get(result.data, 'raspberryPi');
+        var processes = get(raspberryPi, 'cpu.loadStatus.processes');
+        if(!isNil(processes)){
+          raspberryPi.cpu.loadStatus.processes = orderBy(
+            processes,
+            ['cpuPercentage', 'ramPercentage'],
+            ['desc', 'desc']);
+        }
+        return raspberryPi;
+      }),
       catchError(this.errorHandlingService.handleError)
     );
   }
@@ -114,6 +124,21 @@ export class RaspberryPiService {
         }`
     }).pipe(
       map(result => get(result.data, 'shutdown')),
+      catchError(this.errorHandlingService.handleError)
+    );
+  }
+
+  killProcess(processId: number): Observable<boolean> {
+    return this.apollo.mutate({
+      mutation: gql`
+        mutation kill($processId: Int!) {
+          kill(processId: $processId)
+        }`,
+      variables: {
+        processId: processId
+      }
+    }).pipe(
+      map(result => get(result.data, 'kill')),
       catchError(this.errorHandlingService.handleError)
     );
   }
