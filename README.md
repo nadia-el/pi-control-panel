@@ -63,7 +63,7 @@ Query variables:
 
 Query:
 ````graphql
-query Q {
+query RaspberryPi {
   raspberryPi {
     chipset {
       model
@@ -78,17 +78,28 @@ query Q {
         value
         dateTime
       }
-      averageLoad {
-        lastMinute
-        last5Minutes
-        last15Minutes
+      loadStatus {
         dateTime
-      }
-      realTimeLoad {
-        kernel
-        user
-        total
-        dateTime
+	lastMinuteAverage
+	last5MinutesAverage
+	last15MinutesAverage
+	kernelRealTime
+	userRealTime
+	totalRealTime
+	processes {
+	  processId
+	  user
+          priority
+          niceValue
+          totalMemory
+          ram
+          sharedMemory
+          state
+          cpuPercentage
+          ramPercentage
+          totalCpuTime
+          command
+        }
       }
     }
     disk {
@@ -101,11 +112,20 @@ query Q {
         dateTime
       }
     }
-    memory {
+    ram {
       total
       status {
         used
-      	available
+	free
+	diskCache
+	dateTime
+      }
+    }
+    swapMemory {
+      total
+      status {
+        used
+        free
         dateTime
       }
     }
@@ -116,6 +136,10 @@ query Q {
       name
       kernel
       hostname
+      status {
+        uptime
+	dateTime
+      }
     }
   }
 }
@@ -128,11 +152,91 @@ HTTP Headers:
 }
 ````
 
-##### Cpu Subscription
+##### Cpu First Temperatures Query
 
 Query:
 ````graphql
-subscription S {
+query CpuTemperatures($firstTemperatures: Int, $afterTemperatures: String) {
+  raspberryPi {
+    cpu {
+      temperatures(first: $firstTemperatures, after: $afterTemperatures) {
+      items {
+          value
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstTemperatures": 10,
+  "afterTemperatures": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Last Temperatures Query
+
+Query:
+````graphql
+query CpuTemperatures($lastTemperatures: Int, $beforeTemperatures: String) {
+  raspberryPi {
+    cpu {
+      temperatures(last: $lastTemperatures, before: $beforeTemperatures) {
+      items {
+          value
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastTemperatures": 10,
+  "beforeTemperatures": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Temperature Subscription
+
+Query:
+````graphql
+subscription CpuTemperature {
     cpuTemperature {
       value
       dateTime
@@ -147,13 +251,599 @@ HTTP Headers:
 }
 ````
 
-##### Shutdown Mutation
-Returns true, but doesn't actually shut the container down.
+##### Cpu First Load Statuses Query
 
 Query:
 ````graphql
-mutation M {
+query CpuLoadStatuses($firstLoadStatuses: Int, $afterLoadStatuses: String) {
+  raspberryPi {
+    cpu {
+      loadStatuses(first: $firstLoadStatuses, after: $afterLoadStatuses) {
+        items {
+          dateTime
+          lastMinuteAverage
+          last5MinutesAverage
+          last15MinutesAverage
+          kernelRealTime
+          userRealTime
+          totalRealTime
+          processes {
+            processId
+            user
+            priority
+            niceValue
+            totalMemory
+            ram
+            sharedMemory
+            state
+            cpuPercentage
+            ramPercentage
+            totalCpuTime
+            command
+          }
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstLoadStatuses": 10,
+  "afterLoadStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Last Load Statuses Query
+
+Query:
+````graphql
+query CpuLoadStatuses($lastLoadStatuses: Int, $beforeLoadStatuses: String) {
+  raspberryPi {
+    cpu {
+      loadStatuses(last: $lastLoadStatuses, before: $beforeLoadStatuses) {
+        items {
+          dateTime
+          lastMinuteAverage
+          last5MinutesAverage
+          last15MinutesAverage
+          kernelRealTime
+          userRealTime
+          totalRealTime
+          processes {
+            processId
+            user
+            priority
+            niceValue
+            totalMemory
+            ram
+            sharedMemory
+            state
+            cpuPercentage
+            ramPercentage
+            totalCpuTime
+            command
+          }
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastLoadStatuses": 10,
+  "beforeLoadStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Load Status Subscription
+
+Query:
+````graphql
+subscription CpuLoadStatus {
+  cpuLoadStatus {
+    dateTime
+    lastMinuteAverage
+    last5MinutesAverage
+    last15MinutesAverage
+    kernelRealTime
+    userRealTime
+    totalRealTime
+    processes {
+      processId
+      user
+      priority
+      niceValue
+      totalMemory
+      ram
+      sharedMemory
+      state
+      cpuPercentage
+      ramPercentage
+      totalCpuTime
+      command
+    }
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### RAM First Statuses Query
+
+Query:
+````graphql
+query RamStatuses($firstMemoryStatuses: Int, $afterMemoryStatuses: String) {
+  raspberryPi {
+    ram {
+      statuses(first: $firstMemoryStatuses, after: $afterMemoryStatuses) {
+        items {
+          used
+          free
+          diskCache
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstMemoryStatuses": 10,
+  "afterMemoryStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### RAM Last Statuses Query
+
+Query:
+````graphql
+query RamStatuses($lastMemoryStatuses: Int, $beforeMemoryStatuses: String) {
+  raspberryPi {
+    ram {
+      statuses(last: $lastMemoryStatuses, before: $beforeMemoryStatuses) {
+        items {
+          used
+          free
+          diskCache
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastMemoryStatuses": 10,
+  "beforeMemoryStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### RAM Status Subscription
+
+Query:
+````graphql
+subscription RamStatus {
+  ramStatus {
+    used
+    free
+    diskCache
+    dateTime
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Swap Memory First Statuses Query
+
+Query:
+````graphql
+query SwapMemoryStatuses($firstMemoryStatuses: Int, $afterMemoryStatuses: String) {
+  raspberryPi {
+    swapMemory {
+      statuses(first: $firstMemoryStatuses, after: $afterMemoryStatuses) {
+        items {
+          used
+          free
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstMemoryStatuses": 10,
+  "afterMemoryStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Swap Memory Last Statuses Query
+
+Query:
+````graphql
+query SwapMemoryStatuses($lastMemoryStatuses: Int, $beforeMemoryStatuses: String) {
+  raspberryPi {
+    swapMemory {
+      statuses(last: $lastMemoryStatuses, before: $beforeMemoryStatuses) {
+        items {
+          used
+          free
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastMemoryStatuses": 10,
+  "beforeMemoryStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Swap Memory Status Subscription
+
+Query:
+````graphql
+subscription SwapMemoryStatus {
+  swapMemoryStatus {
+    used
+    free
+    dateTime
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Disk First Statuses Query
+
+Query:
+````graphql
+query DiskStatuses($firstDiskStatuses: Int, $afterDiskStatuses: String) {
+  raspberryPi {
+    disk {
+      statuses(first: $firstDiskStatuses, after: $afterDiskStatuses) {
+        items {
+          used
+          available
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstDiskStatuses": 10,
+  "afterDiskStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Disk Last Statuses Query
+
+Query:
+````graphql
+query DiskStatuses($lastDiskStatuses: Int, $beforeDiskStatuses: String) {
+  raspberryPi {
+    disk {
+      statuses(last: $lastDiskStatuses, before: $beforeDiskStatuses) {
+        items {
+          used
+          available
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastDiskStatuses": 10,
+  "beforeDiskStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Disk Status Subscription
+
+Query:
+````graphql
+subscription DiskStatus {
+  diskStatus {
+    used
+    available
+    dateTime
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### OS First Statuses Query
+
+Query:
+````graphql
+query OsStatuses($firstOsStatuses: Int, $afterOsStatuses: String) {
+  raspberryPi {
+    os {
+      statuses(first: $firstOsStatuses, after: $afterOsStatuses) {
+        items {
+          uptime
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstOsStatuses": 10,
+  "afterOsStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### OS Last Statuses Query
+
+Query:
+````graphql
+query OsStatuses($lastOsStatuses: Int, $beforeOsStatuses: String) {
+  raspberryPi {
+    os {
+      statuses(last: $lastOsStatuses, before: $beforeOsStatuses) {
+        items {
+          uptime
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastOsStatuses": 10,
+  "beforeOsStatuses": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### OS Status Subscription
+
+Query:
+````graphql
+subscription OsStatus {
+  os {
+    uptime
+    dateTime
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Shutdown Mutation
+
+Query:
+````graphql
+mutation Shutdown {
   shutdown
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Kill Process Mutation
+
+Query:
+````graphql
+mutation Kill($processId: Int!) {
+  kill(processId: $processId)
+}
+````
+
+Mutation variables:
+````graphql
+{
+  "processId": 4539
 }
 ````
 
@@ -193,32 +883,11 @@ docker-compose up -d
 ````
 4. Access http://localhost:8080/
 
-#### Available operations when running on Docker
+#### Available fields when running on Docker
 
-##### Login Query
-
-Query:
+* Login Query
+* RaspberryPi Query
 ````graphql
-query Login($userAccount: UserAccountInputType) {
-  login(userAccount: $userAccount)
-}
-````
-
-Query variables:
-````graphql
-{
-  "userAccount": {
-    "username": "pi",
-    "password": "raspberry"
-  }
-}
-````
-
-##### RaspberryPi Query
-
-Query:
-````graphql
-query Q {
   raspberryPi {
     disk {
       fileSystem
@@ -230,258 +899,25 @@ query Q {
         dateTime
       }
     }
-    memory {
+    ram {
       total
       status {
         used
-      	available
-        dateTime
+	free
+	diskCache
+	dateTime
       }
     }
-  }
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-##### Shutdown Mutation
-Returns true, but doesn't actually shut the container down.
-
-Query:
-````graphql
-mutation M {
-  shutdown
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-## GraphQL Connections
-
-Besides the above mentioned query fields, these are the supported GraphQL connection fields. They return paginated lists and can be used with the other fields in the same request.
-
-### Cpu Temperatures
-
-Query:
-````graphql
-query Q($firstTemperatures: Int, $afterTemperatures: String) {
-  raspberryPi {
-    cpu {
-      temperatures(first: $firstTemperatures, after: $afterTemperatures) {
-        items {
-          value
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
-      }
-    }
-  }
-}
-````
-
-Query variables:
-````graphql
-{
-  "firstTemperatures": 20,
-  "afterTemperatures": null
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-### Cpu Average Loads
-
-Query:
-````graphql
-query Q($firstAverageLoads: Int, $afterAverageLoads: String) {
-  raspberryPi {
-    cpu {
-      averageLoads(first: $firstAverageLoads, after: $afterAverageLoads) {
-        items {
-          lastMinute
-          last5Minutes
-          last15Minutes
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
-      }
-    }
-  }
-}
-````
-
-Query variables:
-````graphql
-{
-  "firstAverageLoads": 20,
-  "afterAverageLoads": null
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-### Cpu Real-time Loads
-
-Query:
-````graphql
-query Q($firstRealTimeLoads: Int, $afterRealTimeLoads: String) {
-  raspberryPi {
-    cpu {
-      realTimeLoads(first: $firstRealTimeLoads, after: $afterRealTimeLoads) {
-        items {
-          kernel
-          user
-          total
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
-      }
-    }
-  }
-}
-````
-
-Query variables:
-````graphql
-{
-  "firstRealTimeLoads": 20,
-  "afterRealTimeLoads": null
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-### Disk Statuses
-
-Query:
-````graphql
-query Q($firstDiskStatuses: Int, $afterDiskStatuses: String) {
-  raspberryPi {
-    disk {
+    swapMemory {
+      total
       status {
         used
-        available
+        free
         dateTime
-      }
-      statuses(first: $firstDiskStatuses, after: $afterDiskStatuses) {
-	    items {
-          used
-          available
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
       }
     }
   }
-}
 ````
-
-Query variables:
-````graphql
-{
-  "firstDiskStatuses": 20,
-  "afterDiskStatuses": null
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
-
-### Memory Statuses
-
-Query:
-````graphql
-query Q($firstMemoryStatuses: Int, $afterMemoryStatuses: String) {
-  raspberryPi {
-    memory {
-      status {
-        used
-        available
-        dateTime
-      }
-      statuses(first: $firstMemoryStatuses, after: $afterMemoryStatuses) {
-	    items {
-          used
-          available
-          dateTime
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-          startCursor
-          hasPreviousPage
-        }
-        totalCount
-      }
-    }
-  }
-}
-````
-
-Query variables:
-````graphql
-{
-  "firstMemoryStatuses": 40,
-  "afterMemoryStatuses": null
-}
-````
-
-HTTP Headers:
-````graphql
-{
-  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
-}
-````
+* All Disk Status queries and subscription
+* All RAM and Swap Memory Status queries and subscription
+* Shutdown Mutation (Returns true, but doesn't actually shut the container down)
