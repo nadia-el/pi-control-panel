@@ -19,7 +19,9 @@ export interface ICpu {
   cores: string;
   model: string;
   temperature: ICpuTemperature;
+  temperatures: ICpuTemperature[];
   loadStatus: ICpuLoadStatus;
+  loadStatuses: ICpuLoadStatus[];
 }
 
 export interface ICpuTemperature {
@@ -58,6 +60,7 @@ export interface IDisk {
   type: string;
   total: number;
   status: IDiskStatus;
+  statuses: IDiskStatus[];
 }
 
 export interface IDiskStatus {
@@ -69,6 +72,7 @@ export interface IDiskStatus {
 export interface IMemory {
   total: number;
   status: IMemoryStatus;
+  statuses: IMemoryStatus[];
 }
 
 export interface IMemoryStatus {
@@ -79,6 +83,7 @@ export interface IMemoryStatus {
 
 export interface IRandomAccessMemory extends IMemory {
   status: IRandomAccessMemoryStatus;
+  statuses: IRandomAccessMemoryStatus[];
 }
 
 export interface IRandomAccessMemoryStatus extends IMemoryStatus {
@@ -94,6 +99,7 @@ export interface IOs {
   kernel: string;
   hostname: string;
   status: IOsStatus;
+  statuses: IOsStatus[];
 }
 
 export interface IOsStatus {
