@@ -45,7 +45,11 @@ To test the available operations directly, run the application as a process sett
 Query:
 ````graphql
 query Login($userAccount: UserAccountInputType) {
-  login(userAccount: $userAccount)
+  login(userAccount: $userAccount) {
+    username
+    jwt
+    roles
+  }
 }
 ````
 
