@@ -78,6 +78,10 @@ query RaspberryPi {
     cpu {
       cores
       model
+      frequency {
+        value
+        dateTime
+      }
       temperature {
         value
         dateTime
@@ -146,6 +150,105 @@ query RaspberryPi {
       }
     }
   }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu First Frequencies Query
+
+Query:
+````graphql
+query CpuFrequencies($firstFrequencies: Int, $afterFrequencies: String) {
+  raspberryPi {
+    cpu {
+      frequencies(first: $firstFrequencies, after: $afterFrequencies) {
+      items {
+          value
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "firstFrequencies": 10,
+  "afterFrequencies": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Last Frequencies Query
+
+Query:
+````graphql
+query CpuFrequencies($lastFrequencies: Int, $beforeFrequencies: String) {
+  raspberryPi {
+    cpu {
+      frequencies(last: $lastFrequencies, before: $beforeFrequencies) {
+      items {
+          value
+          dateTime
+        }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          endCursor
+          hasNextPage
+        }
+        totalCount
+      }
+    }
+  }
+}
+````
+
+Query variables:
+````graphql
+{
+  "lastFrequencies": 10,
+  "beforeFrequencies": "ca23bf..."
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Cpu Frequency Subscription
+
+Query:
+````graphql
+subscription CpuFrequency {
+    cpuFrequency {
+      value
+      dateTime
+    }
 }
 ````
 
