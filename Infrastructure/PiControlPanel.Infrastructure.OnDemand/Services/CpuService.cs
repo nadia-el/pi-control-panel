@@ -15,14 +15,17 @@
 
     public class CpuService : BaseService<Cpu>, ICpuService
     {
+        private readonly ISubject<CpuFrequency> cpuFrequencySubject;
         private readonly ISubject<CpuTemperature> cpuTemperatureSubject;
         private readonly ISubject<CpuLoadStatus> cpuLoadStatusSubject;
 
-        public CpuService(ISubject<CpuTemperature> cpuTemperatureSubject,
+        public CpuService(ISubject<CpuFrequency> cpuFrequencySubject,
+            ISubject<CpuTemperature> cpuTemperatureSubject,
             ISubject<CpuLoadStatus> cpuLoadStatusSubject,
             ILogger logger)
             : base(logger)
         {
+            this.cpuFrequencySubject = cpuFrequencySubject;
             this.cpuTemperatureSubject = cpuTemperatureSubject;
             this.cpuLoadStatusSubject = cpuLoadStatusSubject;
         }
@@ -65,6 +68,24 @@
             this.cpuTemperatureSubject.OnNext(temperature);
         }
 
+        public async Task<CpuFrequency> GetFrequencyAsync(int samplingInterval)
+        {
+            logger.Info("Infra layer -> CpuService -> GetFrequencyAsync");
+            return await this.GetFrequencyFromStatsAsync(samplingInterval);
+        }
+
+        public IObservable<CpuFrequency> GetFrequencyObservable()
+        {
+            logger.Info("Infra layer -> CpuService -> GetFrequencyObservable");
+            return this.cpuFrequencySubject.AsObservable();
+        }
+
+        public void PublishFrequency(CpuFrequency frequency)
+        {
+            logger.Info("Infra layer -> CpuService -> PublishFrequency");
+            this.cpuFrequencySubject.OnNext(frequency);
+        }
+
         protected override Cpu GetModel()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
@@ -85,6 +106,66 @@
             };
         }
 
+        private async Task<CpuFrequency> GetFrequencyFromStatsAsync(int samplingInterval)
+        {
+            var result = BashCommands.CatCpuFreqStats.Bash();
+            logger.Debug($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
+            string[] lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            var frequencyStats = new Dictionary<int, long>();
+            foreach(var line in lines)
+            {
+                var state = line.Split(' ');
+                if (int.TryParse(state[0], out var frequency) && long.TryParse(state[1], out var time))
+                {
+                    frequencyStats.Add(frequency, time);
+                }
+                else
+                {
+                    logger.Warn($"Could not parse frequency stats: '{line}'");
+                }
+            }
+
+            await Task.Delay(samplingInterval);
+
+            result = BashCommands.CatCpuFreqStats.Bash();
+            logger.Debug($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
+            lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var line in lines)
+            {
+                var state = line.Split(' ');
+                if (int.TryParse(state[0], out var frequency) && long.TryParse(state[1], out var time))
+                {
+                    var oldTime = frequencyStats.ContainsKey(frequency) ? frequencyStats[frequency] : 0;
+                    frequencyStats[frequency] = time - oldTime;
+                }
+                else
+                {
+                    logger.Warn($"Could not parse frequency stats: '{line}'");
+                    if (frequencyStats.ContainsKey(frequency))
+                    {
+                        frequencyStats.Remove(frequency);
+                    }
+                }
+            }
+
+            if (frequencyStats.Any())
+            {
+                var totalTime = frequencyStats.Values.Sum();
+                var weightedAverage = frequencyStats.Select(f => f.Key * f.Value).Sum() / totalTime;
+                return new CpuFrequency()
+                {
+                    Frequency = Convert.ToInt32(weightedAverage / 1000),
+                    DateTime = DateTime.Now
+                };
+            }
+            logger.Warn($"Could get cpu frequency stats");
+            return null;
+        }
+
         private CpuTemperature GetTemperature()
         {
             var result = BashCommands.MeasureTemp.Bash();
@@ -93,8 +174,7 @@
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
             logger.Debug($"Temperature substring: '{temperatureResult}'");
 
-            double temperature;
-            if (double.TryParse(temperatureResult, out temperature))
+            if (double.TryParse(temperatureResult, out var temperature))
             {
                 return new CpuTemperature()
                 {

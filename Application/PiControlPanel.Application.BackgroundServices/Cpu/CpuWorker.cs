@@ -1,4 +1,4 @@
-﻿namespace PiControlPanel.Application.BackgroundServices
+﻿namespace PiControlPanel.Application.BackgroundServices.Cpu
 {
     using System.Threading;
     using System.Threading.Tasks;

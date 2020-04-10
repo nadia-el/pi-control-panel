@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { CpuFrequencyService } from 'src/app/shared/services/cpu-frequency.service';
 import { CpuTemperatureService } from 'src/app/shared/services/cpu-temperature.service';
 import { CpuLoadStatusService } from 'src/app/shared/services/cpu-load-status.service';
 import { RamStatusService } from 'src/app/shared/services/ram-status.service';
 import { SwapMemoryStatusService } from 'src/app/shared/services/swap-memory-status.service';
 import { BsModalRef } from 'ngx-bootstrap';
-import { isNil } from 'lodash';
+import { isNil, get } from 'lodash';
 
 @Component({
   templateUrl: './real-time-modal.component.html',
@@ -13,8 +14,12 @@ import { isNil } from 'lodash';
 export class RealTimeModalComponent implements OnInit {
   errorMessage: string;
   public chartData: any[];
+  colorScheme = {
+    domain: ['#C39BD3', '#EC7063', '#E59866', '#5499C7', '#85929E']
+  };
 
   constructor(public bsModalRef: BsModalRef,
+    private cpuFrequencyService: CpuFrequencyService,
     private cpuTemperatureService: CpuTemperatureService,
     private cpuLoadStatusService: CpuLoadStatusService,
     private ramStatusService: RamStatusService,
@@ -29,6 +34,7 @@ export class RealTimeModalComponent implements OnInit {
   }
 
   loadNextPage() {
+    this.cpuFrequencyService.getNextPage();
     this.cpuTemperatureService.getNextPage();
     this.cpuLoadStatusService.getNextPage();
     this.ramStatusService.getNextPage();
@@ -36,6 +42,7 @@ export class RealTimeModalComponent implements OnInit {
   }
 
   loadPreviousPage() {
+    this.cpuFrequencyService.getPreviousPage();
     this.cpuTemperatureService.getPreviousPage();
     this.cpuLoadStatusService.getPreviousPage();
     this.ramStatusService.getPreviousPage();
@@ -44,6 +51,10 @@ export class RealTimeModalComponent implements OnInit {
 
   closeModal() {
     this.bsModalRef.hide();
+  }
+
+  getValue(model: any) {
+    return get(model, 'absoluteValue', model.value);
   }
   
 }
