@@ -922,12 +922,44 @@ HTTP Headers:
 }
 ````
 
+##### Reboot Mutation
+
+Query:
+````graphql
+mutation Reboot {
+  reboot
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
 ##### Shutdown Mutation
 
 Query:
 ````graphql
 mutation Shutdown {
   shutdown
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Update Mutation
+
+Query:
+````graphql
+mutation Update {
+  update
 }
 ````
 
