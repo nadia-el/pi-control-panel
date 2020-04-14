@@ -99,10 +99,22 @@
                 .Split(':')[1].Trim();
             logger.Debug($"Cpu model: '{model}'");
 
+            result = BashCommands.CatBootConfig.Bash();
+            logger.Debug($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
+            lines = result.Split(new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries);
+            var frequencyLine = lines.FirstOrDefault(line => line.Contains("arm_freq="));
+            var frequencyLineRegex = new Regex(@"^(?<commented>#?)\s*arm_freq=(?<frequency>\d+)$");
+            logger.Debug($"Frequency line in config file: '{frequencyLine}'");
+            var frequencyLineGroups = frequencyLineRegex.Match(frequencyLine).Groups;
+            var frequency = !string.IsNullOrEmpty(frequencyLineGroups["commented"].Value) ?
+                1500 : int.Parse(frequencyLineGroups["frequency"].Value);
+
             return new Cpu()
             {
                 Cores = cores,
-                Model = model
+                Model = model,
+                MaximumFrequency = frequency
             };
         }
 
