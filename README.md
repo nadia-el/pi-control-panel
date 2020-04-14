@@ -78,6 +78,7 @@ query RaspberryPi {
     cpu {
       cores
       model
+      maxFrequency
       frequency {
         value
         dateTime
@@ -139,6 +140,7 @@ query RaspberryPi {
     }
     gpu {
       memory
+      frequency
     }
     os {
       name
@@ -983,6 +985,29 @@ Mutation variables:
 ````graphql
 {
   "processId": 4539
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
+##### Overclock Mutation
+
+Query:
+````graphql
+mutation overclock($cpuMaxFrequencyLevel: CpuMaxFrequencyLevel!) {
+  overclock(cpuMaxFrequencyLevel: $cpuMaxFrequencyLevel)
+}
+````
+
+Mutation variables:
+````graphql
+{
+  "cpuMaxFrequencyLevel": "MAXIMUM"
 }
 ````
 
