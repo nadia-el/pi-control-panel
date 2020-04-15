@@ -8,6 +8,9 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay'
+import { MatSpinner } from '@angular/material';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -38,8 +41,6 @@ const routes: Routes = [
   { path: '**', redirectTo: '/home' },
 ];
 
-graphqlUri: () => new URL('/graphql', window.location.href);
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +58,8 @@ graphqlUri: () => new URL('/graphql', window.location.href);
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     NgxChartsModule,
+    MatProgressSpinnerModule,
+    OverlayModule,
     //StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -66,7 +69,8 @@ graphqlUri: () => new URL('/graphql', window.location.href);
     HttpLinkModule
   ],
   entryComponents: [
-    RealTimeModalComponent
+    RealTimeModalComponent,
+    MatSpinner
   ],
   providers: [
     DashboardResolve,

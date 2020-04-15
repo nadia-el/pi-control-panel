@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, finalize } from 'rxjs/operators';
 import { get, isNil, orderBy } from 'lodash';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { IRaspberryPi } from '../interfaces/raspberry-pi';
 import { ErrorHandlingService } from './error-handling.service';
 import { CpuMaxFrequencyLevel } from '../constants/cpu-max-frequency-level';
+import { OverlayRef, Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { MatSpinner } from '@angular/material';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RaspberryPiService {
+  private overlayRef: OverlayRef;
 
-  constructor(private apollo: Apollo,
-    private errorHandlingService: ErrorHandlingService) {
-  }
+  constructor(
+    private apollo: Apollo,
+    private overlay: Overlay,
+    private errorHandlingService: ErrorHandlingService
+    ) {
+      this.overlayRef = this.createOverlay();
+    }
 
   getRaspberryPi(): Observable<IRaspberryPi> {
     return this.apollo.query<{ raspberryPi: IRaspberryPi }>({
@@ -148,6 +156,7 @@ export class RaspberryPiService {
   }
 
   updateRaspberryPi(): Observable<boolean> {
+    this.showSpinner();
     return this.apollo.mutate({
       mutation: gql`
         mutation update {
@@ -155,7 +164,8 @@ export class RaspberryPiService {
         }`
     }).pipe(
       map(result => get(result.data, 'update')),
-      catchError(this.errorHandlingService.handleError)
+      catchError(this.errorHandlingService.handleError),
+      finalize(() => this.stopSpinner())
     );
   }
 
@@ -187,6 +197,27 @@ export class RaspberryPiService {
       map(result => get(result.data, 'overclock')),
       catchError(this.errorHandlingService.handleError)
     );
+  }
+
+  private createOverlay() {
+    return this.overlay.create({
+        hasBackdrop: true,
+        backdropClass: 'dark-backdrop',
+        positionStrategy: this.overlay.position()
+            .global()
+            .centerHorizontally()
+            .centerVertically()
+    })
+  }
+
+  private showSpinner() {
+    this.overlayRef.attach(new ComponentPortal(MatSpinner))
+  }
+ 
+  private stopSpinner() {
+    if(this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
+    }
   }
 
 }
