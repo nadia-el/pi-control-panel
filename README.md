@@ -924,6 +924,26 @@ HTTP Headers:
 }
 ````
 
+##### Refresh Token Query
+
+Query:
+````graphql
+query RefreshToken {
+  refreshToken {
+    username
+    jwt
+    roles
+  }
+}
+````
+
+HTTP Headers:
+````graphql
+{
+  "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+````
+
 ##### Reboot Mutation
 
 Query:
@@ -1084,4 +1104,5 @@ docker-compose up -d
 ````
 * All Disk Status queries and subscription
 * All RAM and Swap Memory Status queries and subscription
+* Refresh Token Query
 * Shutdown Mutation (Returns true, but doesn't actually shut the container down)
