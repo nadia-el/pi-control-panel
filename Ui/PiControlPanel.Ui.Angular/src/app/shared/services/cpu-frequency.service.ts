@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { unionBy } from 'lodash';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -13,17 +13,6 @@ import { ErrorHandlingService } from './error-handling.service';
   providedIn: 'root',
 })
 export class CpuFrequencyService {
-
-  protected cpuFrequencies$: BehaviorSubject<Connection<ICpuFrequency>> = new BehaviorSubject({
-    items: [],
-    totalCount: 0,
-    pageInfo: {
-      endCursor: null,
-      hasNextPage: false,
-      startCursor: null,
-      hasPreviousPage: false
-    }
-  });
   searchQuery: QueryRef<any>;
   afterCursor: string = null;
   beforeCursor: string = null;
@@ -71,7 +60,6 @@ export class CpuFrequencyService {
             this.afterCursor = connection.pageInfo.endCursor;
             return connection;
           }),
-          tap(c => this.cpuFrequencies$.next(c)),
           catchError((err) => this.errorHandlingService.handleError(err))
         );
     } else {
@@ -147,7 +135,6 @@ export class CpuFrequencyService {
             this.afterCursor = connection.pageInfo.endCursor;
             return connection;
           }),
-          tap(c => this.cpuFrequencies$.next(c)),
           catchError((err) => this.errorHandlingService.handleError(err))
         );
     } else {

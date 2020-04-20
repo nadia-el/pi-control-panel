@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { unionBy } from 'lodash';
 import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -13,17 +13,6 @@ import { ErrorHandlingService } from './error-handling.service';
   providedIn: 'root',
 })
 export class SwapMemoryStatusService {
-
-  protected memoryStatuses$: BehaviorSubject<Connection<IMemoryStatus>> = new BehaviorSubject({
-    items: [],
-    totalCount: 0,
-    pageInfo: {
-      endCursor: null,
-      hasNextPage: false,
-      startCursor: null,
-      hasPreviousPage: false
-    }
-  });
   searchQuery: QueryRef<any>;
   afterCursor: string = null;
   beforeCursor: string = null;
@@ -72,7 +61,6 @@ export class SwapMemoryStatusService {
             this.afterCursor = connection.pageInfo.endCursor;
             return connection;
           }),
-          tap(c => this.memoryStatuses$.next(c)),
           catchError((err) => this.errorHandlingService.handleError(err))
         );
     } else {
@@ -149,7 +137,6 @@ export class SwapMemoryStatusService {
             this.afterCursor = connection.pageInfo.endCursor;
             return connection;
           }),
-          tap(c => this.memoryStatuses$.next(c)),
           catchError((err) => this.errorHandlingService.handleError(err))
         );
     } else {
