@@ -138,6 +138,8 @@ namespace PiControlPanel.Api.GraphQL
             services.AddHostedService<DiskWorker>();
             services.AddHostedService<MemoryWorker<RandomAccessMemory, RandomAccessMemoryStatus>>();
             services.AddHostedService<MemoryWorker<SwapMemory, SwapMemoryStatus>>();
+            services.AddHostedService<NetworkWorker>();
+            services.AddHostedService<NetworkInterfaceStatusWorker>();
 
             // Configuring SPA Path
             services.AddSpaStaticFiles(configuration =>
@@ -165,6 +167,7 @@ namespace PiControlPanel.Api.GraphQL
             container.Register<IGpuService, GpuService>();
             container.Register<IDiskService, DiskService>();
             container.Register<IOsService, OsService>();
+            container.Register<INetworkService, NetworkService>();
 
             //Registers all services required for the Application layer
             container.RegisterFrom<AppCompositionRoot>();
