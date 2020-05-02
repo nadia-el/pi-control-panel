@@ -291,7 +291,9 @@ export class DashboardComponent implements OnInit {
     }
     if (!isEmpty(this.networkInterfaceStatusBehaviorSubjectSubscriptions)) {
       for(const networkInterfaceStatusBehaviorSubjectSubscription of this.networkInterfaceStatusBehaviorSubjectSubscriptions) {
-        networkInterfaceStatusBehaviorSubjectSubscription.unsubscribe();
+        if (!isNil(networkInterfaceStatusBehaviorSubjectSubscription)) {
+          networkInterfaceStatusBehaviorSubjectSubscription.unsubscribe();
+        }
       }
     }
   }
