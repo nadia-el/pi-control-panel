@@ -73,13 +73,16 @@ export class RaspberryPiService {
               }
             }
             disk {
-              fileSystem
-              type
-              total
-              status {
-                used
-                available
-                dateTime
+              fileSystems {
+                name
+                total
+                type
+                status {
+                  fileSystemName
+                  available
+                  used
+                  dateTime
+                }
               }
             }
             ram {
