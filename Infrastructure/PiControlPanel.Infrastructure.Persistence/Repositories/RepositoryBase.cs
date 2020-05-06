@@ -83,17 +83,27 @@
             entry.State = EntityState.Modified;
         }
 
+        public async Task CreateManyAsync(TObject[] entities)
+        {
+            logger.Debug("CreateManyAsync");
+            await this.dbSet.AddRangeAsync(entities);
+        }
+
         public void Create(TObject entity)
         {
             logger.Debug("Create");
-            var entry = this.context.Entry(entity);
             this.dbSet.Add(entity);
+        }
+
+        public void RemoveMany(TObject[] entities)
+        {
+            logger.Debug("RemoveMany");
+            this.dbSet.RemoveRange(entities);
         }
 
         public void Remove(TObject entity)
         {
             logger.Debug("Remove");
-            var entry = this.context.Entry(entity);
             this.dbSet.Remove(entity);
         }
     }

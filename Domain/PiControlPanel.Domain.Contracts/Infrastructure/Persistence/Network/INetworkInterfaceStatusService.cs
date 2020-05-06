@@ -13,6 +13,6 @@
 
         Task<PagingOutput<NetworkInterfaceStatus>> GetPageAsync(string networkInterfaceName, PagingInput pagingInput);
 
-        Task AddAsync(NetworkInterfaceStatus model);
+        Task AddManyAsync(IEnumerable<NetworkInterfaceStatus> networkInterfacesStatus);
     }
 }

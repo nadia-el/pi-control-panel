@@ -57,10 +57,7 @@
             var networkInterfaceNames = network.NetworkInterfaces.Select(i => i.Name).ToList();
             var networkInterfacesStatus = await ((OnDemand.INetworkService)this.onDemandService).GetNetworkInterfacesStatusAsync(networkInterfaceNames, samplingInterval);
 
-            foreach (var networkInterfaceStatus in networkInterfacesStatus)
-            {
-                await this.persistenceNetworkInterfaceStatusService.AddAsync(networkInterfaceStatus);
-            }
+            await this.persistenceNetworkInterfaceStatusService.AddManyAsync(networkInterfacesStatus);
             ((OnDemand.INetworkService)this.onDemandService).PublishNetworkInterfacesStatus(networkInterfacesStatus);
         }
     }

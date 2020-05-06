@@ -56,10 +56,7 @@
             var fileSystemNames = disk.FileSystems.Select(i => i.Name).ToList();
             var fileSystemsStatus = await ((OnDemand.IDiskService)this.onDemandService).GetFileSystemsStatusAsync(fileSystemNames);
 
-            foreach (var fileSystemStatus in fileSystemsStatus)
-            {
-                await this.persistenceStatusService.AddAsync(fileSystemStatus);
-            }
+            await this.persistenceStatusService.AddManyAsync(fileSystemsStatus);
             ((OnDemand.IDiskService)this.onDemandService).PublishFileSystemsStatus(fileSystemsStatus);
         }
     }

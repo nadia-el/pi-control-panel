@@ -13,6 +13,6 @@
 
         Task<PagingOutput<FileSystemStatus>> GetPageAsync(string fileSystemName, PagingInput pagingInput);
 
-        Task AddAsync(FileSystemStatus model);
+        Task AddManyAsync(IEnumerable<FileSystemStatus> fileSystemsStatus);
     }
 }

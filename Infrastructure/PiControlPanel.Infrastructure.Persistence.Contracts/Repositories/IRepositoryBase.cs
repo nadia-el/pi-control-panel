@@ -67,10 +67,22 @@
         void Update(T entity);
 
         /// <summary>
+        /// Creates many given entities in the database
+        /// </summary>
+        /// <param name="entities">entities to be created in the database</param>
+        Task CreateManyAsync(T[] entities);
+
+        /// <summary>
         /// Creates the given entity in the database
         /// </summary>
         /// <param name="entity">entity to be created in the database</param>
         void Create(T entity);
+
+        /// <summary>
+        /// Deletes the given entities in the database
+        /// </summary>
+        /// <param name="entities">entities to be deleted in the database</param>
+        void RemoveMany(T[] entities);
 
         /// <summary>
         /// Deletes the given entity in the database

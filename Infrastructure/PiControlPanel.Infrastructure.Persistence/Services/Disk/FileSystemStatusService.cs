@@ -8,6 +8,7 @@
     using PiControlPanel.Infrastructure.Persistence.Contracts.Repositories;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
@@ -37,6 +38,13 @@
         {
             Expression<Func<Entities.Disk.FileSystemStatus, bool>> where = (e => e.FileSystemName == fileSystemName);
             return base.GetPageAsync(pagingInput, where);
+        }
+
+        public async Task AddManyAsync(IEnumerable<FileSystemStatus> fileSystemsStatus)
+        {
+            var entities = mapper.Map<IEnumerable<Entities.Disk.FileSystemStatus>>(fileSystemsStatus);
+            await repository.CreateManyAsync(entities.ToArray());
+            await this.unitOfWork.CommitAsync();
         }
     }
 }
