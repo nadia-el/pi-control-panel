@@ -26,11 +26,11 @@
 
         public async Task<IList<NetworkInterfaceStatus>> GetNetworkInterfacesStatusAsync(IList<string> networkInterfaceNames, int samplingInterval)
         {
-            logger.Trace("Infra layer -> NetworkService -> GetNetworkInterfacesStatusAsync");
+            logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfacesStatusAsync");
 
             var result = BashCommands.CatProcNetDev.Bash();
             var now = DateTime.Now;
-            logger.Debug($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
             var lines = result
                 .Split(
                     new[] { Environment.NewLine },
@@ -62,7 +62,7 @@
 
             result = BashCommands.CatProcNetDev.Bash();
             now = DateTime.Now;
-            logger.Debug($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
             lines = result
                 .Split(
                     new[] { Environment.NewLine },
@@ -94,7 +94,7 @@
 
         public IObservable<NetworkInterfaceStatus> GetNetworkInterfaceStatusObservable(string networkInterfaceName)
         {
-            logger.Trace("Infra layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
+            logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
             return this.networkInterfacesStatusSubject
                 .Select(l => l.FirstOrDefault(i => i.NetworkInterfaceName == networkInterfaceName))
                 .AsObservable();
@@ -102,7 +102,7 @@
 
         public void PublishNetworkInterfacesStatus(IList<NetworkInterfaceStatus> networkInterfacesStatus)
         {
-            logger.Trace("Infra layer -> NetworkService -> PublishNetworkInterfacesStatus");
+            logger.Debug("Infra layer -> NetworkService -> PublishNetworkInterfacesStatus");
             this.networkInterfacesStatusSubject.OnNext(networkInterfacesStatus);
         }
 
@@ -114,7 +114,7 @@
             };
 
             var result = BashCommands.Ifconfig.Bash();
-            logger.Debug($"Result of '{BashCommands.Ifconfig}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Ifconfig}' command: '{result}'");
 
             var regex = new Regex(@"(?<name>\S+):\sflags=\d+<\S*RUNNING\S*>\s+mtu\s\d+\r?\n\s+inet\s(?<ip>\S+)\s+netmask\s(?<mask>\S+)\s+broadcast\s(?<gateway>\S+)");
             var matches = regex.Matches(result);

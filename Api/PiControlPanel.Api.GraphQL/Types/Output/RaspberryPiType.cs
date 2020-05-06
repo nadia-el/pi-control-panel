@@ -18,7 +18,7 @@
                 .Name("Chipset")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Chipset field");
+                    logger.Debug("Chipset field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -29,7 +29,7 @@
                 .Name("Cpu")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Cpu field");
+                    logger.Debug("Cpu field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -40,7 +40,7 @@
                 .Name("Ram")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Ram field");
+                    logger.Debug("Ram field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -51,7 +51,7 @@
                 .Name("swapMemory")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Swap Memory field");
+                    logger.Debug("Swap Memory field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -62,7 +62,7 @@
                 .Name("Gpu")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Gpu field");
+                    logger.Debug("Gpu field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -73,7 +73,7 @@
                 .Name("Disk")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Disk field");
+                    logger.Debug("Disk field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -84,7 +84,7 @@
                 .Name("Os")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Os field");
+                    logger.Debug("Os field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -95,7 +95,7 @@
                 .Name("Network")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Network field");
+                    logger.Debug("Network field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

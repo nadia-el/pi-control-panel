@@ -19,13 +19,13 @@
         protected override Gpu GetModel()
         {
             var result = BashCommands.GetMemGpu.Bash();
-            logger.Debug($"Result of '{BashCommands.GetMemGpu}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.GetMemGpu}' command: '{result}'");
             string gpu = result.Replace("gpu=", string.Empty).Replace("M", string.Empty);
-            logger.Debug($"Gpu memory: '{gpu}'MB");
+            logger.Trace($"Gpu memory: '{gpu}' MB");
 
             var frequency = 500;
             result = BashCommands.CatBootConfig.Bash();
-            logger.Debug($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
             var lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var frequencyLine = lines.FirstOrDefault(line => line.Contains("gpu_freq="));
@@ -33,7 +33,7 @@
 
             if (!string.IsNullOrEmpty(frequencyLine))
             {
-                logger.Debug($"Frequency line in config file: '{frequencyLine}'");
+                logger.Trace($"Frequency line in config file: '{frequencyLine}'");
                 var frequencyLineGroups = frequencyLineRegex.Match(frequencyLine).Groups;
                 frequency = !string.IsNullOrEmpty(frequencyLineGroups["commented"].Value) ?
                     500 : int.Parse(frequencyLineGroups["frequency"].Value);

@@ -22,27 +22,27 @@
 
         public Task<bool> RebootAsync()
         {
-            logger.Trace("Infra layer -> ControlPanelService -> RebootAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> RebootAsync");
             var result = BashCommands.SudoReboot.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoReboot}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoReboot}' command: '{result}'");
             return Task.FromResult(true);
         }
 
         public Task<bool> ShutdownAsync()
         {
-            logger.Trace("Infra layer -> ControlPanelService -> ShutdownAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> ShutdownAsync");
             var result = BashCommands.SudoShutdown.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoShutdown}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoShutdown}' command: '{result}'");
             return Task.FromResult(true);
         }
 
         public Task<bool> UpdateAsync()
         {
-            logger.Trace("Infra layer -> ControlPanelService -> UpdateAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> UpdateAsync");
             var result = BashCommands.SudoAptgetUpdade.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoAptgetUpdade}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoAptgetUpdade}' command: '{result}'");
             result = BashCommands.SudoAptgetUpgrade.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoAptgetUpgrade}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoAptgetUpgrade}' command: '{result}'");
 
             string lastLine = result
                 .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
@@ -56,16 +56,16 @@
             }
             
             result = BashCommands.SudoAptgetAutoremove.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoAptgetAutoremove}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoAptgetAutoremove}' command: '{result}'");
             result = BashCommands.SudoAptgetAutoclean.Bash();
-            logger.Debug($"Result of '{BashCommands.SudoAptgetAutoclean}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.SudoAptgetAutoclean}' command: '{result}'");
 
             return this.RebootAsync();
         }
 
         public Task<bool> KillAsync(BusinessContext context, int processId)
         {
-            logger.Trace("Infra layer -> ControlPanelService -> KillAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> KillAsync");
 
             var sudoKillCommand = string.Format(BashCommands.SudoKill, processId);
             var result = sudoKillCommand.Bash();
@@ -76,13 +76,13 @@
                 return Task.FromResult(false);
             }
 
-            logger.Debug($"Result of '{sudoKillCommand}' command is empty, success");
+            logger.Info($"Result of '{sudoKillCommand}' command is empty, success");
             return Task.FromResult(true);
         }
 
         public Task<string> GetProcessOwnerUsernameAsync(int processId)
         {
-            logger.Trace("Infra layer -> ControlPanelService -> GetProcessOwnerUsernameAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> GetProcessOwnerUsernameAsync");
 
             var psUserCommand = string.Format(BashCommands.PsUser, processId);
             var result = psUserCommand.Bash();
@@ -93,21 +93,21 @@
                 return Task.FromResult(string.Empty);
             }
 
-            logger.Debug($"Result of '{psUserCommand}' command: '{result}'");
+            logger.Trace($"Result of '{psUserCommand}' command: '{result}'");
             return Task.FromResult(result);
         }
 
         public Task<bool> OverclockAsync(CpuMaxFrequencyLevel cpuMaxFrequencyLevel)
         {
-            logger.Trace("Infra layer -> ControlPanelService -> OverclockAsync");
+            logger.Debug("Infra layer -> ControlPanelService -> OverclockAsync");
 
             var result = BashCommands.CatBootConfig.Bash();
-            logger.Debug($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
             var lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var frequencyLine = lines.FirstOrDefault(line => line.Contains("arm_freq="));
             var frequencyLineRegex = new Regex(@"^(?<commented>#?)\s*arm_freq=(?<frequency>\d+)$");
-            logger.Debug($"Frequency line in config file: '{frequencyLine}'");
+            logger.Trace($"Frequency line in config file: '{frequencyLine}'");
             var frequencyLineGroups = frequencyLineRegex.Match(frequencyLine).Groups;
             var currentFrequency = !string.IsNullOrEmpty(frequencyLineGroups["commented"].Value) ?
                 1500 : int.Parse(frequencyLineGroups["frequency"].Value);

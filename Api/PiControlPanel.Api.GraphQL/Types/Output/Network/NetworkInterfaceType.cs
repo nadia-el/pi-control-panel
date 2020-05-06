@@ -19,7 +19,7 @@
                 .Name("Status")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Network interface status field");
+                    logger.Debug("Network interface status field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -31,7 +31,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Network Interface statuses connection");
+                    logger.Debug("Network Interface statuses connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

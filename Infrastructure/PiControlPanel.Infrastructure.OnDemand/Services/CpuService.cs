@@ -32,10 +32,10 @@
 
         public Task<CpuLoadStatus> GetLoadStatusAsync(int cores)
         {
-            logger.Trace("Infra layer -> CpuService -> GetLoadStatusAsync");
+            logger.Debug("Infra layer -> CpuService -> GetLoadStatusAsync");
 
             var result = BashCommands.Top.Bash();
-            logger.Debug($"Result of '{BashCommands.Top}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Top}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -66,25 +66,25 @@
 
         public IObservable<CpuLoadStatus> GetLoadStatusObservable()
         {
-            logger.Trace("Infra layer -> CpuService -> GetLoadStatusObservable");
+            logger.Debug("Infra layer -> CpuService -> GetLoadStatusObservable");
             return this.cpuLoadStatusSubject.AsObservable();
         }
 
         public void PublishLoadStatus(CpuLoadStatus loadStatus)
         {
-            logger.Trace("Infra layer -> CpuService -> PublishLoadStatus");
+            logger.Debug("Infra layer -> CpuService -> PublishLoadStatus");
             this.cpuLoadStatusSubject.OnNext(loadStatus);
         }
 
         public Task<CpuTemperature> GetTemperatureAsync()
         {
-            logger.Trace("Infra layer -> CpuService -> GetTemperatureAsync");
+            logger.Debug("Infra layer -> CpuService -> GetTemperatureAsync");
 
             var result = BashCommands.MeasureTemp.Bash();
-            logger.Debug($"Result of '{BashCommands.MeasureTemp}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.MeasureTemp}' command: '{result}'");
 
             var temperatureResult = result.Substring(result.IndexOf('=') + 1, result.IndexOf("'") - (result.IndexOf('=') + 1));
-            logger.Debug($"Temperature substring: '{temperatureResult}'");
+            logger.Trace($"Temperature substring: '{temperatureResult}'");
 
             if (double.TryParse(temperatureResult, out var temperature))
             {
@@ -100,22 +100,22 @@
 
         public IObservable<CpuTemperature> GetTemperatureObservable()
         {
-            logger.Trace("Infra layer -> CpuService -> GetTemperatureObservable");
+            logger.Debug("Infra layer -> CpuService -> GetTemperatureObservable");
             return this.cpuTemperatureSubject.AsObservable();
         }
 
         public void PublishTemperature(CpuTemperature temperature)
         {
-            logger.Trace("Infra layer -> CpuService -> PublishTemperature");
+            logger.Debug("Infra layer -> CpuService -> PublishTemperature");
             this.cpuTemperatureSubject.OnNext(temperature);
         }
 
         public async Task<CpuFrequency> GetFrequencyAsync(int samplingInterval)
         {
-            logger.Trace("Infra layer -> CpuService -> GetFrequencyAsync");
+            logger.Debug("Infra layer -> CpuService -> GetFrequencyAsync");
 
             var result = BashCommands.CatCpuFreqStats.Bash();
-            logger.Debug($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -136,7 +136,7 @@
             await Task.Delay(samplingInterval);
 
             result = BashCommands.CatCpuFreqStats.Bash();
-            logger.Debug($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatCpuFreqStats}' command: '{result}'");
             lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -174,36 +174,36 @@
 
         public IObservable<CpuFrequency> GetFrequencyObservable()
         {
-            logger.Trace("Infra layer -> CpuService -> GetFrequencyObservable");
+            logger.Debug("Infra layer -> CpuService -> GetFrequencyObservable");
             return this.cpuFrequencySubject.AsObservable();
         }
 
         public void PublishFrequency(CpuFrequency frequency)
         {
-            logger.Trace("Infra layer -> CpuService -> PublishFrequency");
+            logger.Debug("Infra layer -> CpuService -> PublishFrequency");
             this.cpuFrequencySubject.OnNext(frequency);
         }
 
         protected override Cpu GetModel()
         {
             var result = BashCommands.CatProcCpuInfo.Bash();
-            logger.Debug($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatProcCpuInfo}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
             var cores = lines.Count(line => line.StartsWith("processor"));
-            logger.Debug($"Number of cores: '{cores}'");
+            logger.Trace($"Number of cores: '{cores}'");
             var model = lines.Last(line => line.StartsWith("model name"))
                 .Split(':')[1].Trim();
-            logger.Debug($"Cpu model: '{model}'");
+            logger.Trace($"Cpu model: '{model}'");
 
             result = BashCommands.CatBootConfig.Bash();
-            logger.Debug($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.CatBootConfig}' command: '{result}'");
             lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var frequencyLine = lines.FirstOrDefault(line => line.Contains("arm_freq="));
             var frequencyLineRegex = new Regex(@"^(?<commented>#?)\s*arm_freq=(?<frequency>\d+)$");
-            logger.Debug($"Frequency line in config file: '{frequencyLine}'");
+            logger.Trace($"Frequency line in config file: '{frequencyLine}'");
             var frequencyLineGroups = frequencyLineRegex.Match(frequencyLine).Groups;
             var frequency = !string.IsNullOrEmpty(frequencyLineGroups["commented"].Value) ?
                 1500 : int.Parse(frequencyLineGroups["frequency"].Value);

@@ -18,7 +18,7 @@
                 .Name("Status")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Os status field");
+                    logger.Debug("Os status field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -30,7 +30,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Os statuses connection");
+                    logger.Debug("Os statuses connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

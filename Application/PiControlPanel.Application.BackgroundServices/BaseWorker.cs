@@ -36,7 +36,7 @@
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Trace($"BaseWorker<{typeof(T).Name}> running at: {DateTimeOffset.Now}");
+                    logger.Debug($"BaseWorker<{typeof(T).Name}> running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(stoppingToken);
                     await Task.Delay(workerInterval, stoppingToken);
                 }
@@ -58,7 +58,7 @@
 
         protected virtual Task SaveRecurring(CancellationToken stoppingToken)
         {
-            logger.Trace($"BaseWorker<{typeof(T).Name}> has no recurring task, returning...");
+            logger.Debug($"BaseWorker<{typeof(T).Name}> has no recurring task, returning...");
             return Task.CompletedTask;
         }
     }

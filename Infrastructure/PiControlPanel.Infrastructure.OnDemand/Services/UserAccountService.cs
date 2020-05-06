@@ -19,13 +19,13 @@
 
         public Task<bool> ValidateAsync(UserAccount userAccount)
         {
-            logger.Trace("Infra layer -> UserAccountService -> ValidateAsync");
+            logger.Debug("Infra layer -> UserAccountService -> ValidateAsync");
 
             var catEtcShadowCommand = string.Format(
                 BashCommands.SudoCatEtcShadow,
                 userAccount.Username);
             var loginInfo = catEtcShadowCommand.Bash();
-            logger.Debug($"Result of '{catEtcShadowCommand}' command: '{loginInfo}'");
+            logger.Trace($"Result of '{catEtcShadowCommand}' command: '{loginInfo}'");
 
             if (string.IsNullOrWhiteSpace(loginInfo))
             {
@@ -47,7 +47,7 @@
                 passwordInfo[2],
                 userAccount.Password);
             var hashedPassword = openSslPasswdCommand.Bash();
-            logger.Debug($"Result of '{openSslPasswdCommand}' command: '{hashedPassword}'");
+            logger.Trace($"Result of '{openSslPasswdCommand}' command: '{hashedPassword}'");
             if (!string.Equals(parsedLoginInfo[1], hashedPassword, StringComparison.InvariantCultureIgnoreCase))
             {
                 logger.Error($"Hashed password {hashedPassword} different from existing hashed password {parsedLoginInfo[1]}");
@@ -59,13 +59,13 @@
 
         public Task<bool> IsSuperUserAsync(UserAccount userAccount)
         {
-            logger.Trace("Infra layer -> UserAccountService -> IsSuperUserAsync");
+            logger.Debug("Infra layer -> UserAccountService -> IsSuperUserAsync");
 
             var groupsCommand = string.Format(
                 BashCommands.Groups,
                 userAccount.Username);
             var result = groupsCommand.Bash();
-            logger.Debug($"Result of '{groupsCommand}' command: '{result}'");
+            logger.Trace($"Result of '{groupsCommand}' command: '{result}'");
             return Task.FromResult(result.Contains(" sudo ") || result.EndsWith(" sudo"));
         }
     }

@@ -25,10 +25,10 @@
 
         public Task<IList<FileSystemStatus>> GetFileSystemsStatusAsync(IList<string> fileSystemNames)
         {
-            logger.Trace("Infra layer -> DiskService -> GetFileSystemsStatusAsync");
+            logger.Debug("Infra layer -> DiskService -> GetFileSystemsStatusAsync");
 
             var result = BashCommands.Df.Bash();
-            logger.Debug($"Result of '{BashCommands.Df}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Df}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -52,7 +52,7 @@
 
         public IObservable<FileSystemStatus> GetFileSystemStatusObservable(string fileSystemName)
         {
-            logger.Trace("Infra layer -> DiskService -> GetFileSystemStatusObservable");
+            logger.Debug("Infra layer -> DiskService -> GetFileSystemStatusObservable");
             return this.fileSystemsStatusSubject
                 .Select(l => l.FirstOrDefault(i => i.FileSystemName == fileSystemName))
                 .AsObservable();
@@ -60,7 +60,7 @@
 
         public void PublishFileSystemsStatus(IList<FileSystemStatus> fileSystemsStatus)
         {
-            logger.Trace("Infra layer -> DiskService -> PublishFileSystemsStatus");
+            logger.Debug("Infra layer -> DiskService -> PublishFileSystemsStatus");
             this.fileSystemsStatusSubject.OnNext(fileSystemsStatus);
         }
 
@@ -72,7 +72,7 @@
             };
 
             var result = BashCommands.Df.Bash();
-            logger.Debug($"Result of '{BashCommands.Df}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Df}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
             var fileSystemsInfo = lines.Where(l => l.StartsWith("/dev/") && !l.EndsWith("/boot"));

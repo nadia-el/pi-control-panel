@@ -26,25 +26,25 @@
 
         public async Task<NetworkInterfaceStatus> GetLastNetworkInterfaceStatusAsync(string networkInterfaceName)
         {
-            logger.Trace("Application layer -> NetworkService -> GetLastNetworkInterfaceStatusAsync");
+            logger.Debug("Application layer -> NetworkService -> GetLastNetworkInterfaceStatusAsync");
             return await this.persistenceNetworkInterfaceStatusService.GetLastAsync(networkInterfaceName);
         }
 
         public async Task<PagingOutput<NetworkInterfaceStatus>> GetNetworkInterfaceStatusesAsync(string networkInterfaceName, PagingInput pagingInput)
         {
-            logger.Trace("Application layer -> NetworkService -> GetNetworkInterfaceStatusesAsync");
+            logger.Debug("Application layer -> NetworkService -> GetNetworkInterfaceStatusesAsync");
             return await this.persistenceNetworkInterfaceStatusService.GetPageAsync(networkInterfaceName, pagingInput);
         }
 
         public IObservable<NetworkInterfaceStatus> GetNetworkInterfaceStatusObservable(string networkInterfaceName)
         {
-            logger.Trace("Application layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
+            logger.Debug("Application layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
             return ((OnDemand.INetworkService)this.onDemandService).GetNetworkInterfaceStatusObservable(networkInterfaceName);
         }
 
         public async Task SaveNetworkInterfacesStatusAsync(int samplingInterval)
         {
-            logger.Trace("Application layer -> NetworkService -> SaveNetworkInterfacesStatusAsync");
+            logger.Debug("Application layer -> NetworkService -> SaveNetworkInterfacesStatusAsync");
 
             var network = await this.persistenceService.GetAsync();
             if (network == null)

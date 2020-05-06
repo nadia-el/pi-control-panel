@@ -26,27 +26,27 @@
 
         public Task<U> GetStatusAsync()
         {
-            logger.Trace("Infra layer -> MemoryService -> GetStatusAsync");
+            logger.Debug("Infra layer -> MemoryService -> GetStatusAsync");
             var memoryStatus = this.GetMemoryStatus();
             return Task.FromResult(memoryStatus);
         }
 
         public IObservable<U> GetStatusObservable()
         {
-            logger.Trace("Infra layer -> MemoryService -> GetStatusObservable");
+            logger.Debug("Infra layer -> MemoryService -> GetStatusObservable");
             return this.memoryStatusSubject.AsObservable();
         }
 
         public void PublishStatus(U status)
         {
-            logger.Trace("Infra layer -> MemoryService -> PublishStatus");
+            logger.Debug("Infra layer -> MemoryService -> PublishStatus");
             this.memoryStatusSubject.OnNext(status);
         }
 
         protected override T GetModel()
         {
             var result = BashCommands.Free.Bash();
-            logger.Debug($"Result of '{BashCommands.Free}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Free}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -55,7 +55,7 @@
             var regex = new Regex(@"^\w*:\s*(?<total>\d*)\s*(?<used>\d*)\s*(?<free>\d*)\s*(?<shared>\d*)\s*(?<buffcache>\d*)\s*.*$");
             var groups = regex.Match(memoryInfo).Groups;
             var total = int.Parse(groups["total"].Value);
-            logger.Debug($"Total memory: '{total}'KB");
+            logger.Trace($"Total memory: '{total}'KB");
 
             return new T()
             {
@@ -66,7 +66,7 @@
         private U GetMemoryStatus()
         {
             var result = BashCommands.Free.Bash();
-            logger.Debug($"Result of '{BashCommands.Free}' command: '{result}'");
+            logger.Trace($"Result of '{BashCommands.Free}' command: '{result}'");
             string[] lines = result.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
@@ -79,7 +79,7 @@
             var groups = regex.Match(memoryInfo).Groups;
             var used = int.Parse(groups["used"].Value);
             var free = int.Parse(groups["free"].Value);
-            logger.Debug($"Used memory: '{used}'KB, Free memory: '{free}'KB");
+            logger.Trace($"Used memory: '{used}'KB, Free memory: '{free}'KB");
 
             var memoryStatus = new U()
             {

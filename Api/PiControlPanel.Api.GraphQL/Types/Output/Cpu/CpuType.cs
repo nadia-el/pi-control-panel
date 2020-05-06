@@ -18,7 +18,7 @@
                 .Name("LoadStatus")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("LoadStatus field");
+                    logger.Debug("LoadStatus field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -30,7 +30,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("LoadStatuses connection");
+                    logger.Debug("LoadStatuses connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -44,7 +44,7 @@
                 .Name("Temperature")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Temperature field");
+                    logger.Debug("Temperature field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -56,7 +56,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Temperatures connection");
+                    logger.Debug("Temperatures connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -70,7 +70,7 @@
                 .Name("Frequency")
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Frequency field");
+                    logger.Debug("Frequency field");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
@@ -82,7 +82,7 @@
                 .Bidirectional()
                 .ResolveAsync(async context =>
                 {
-                    logger.Trace("Frequencies connection");
+                    logger.Debug("Frequencies connection");
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 

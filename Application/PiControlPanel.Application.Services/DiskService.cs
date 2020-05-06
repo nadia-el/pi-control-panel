@@ -26,25 +26,25 @@
 
         public async Task<FileSystemStatus> GetLastFileSystemStatusAsync(string fileSystemName)
         {
-            logger.Trace("Application layer -> DiskService -> GetLastFileSystemStatusAsync");
+            logger.Debug("Application layer -> DiskService -> GetLastFileSystemStatusAsync");
             return await this.persistenceStatusService.GetLastAsync(fileSystemName);
         }
 
         public async Task<PagingOutput<FileSystemStatus>> GetFileSystemStatusesAsync(string fileSystemName, PagingInput pagingInput)
         {
-            logger.Trace("Application layer -> DiskService -> GetFileSystemStatusesAsync");
+            logger.Debug("Application layer -> DiskService -> GetFileSystemStatusesAsync");
             return await this.persistenceStatusService.GetPageAsync(fileSystemName, pagingInput);
         }
 
         public IObservable<FileSystemStatus> GetFileSystemStatusObservable(string fileSystemName)
         {
-            logger.Trace("Application layer -> DiskService -> GetFileSystemStatusObservable");
+            logger.Debug("Application layer -> DiskService -> GetFileSystemStatusObservable");
             return ((OnDemand.IDiskService)this.onDemandService).GetFileSystemStatusObservable(fileSystemName);
         }
 
         public async Task SaveFileSystemStatusAsync()
         {
-            logger.Trace("Application layer -> DiskService -> SaveFileSystemStatusAsync");
+            logger.Debug("Application layer -> DiskService -> SaveFileSystemStatusAsync");
 
             var disk = await this.persistenceService.GetAsync();
             if (disk == null)

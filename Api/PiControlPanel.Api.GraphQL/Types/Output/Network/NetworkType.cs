@@ -19,7 +19,7 @@
                 ),
                 resolve: context =>
                 {
-                    logger.Trace("NetworkInterface field");
+                    logger.Debug("NetworkInterface field");
                     var name = context.GetArgument<string>("name");
                     return context.Source.NetworkInterfaces.SingleOrDefault(i => i.Name == name);
                 });

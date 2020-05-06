@@ -24,13 +24,13 @@
 
         public Task<T> GetAsync()
         {
-            logger.Trace($"Application layer -> BaseService<{typeof(T).Name}> -> GetAsync");
+            logger.Debug($"Application layer -> BaseService<{typeof(T).Name}> -> GetAsync");
             return persistenceService.GetAsync();
         }
 
         public async Task SaveAsync()
         {
-            logger.Trace($"Application layer -> BaseService<{typeof(T).Name}> -> SaveAsync");
+            logger.Debug($"Application layer -> BaseService<{typeof(T).Name}> -> SaveAsync");
             var onDemandInfo = await this.onDemandService.GetAsync();
 
             var persistedInfo = await this.GetPersistedInfoAsync(onDemandInfo);

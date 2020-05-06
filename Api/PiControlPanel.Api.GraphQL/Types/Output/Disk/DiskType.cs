@@ -19,7 +19,7 @@
                 ),
                 resolve: context =>
                 {
-                    logger.Trace("FileSystem field");
+                    logger.Debug("FileSystem field");
                     var name = context.GetArgument<string>("name");
                     return context.Source.FileSystems.SingleOrDefault(i => i.Name == name);
                 });

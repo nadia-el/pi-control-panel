@@ -35,7 +35,7 @@
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Trace($"NetworkInterfaceStatusWorker running at: {DateTimeOffset.Now}");
+                    logger.Debug($"NetworkInterfaceStatusWorker running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(workerInterval);
                 }
             }

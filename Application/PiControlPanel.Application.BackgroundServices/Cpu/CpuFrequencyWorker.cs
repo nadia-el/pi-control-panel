@@ -35,7 +35,7 @@
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Trace($"CpuFrequencyWorker running at: {DateTimeOffset.Now}");
+                    logger.Debug($"CpuFrequencyWorker running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(workerInterval);
                 }
             }

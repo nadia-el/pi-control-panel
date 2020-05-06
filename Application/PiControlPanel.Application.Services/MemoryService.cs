@@ -27,25 +27,25 @@
 
         public async Task<U> GetLastStatusAsync()
         {
-            logger.Trace("Application layer -> MemoryService -> GetLastStatusAsync");
+            logger.Debug("Application layer -> MemoryService -> GetLastStatusAsync");
             return await this.persistenceStatusService.GetLastAsync();
         }
 
         public async Task<PagingOutput<U>> GetStatusesAsync(PagingInput pagingInput)
         {
-            logger.Trace("Application layer -> MemoryService -> GetStatusesAsync");
+            logger.Debug("Application layer -> MemoryService -> GetStatusesAsync");
             return await this.persistenceStatusService.GetPageAsync(pagingInput);
         }
 
         public IObservable<U> GetStatusObservable()
         {
-            logger.Trace("Application layer -> MemoryService -> GetStatusObservable");
+            logger.Debug("Application layer -> MemoryService -> GetStatusObservable");
             return ((OnDemand.IMemoryService<T, U>)this.onDemandService).GetStatusObservable();
         }
 
         public async Task SaveStatusAsync()
         {
-            logger.Trace("Application layer -> MemoryService -> SaveStatusAsync");
+            logger.Debug("Application layer -> MemoryService -> SaveStatusAsync");
             var status = await ((OnDemand.IMemoryService<T, U>)this.onDemandService).GetStatusAsync();
 
             await this.persistenceStatusService.AddAsync(status);
