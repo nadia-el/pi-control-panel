@@ -18,7 +18,7 @@
 
         public Task BeforeHandleAsync(MessageHandlingContext context)
         {
-            if (MessageType.GQL_CONNECTION_INIT.Equals(context?.Message?.Type))
+            if (MessageType.GQL_CONNECTION_INIT.Equals(context.Message?.Type))
             {
                 var payload = context.Message?.Payload;
                 if (payload != null)
