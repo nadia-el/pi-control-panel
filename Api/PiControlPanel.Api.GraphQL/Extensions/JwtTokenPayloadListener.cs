@@ -18,22 +18,27 @@
 
         public Task BeforeHandleAsync(MessageHandlingContext context)
         {
-            if (context.Message.Type == MessageType.GQL_CONNECTION_INIT)
+            if (MessageType.GQL_CONNECTION_INIT.Equals(context?.Message?.Type))
             {
-                var payload = context.Message.Payload;
-                var token = ((JObject)payload)["Authorization"].ToString();
-
-                if (!string.IsNullOrEmpty(token))
+                var payload = context.Message?.Payload;
+                if (payload != null)
                 {
-                    token = token.Replace("Bearer ", string.Empty);
-                    var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-                    this.httpContextAccessor.HttpContext.User =
-                        new ClaimsPrincipal(new ClaimsIdentity(jwtSecurityToken.Claims));
+                    var authorizationTokenObject = ((JObject)payload)["Authorization"];
+                    
+                    if (authorizationTokenObject != null)
+                    {
+                        var token = authorizationTokenObject.ToString().Replace("Bearer ", string.Empty);
+                        var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+                        this.httpContextAccessor.HttpContext.User =
+                            new ClaimsPrincipal(new ClaimsIdentity(jwtSecurityToken.Claims));
+                    }
                 }
             }
+
             var user = this.httpContextAccessor.HttpContext.User;
             context.Properties["GraphQLUserContext"] = new GraphQLUserContext() { User = user };
-            return Task.FromResult(true);
+
+            return Task.CompletedTask;
         }
 
         public Task HandleAsync(MessageHandlingContext context)
