@@ -170,7 +170,7 @@ namespace PiControlPanel.Api.GraphQL
             container.Register<INetworkService, NetworkService>();
 
             //Registers all services required for the Application layer
-            container.RegisterFrom<AppCompositionRoot>();
+            container.RegisterFrom<ApplicationCompositionRoot>();
 
             container.RegisterSingleton<IConfiguration>(factory => configuration);
             container.RegisterSingleton<ILogger>(factory => logger);

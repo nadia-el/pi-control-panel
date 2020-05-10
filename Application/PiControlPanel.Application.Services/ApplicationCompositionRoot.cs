@@ -20,7 +20,7 @@
     ///     Implementation of LightInject's ICompositionRoot responsible for
     ///     registering all services required for the Application layer
     /// </summary>
-    public class AppCompositionRoot : ICompositionRoot
+    public class ApplicationCompositionRoot : ICompositionRoot
     {
         /// <summary>
         ///     Called after LightInject ServiceContainer RegisterFor method is called
