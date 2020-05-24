@@ -19,11 +19,7 @@ dpkg-deb --build pi-control-panel_1.4_armhf
 ## Running
 
 ### Running on Raspberry Pi from the Debian package
-1. Download or copy the package
-````bash
-git clone https://github.com/rembertmagri/pi-control-panel-package.git
-cd pi-control-panel-package/ 
-````
+1. Download the [latest release](https://github.com/rembertmagri/pi-control-panel/releases/latest)
 2. Install the package
 ````bash
 sudo apt install ./pi-control-panel_1.4_armhf.deb
