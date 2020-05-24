@@ -1,5 +1,17 @@
 # Pi Control Panel
 
+## Installing on Raspberry Pi from the Debian package
+1. Download the [latest release](https://github.com/rembertmagri/pi-control-panel/releases/latest)
+2. Install the package
+````bash
+sudo apt install ./pi-control-panel_1.4_armhf.deb
+````
+3. Access http://<<ip_of_raspberry_pi>>:8080/
+4. To uninstall:
+````bash
+sudo apt remove pi-control-panel
+````
+
 ## Creating the Debian Package
 
 1. Publish the PiControlPanel.Api.GraphQL project targeting ARM; this will publish the files into pi-control-panel/package/pi-control-panel_VERSION.SUBVERSION_armhf/opt/picontrolpanel
@@ -17,18 +29,6 @@ dpkg-deb --build pi-control-panel_1.4_armhf
 ````
 
 ## Running
-
-### Running on Raspberry Pi from the Debian package
-1. Download the [latest release](https://github.com/rembertmagri/pi-control-panel/releases/latest)
-2. Install the package
-````bash
-sudo apt install ./pi-control-panel_1.4_armhf.deb
-````
-3. Access http://<<ip_of_raspberry_pi>>:8080/
-4. To uninstall:
-````bash
-sudo apt remove pi-control-panel
-````
 
 ### Running on Raspberry Pi from the source code
 1. Create the user to run the app and the log directory
