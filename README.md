@@ -1,6 +1,6 @@
 # Pi Control Panel
 
-A web control panel for Raspberry Pi 4 implemented on .NET Core and Angular using GraphQL as API.
+Web control panel for Raspberry Pi 4 implemented on .NET Core and Angular using GraphQL as API. Allows easy overclocking, killing processes, updating Raspbian, rebooting and shutting down the Pi. Provides real-time access to system information such as temperature, memory and disk usage, CPU load and network status.
 
 Login | Dashboard | Real-Time Chart | Real-Time Chart (overclocking results)
 ------------ | ------------- | ------------- | -------------
