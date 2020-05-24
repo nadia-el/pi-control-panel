@@ -1,6 +1,6 @@
 # Pi Control Panel
 
-A web control panel for Raspberry Pi implemented on .NET Core and Angular using GraphQL as API.
+A web control panel for Raspberry Pi 4 implemented on .NET Core and Angular using GraphQL as API.
 
 Login | Dashboard | Real-Time Chart | Real-Time Chart (overclocking results)
 ------------ | ------------- | ------------- | -------------
