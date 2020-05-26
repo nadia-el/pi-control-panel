@@ -28,11 +28,23 @@
         {
             try
             {
+                bool.TryParse(configuration[$"Workers:CpuFrequency:Enabled"], out var enabled);
+                if (!enabled)
+                {
+                    logger.Warn($"CpuFrequencyWorker is not enabled, returning...");
+                    return;
+                }
+
                 logger.Info($"CpuFrequencyWorker started");
 
-                var workerInterval = int.Parse(configuration["Worker:Interval"]);
-                logger.Info($"CpuFrequencyWorker configured to run at interval of {workerInterval} ms");
+                var workerInterval = int.Parse(configuration["Workers:CpuFrequency:Interval"]);
+                if (workerInterval <= 0)
+                {
+                    logger.Debug($"CpuFrequencyWorker has no interval set for recurring task, returning...");
+                    return;
+                }
 
+                logger.Info($"CpuFrequencyWorker configured to run at interval of {workerInterval} ms");
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     logger.Debug($"CpuFrequencyWorker running at: {DateTimeOffset.Now}");

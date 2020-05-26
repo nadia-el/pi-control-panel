@@ -28,11 +28,90 @@ if [ ! -d '/var/db/picontrolpanel' ]; then
 	chown picontrolpanel /var/db/picontrolpanel
 fi
 
+# Enabling supported workers
+cat /proc/cpuinfo &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'ChipsetWorker \033[0;32menabled\033[0m'
+else
+	echo -e 'ChipsetWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Chipset": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+top -bc -n 1 &> /dev/null && vcgencmd measure_temp &> /dev/null && cat /proc/cpuinfo &> /dev/null && cat /boot/config.txt &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'CpuWorker \033[0;32menabled\033[0m'
+	cat /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state &> /dev/null
+	if [ $? -eq 0 ]; then
+		echo -e 'CpuFrequencyWorker \033[0;32menabled\033[0m'
+	else
+		echo -e 'CpuFrequencyWorker \033[0;31mdisabled\033[0m'
+		sed --in-place '/    "CpuFrequency": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+	fi
+else
+	echo -e 'CpuWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Cpu": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+	echo -e 'CpuFrequencyWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "CpuFrequency": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+vcgencmd get_mem gpu &> /dev/null && cat /boot/config.txt &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'GpuWorker \033[0;32menabled\033[0m'
+else
+	echo -e 'GpuWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Gpu": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+hostnamectl &> /dev/null && uptime -p &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'OsWorker \033[0;32menabled\033[0m'
+else
+	echo -e 'OsWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Os": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+ifconfig &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'NetworkWorker \033[0;32menabled\033[0m'
+	cat /proc/net/dev &> /dev/null
+	if [ $? -eq 0 ]; then
+		echo -e 'NetworkInterfaceStatusWorker \033[0;32menabled\033[0m'
+	else
+		echo -e 'NetworkInterfaceStatusWorker \033[0;31mdisabled\033[0m'
+		sed --in-place '/    "NetworkInterfaceStatus": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+	fi
+else
+	echo -e 'NetworkWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Network": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+	echo -e 'NetworkInterfaceStatusWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "NetworkInterfaceStatus": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+df -T &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'DiskWorker \033[0;32menabled\033[0m'
+else
+	echo -e 'DiskWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "Disk": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+
+free --mega &> /dev/null
+if [ $? -eq 0 ]; then
+	echo -e 'RandomAccessMemoryWorker \033[0;32menabled\033[0m'
+	echo -e 'SwapMemoryWorker \033[0;32menabled\033[0m'
+else
+	echo -e 'RandomAccessMemoryWorker \033[0;31mdisabled\033[0m'
+	echo -e 'SwapMemoryWorker \033[0;31mdisabled\033[0m'
+	sed --in-place '/    "RandomAccessMemory": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+	sed --in-place '/    "SwapMemory": {/!b;n;c      "Enabled": false,' /opt/picontrolpanel/Configuration/appsettings.json
+fi
+# End of Enabling supported workers
+
 chmod +x /opt/picontrolpanel/PiControlPanel.Api.GraphQL
 systemctl enable picontrolpanel
 systemctl start picontrolpanel
 
-echo -e '\nInstallation of PiControlPanel is complete!'
+echo -e '\n\033[0;32mThe installation of PiControlPanel is complete!\033[0m'
 
 raspberryPiIp=$(hostname -I | cut -d' ' -f1)
-echo -e "Login @ http://localhost:8080 from Raspberry Pi or http://$raspberryPiIp:8080 from another machine\n"
+echo -e 'Login @ \033[0;36mhttp://localhost:8080\033[0m from Raspberry Pi or \033[0;36mhttp://$raspberryPiIp:8080\033[0m from another machine\n'

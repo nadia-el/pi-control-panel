@@ -28,26 +28,38 @@
         {
             try
             {
-                logger.Info($"BaseWorker<{typeof(T).Name}> started");
+                bool.TryParse(configuration[$"Workers:{typeof(T).Name}:Enabled"], out var enabled);
+                if (!enabled)
+                {
+                    logger.Warn($"{this.GetType().Name} is not enabled, returning...");
+                    return;
+                }
+
+                logger.Info($"{this.GetType().Name} started");
                 await this.SaveAsync();
 
-                var workerInterval = int.Parse(configuration["Worker:Interval"]);
-                logger.Info($"BaseWorker<{typeof(T).Name}> configured to run at interval of {workerInterval} ms");
+                var workerInterval = int.Parse(configuration[$"Workers:{typeof(T).Name}:Interval"]);
+                if (workerInterval <= 0)
+                {
+                    logger.Debug($"{this.GetType().Name} has no interval set for recurring task, returning...");
+                    return;
+                }
 
+                logger.Info($"{this.GetType().Name} configured to run at interval of {workerInterval} ms");
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Debug($"BaseWorker<{typeof(T).Name}> running at: {DateTimeOffset.Now}");
+                    logger.Debug($"{this.GetType().Name} running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(stoppingToken);
                     await Task.Delay(workerInterval, stoppingToken);
                 }
             }
             catch(Exception ex)
             {
-                logger.Error(ex, $"error running BaseWorker<{typeof(T).Name}>");
+                logger.Error(ex, $"error running {this.GetType().Name}");
             }
             finally
             {
-                logger.Info($"BaseWorker<{typeof(T).Name}> ended");
+                logger.Info($"{this.GetType().Name} ended");
             }
         }
 
@@ -58,7 +70,7 @@
 
         protected virtual Task SaveRecurring(CancellationToken stoppingToken)
         {
-            logger.Debug($"BaseWorker<{typeof(T).Name}> has no recurring task, returning...");
+            logger.Debug($"{this.GetType().Name} has no recurring task, returning...");
             return Task.CompletedTask;
         }
     }
