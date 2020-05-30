@@ -6,16 +6,24 @@
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Network;
 
+    /// <summary>
+    /// The NetworkInterface GraphQL output type.
+    /// </summary>
     public class NetworkInterfaceType : ObjectGraphType<NetworkInterface>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetworkInterfaceType"/> class.
+        /// </summary>
+        /// <param name="networkService">The application layer NetworkService.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public NetworkInterfaceType(INetworkService networkService, ILogger logger)
         {
-            Field(x => x.Name);
-            Field(x => x.IpAddress);
-            Field(x => x.SubnetMask);
-            Field(x => x.DefaultGateway);
+            this.Field(x => x.Name);
+            this.Field(x => x.IpAddress);
+            this.Field(x => x.SubnetMask);
+            this.Field(x => x.DefaultGateway);
 
-            Field<NetworkInterfaceStatusType>()
+            this.Field<NetworkInterfaceStatusType>()
                 .Name("Status")
                 .ResolveAsync(async context =>
                 {
@@ -26,7 +34,7 @@
                     return await networkService.GetLastNetworkInterfaceStatusAsync(context.Source.Name);
                 });
 
-            Connection<NetworkInterfaceStatusType>()
+            this.Connection<NetworkInterfaceStatusType>()
                 .Name("Statuses")
                 .Bidirectional()
                 .ResolveAsync(async context =>

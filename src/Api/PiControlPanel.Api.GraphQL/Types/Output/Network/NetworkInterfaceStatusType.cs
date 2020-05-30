@@ -3,16 +3,22 @@
     using global::GraphQL.Types;
     using PiControlPanel.Domain.Models.Hardware.Network;
 
+    /// <summary>
+    /// The NetworkInterfaceStatus GraphQL output type.
+    /// </summary>
     public class NetworkInterfaceStatusType : ObjectGraphType<NetworkInterfaceStatus>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetworkInterfaceStatusType"/> class.
+        /// </summary>
         public NetworkInterfaceStatusType()
         {
-            Field(x => x.NetworkInterfaceName);
-            Field(x => x.TotalReceived);
-            Field(x => x.TotalSent);
-            Field(x => x.ReceiveSpeed);
-            Field(x => x.SendSpeed);
-            Field<DateTimeGraphType>("dateTime");
+            this.Field(x => x.NetworkInterfaceName);
+            this.Field(x => x.TotalReceived);
+            this.Field(x => x.TotalSent);
+            this.Field(x => x.ReceiveSpeed);
+            this.Field(x => x.SendSpeed);
+            this.Field<DateTimeGraphType>("dateTime");
         }
     }
 }

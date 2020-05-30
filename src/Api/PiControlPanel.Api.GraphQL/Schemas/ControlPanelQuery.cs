@@ -11,15 +11,22 @@
     using PiControlPanel.Domain.Models.Authentication;
     using PiControlPanel.Api.GraphQL.Types.Output.Authentication;
 
+    /// <summary>
+    /// The root query GraphQL type.
+    /// </summary>
     public class ControlPanelQuery : ObjectGraphType
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControlPanelQuery"/> class.
+        /// </summary>
+        /// <param name="securityService">The application layer SecurityService.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public ControlPanelQuery(ISecurityService securityService, ILogger logger)
         {
-            FieldAsync<LoginResponseType>(
+            this.FieldAsync<LoginResponseType>(
                 "Login",
                 arguments: new QueryArguments(
-                    new QueryArgument<UserAccountInputType> { Name = "UserAccount" }
-                ),
+                    new QueryArgument<UserAccountInputType> { Name = "UserAccount" }),
                 resolve: async context =>
                 {
                     logger.Info("Login query");
@@ -28,7 +35,7 @@
                     return await securityService.LoginAsync(userAccount);
                 });
 
-            FieldAsync<LoginResponseType>(
+            this.FieldAsync<LoginResponseType>(
                 "RefreshToken",
                 resolve: async context =>
                 {
@@ -45,7 +52,7 @@
                 })
                 .AuthorizeWith(AuthorizationPolicyName.AuthenticatedPolicy);
 
-            Field<RaspberryPiType>(
+            this.Field<RaspberryPiType>(
                 "RaspberryPi",
                 resolve: context =>
                 {

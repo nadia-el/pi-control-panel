@@ -3,12 +3,18 @@
     using global::GraphQL.Types;
     using PiControlPanel.Domain.Models.Hardware.Os;
 
+    /// <summary>
+    /// The OsStatus GraphQL output type.
+    /// </summary>
     public class OsStatusType : ObjectGraphType<OsStatus>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OsStatusType"/> class.
+        /// </summary>
         public OsStatusType()
         {
-            Field(x => x.Uptime);
-            Field<DateTimeGraphType>("dateTime");
+            this.Field(x => x.Uptime);
+            this.Field<DateTimeGraphType>("dateTime");
         }
     }
 }

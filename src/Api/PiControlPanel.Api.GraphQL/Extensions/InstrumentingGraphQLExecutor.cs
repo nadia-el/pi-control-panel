@@ -1,5 +1,8 @@
 ﻿namespace PiControlPanel.Api.GraphQL.Extensions
 {
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using global::GraphQL;
     using global::GraphQL.Execution;
     using global::GraphQL.Instrumentation;
@@ -8,15 +11,21 @@
     using global::GraphQL.Types;
     using global::GraphQL.Validation;
     using Microsoft.Extensions.Options;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
 
+    /// <inheritdoc/>
     public class InstrumentingGraphQLExecutor<TSchema> : DefaultGraphQLExecuter<TSchema>
         where TSchema : ISchema
     {
         private readonly GraphQLOptions options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstrumentingGraphQLExecutor{TSchema}"/> class.
+        /// </summary>
+        /// <param name="schema">The GraphQL schema.</param>
+        /// <param name="documentExecuter">The GraphQL document executer.</param>
+        /// <param name="options">The GraphQL options.</param>
+        /// <param name="listeners">The GraphQL document execution listeners.</param>
+        /// <param name="validationRules">The GraphQL validation rules.</param>
         public InstrumentingGraphQLExecutor(
             TSchema schema,
             IDocumentExecuter documentExecuter,
@@ -26,6 +35,7 @@
             : base(schema, documentExecuter, options, listeners, validationRules) =>
             this.options = options.Value;
 
+        /// <inheritdoc/>
         public override async Task<ExecutionResult> ExecuteAsync(
             string operationName,
             string query,
@@ -46,6 +56,7 @@
             return result;
         }
 
+        /// <inheritdoc/>
         protected override ExecutionOptions GetOptions(
             string operationName,
             string query,

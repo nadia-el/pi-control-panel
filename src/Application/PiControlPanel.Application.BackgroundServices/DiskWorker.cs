@@ -7,8 +7,15 @@
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Disk;
 
+    /// <inheritdoc/>
     public class DiskWorker : BaseWorker<Disk>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiskWorker"/> class.
+        /// </summary>
+        /// <param name="diskService">The application layer DiskService.</param>
+        /// <param name="configuration">The IConfiguration instance.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public DiskWorker(
             IDiskService diskService,
             IConfiguration configuration,
@@ -17,9 +24,10 @@
         {
         }
 
+        /// <inheritdoc/>
         protected override Task SaveRecurring(CancellationToken stoppingToken)
         {
-            return ((IDiskService)this.service).SaveFileSystemStatusAsync();
+            return ((IDiskService)this.Service).SaveFileSystemStatusAsync();
         }
     }
 }

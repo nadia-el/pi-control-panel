@@ -8,35 +8,41 @@
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Authentication;
 
+    /// <inheritdoc/>
     public class UserAccountService : IUserAccountService
     {
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAccountService"/> class.
+        /// </summary>
+        /// <param name="logger">The NLog logger instance.</param>
         public UserAccountService(ILogger logger)
         {
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public Task<bool> ValidateAsync(UserAccount userAccount)
         {
-            logger.Debug("Infra layer -> UserAccountService -> ValidateAsync");
+            this.logger.Debug("Infra layer -> UserAccountService -> ValidateAsync");
 
             var catEtcShadowCommand = string.Format(
                 BashCommands.SudoCatEtcShadow,
                 userAccount.Username);
             var loginInfo = catEtcShadowCommand.Bash();
-            logger.Trace($"Result of '{catEtcShadowCommand}' command: '{loginInfo}'");
+            this.logger.Trace($"Result of '{catEtcShadowCommand}' command: '{loginInfo}'");
 
             if (string.IsNullOrWhiteSpace(loginInfo))
             {
-                logger.Error($"User {userAccount.Username} not found");
+                this.logger.Error($"User {userAccount.Username} not found");
                 return Task.FromResult(false);
             }
 
             var parsedLoginInfo = loginInfo.Split(':');
             if (!userAccount.Username.Equals(parsedLoginInfo[0]))
             {
-                logger.Error($"Found username {parsedLoginInfo[0]} different from searched {userAccount.Username}");
+                this.logger.Error($"Found username {parsedLoginInfo[0]} different from searched {userAccount.Username}");
                 return Task.FromResult(false);
             }
 
@@ -47,25 +53,26 @@
                 passwordInfo[2],
                 userAccount.Password);
             var hashedPassword = openSslPasswdCommand.Bash();
-            logger.Trace($"Result of '{openSslPasswdCommand}' command: '{hashedPassword}'");
+            this.logger.Trace($"Result of '{openSslPasswdCommand}' command: '{hashedPassword}'");
             if (!string.Equals(parsedLoginInfo[1], hashedPassword, StringComparison.InvariantCultureIgnoreCase))
             {
-                logger.Error($"Hashed password {hashedPassword} different from existing hashed password {parsedLoginInfo[1]}");
+                this.logger.Error($"Hashed password {hashedPassword} different from existing hashed password {parsedLoginInfo[1]}");
                 return Task.FromResult(false);
             }
 
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc/>
         public Task<bool> IsSuperUserAsync(UserAccount userAccount)
         {
-            logger.Debug("Infra layer -> UserAccountService -> IsSuperUserAsync");
+            this.logger.Debug("Infra layer -> UserAccountService -> IsSuperUserAsync");
 
             var groupsCommand = string.Format(
                 BashCommands.Groups,
                 userAccount.Username);
             var result = groupsCommand.Bash();
-            logger.Trace($"Result of '{groupsCommand}' command: '{result}'");
+            this.logger.Trace($"Result of '{groupsCommand}' command: '{result}'");
             return Task.FromResult(result.Contains(" sudo ") || result.EndsWith(" sudo"));
         }
     }

@@ -7,50 +7,87 @@
     using PiControlPanel.Infrastructure.Persistence.Contracts.Repositories;
     using PiControlPanel.Infrastructure.Persistence.Entities;
 
-    public abstract class BaseService<T, U> : IBaseService<T> where U : BaseEntity
+    /// <inheritdoc/>
+    public abstract class BaseService<TModel, TEntity> : IBaseService<TModel>
+        where TEntity : BaseEntity
     {
-        protected IRepositoryBase<U> repository;
-        protected readonly IUnitOfWork unitOfWork;
-        protected readonly IMapper mapper;
-        protected readonly ILogger logger;
-
-        public BaseService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseService{TModel, TEntity}"/> class.
+        /// </summary>
+        /// <param name="repository">The repository for the entity.</param>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="mapper">The mapper configuration.</param>
+        /// <param name="logger">The NLog logger instance.</param>
+        public BaseService(
+            IRepositoryBase<TEntity> repository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            ILogger logger)
         {
-            this.unitOfWork = unitOfWork;
-            this.mapper = mapper;
-            this.logger = logger;
+            this.Repository = repository;
+            this.UnitOfWork = unitOfWork;
+            this.Mapper = mapper;
+            this.Logger = logger;
         }
 
-        public async Task<T> GetAsync()
+        /// <summary>
+        /// Gets the repository for the entity.
+        /// </summary>
+        protected IRepositoryBase<TEntity> Repository { get; }
+
+        /// <summary>
+        /// Gets the unit of work.
+        /// </summary>
+        protected IUnitOfWork UnitOfWork { get; }
+
+        /// <summary>
+        /// Gets the mapper configuration.
+        /// </summary>
+        protected IMapper Mapper { get; }
+
+        /// <summary>
+        /// Gets the NLog logger instance.
+        /// </summary>
+        protected ILogger Logger { get; }
+
+        /// <inheritdoc/>
+        public async Task<TModel> GetAsync()
         {
             var entity = await this.GetFromRepository();
-            return mapper.Map<T>(entity);
-        }
-        
-        public async Task AddAsync(T model)
-        {
-            var entity = mapper.Map<U>(model);
-            repository.Create(entity);
-            await this.unitOfWork.CommitAsync();
+            return this.Mapper.Map<TModel>(entity);
         }
 
-        public async Task UpdateAsync(T model)
+        /// <inheritdoc/>
+        public async Task AddAsync(TModel model)
         {
-            var entity = mapper.Map<U>(model);
-            repository.Update(entity);
-            await this.unitOfWork.CommitAsync();
+            var entity = this.Mapper.Map<TEntity>(model);
+            this.Repository.Create(entity);
+            await this.UnitOfWork.CommitAsync();
         }
 
-        public async Task RemoveAsync(T model)
+        /// <inheritdoc/>
+        public async Task UpdateAsync(TModel model)
         {
-            var entity = mapper.Map<U>(model);
-            repository.Remove(entity);
-            await this.unitOfWork.CommitAsync();
+            var entity = this.Mapper.Map<TEntity>(model);
+            this.Repository.Update(entity);
+            await this.UnitOfWork.CommitAsync();
         }
 
-        protected virtual Task<U> GetFromRepository()
+        /// <inheritdoc/>
+        public async Task RemoveAsync(TModel model)
         {
-            return repository.GetAsync();
+            var entity = this.Mapper.Map<TEntity>(model);
+            this.Repository.Remove(entity);
+            await this.UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// Retrieves the entity from the repository.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected virtual Task<TEntity> GetFromRepository()
+        {
+            return this.Repository.GetAsync();
         }
     }
 }

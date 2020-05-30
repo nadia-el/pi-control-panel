@@ -1,25 +1,33 @@
 ﻿namespace PiControlPanel.Application.BackgroundServices
 {
+    using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Os;
-    using System.Threading;
-    using System.Threading.Tasks;
 
+    /// <inheritdoc/>
     public class OsWorker : BaseWorker<Os>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OsWorker"/> class.
+        /// </summary>
+        /// <param name="operatingSystemService">The application layer OsService.</param>
+        /// <param name="configuration">The IConfiguration instance.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public OsWorker(
-            IOsService osService,
+            IOsService operatingSystemService,
             IConfiguration configuration,
             ILogger logger)
-            : base(osService, configuration, logger)
+            : base(operatingSystemService, configuration, logger)
         {
         }
 
+        /// <inheritdoc/>
         protected override Task SaveRecurring(CancellationToken stoppingToken)
         {
-            return ((IOsService)this.service).SaveStatusAsync();
+            return ((IOsService)this.Service).SaveStatusAsync();
         }
     }
 }

@@ -28,11 +28,11 @@ chmod +x pi-control-panel_VERSION.SUBVERSION_armhf/DEBIAN/p*
 ````
 3. Rename directory pi-control-panel_VERSION.SUBVERSION_armhf to match the version of the packages. Example:
 ````bash
-mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_1.5_armhf
+mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_1.6_armhf
 ````
 4. Build the Package
 ````bash
-dpkg-deb --build pi-control-panel_1.5_armhf
+dpkg-deb --build pi-control-panel_1.6_armhf
 ````
 
 ## Running

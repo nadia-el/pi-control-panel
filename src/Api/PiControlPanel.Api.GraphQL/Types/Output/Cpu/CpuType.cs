@@ -6,15 +6,23 @@
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
 
+    /// <summary>
+    /// The Cpu GraphQL output type.
+    /// </summary>
     public class CpuType : ObjectGraphType<Cpu>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CpuType"/> class.
+        /// </summary>
+        /// <param name="cpuService">The application layer CpuService.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public CpuType(ICpuService cpuService, ILogger logger)
         {
-            Field(x => x.Cores);
-            Field(x => x.Model);
-            Field("maxFrequency", x => x.MaximumFrequency);
+            this.Field(x => x.Cores);
+            this.Field(x => x.Model);
+            this.Field("maxFrequency", x => x.MaximumFrequency);
 
-            Field<CpuLoadStatusType>()
+            this.Field<CpuLoadStatusType>()
                 .Name("LoadStatus")
                 .ResolveAsync(async context =>
                 {
@@ -25,7 +33,7 @@
                     return await cpuService.GetLastLoadStatusAsync();
                 });
 
-            Connection<CpuLoadStatusType>()
+            this.Connection<CpuLoadStatusType>()
                 .Name("LoadStatuses")
                 .Bidirectional()
                 .ResolveAsync(async context =>
@@ -40,7 +48,7 @@
                     return averageLoads.ToConnection();
                 });
 
-            Field<CpuTemperatureType>()
+            this.Field<CpuTemperatureType>()
                 .Name("Temperature")
                 .ResolveAsync(async context =>
                 {
@@ -51,7 +59,7 @@
                     return await cpuService.GetLastTemperatureAsync();
                 });
 
-            Connection<CpuTemperatureType>()
+            this.Connection<CpuTemperatureType>()
                 .Name("Temperatures")
                 .Bidirectional()
                 .ResolveAsync(async context =>
@@ -66,7 +74,7 @@
                     return temperatures.ToConnection();
                 });
 
-            Field<CpuFrequencyType>()
+            this.Field<CpuFrequencyType>()
                 .Name("Frequency")
                 .ResolveAsync(async context =>
                 {
@@ -77,7 +85,7 @@
                     return await cpuService.GetLastFrequencyAsync();
                 });
 
-            Connection<CpuFrequencyType>()
+            this.Connection<CpuFrequencyType>()
                 .Name("Frequencies")
                 .Bidirectional()
                 .ResolveAsync(async context =>

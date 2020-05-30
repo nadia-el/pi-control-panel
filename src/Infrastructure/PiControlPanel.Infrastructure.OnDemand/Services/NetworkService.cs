@@ -13,24 +13,32 @@
     using PiControlPanel.Domain.Contracts.Util;
     using PiControlPanel.Domain.Models.Hardware.Network;
 
+    /// <inheritdoc/>
     public class NetworkService : BaseService<Network>, INetworkService
     {
         private readonly ISubject<IList<NetworkInterfaceStatus>> networkInterfacesStatusSubject;
 
-        public NetworkService(ISubject<IList<NetworkInterfaceStatus>> networkInterfacesStatusSubject,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetworkService"/> class.
+        /// </summary>
+        /// <param name="networkInterfacesStatusSubject">The network interfaces status subject.</param>
+        /// <param name="logger">The NLog logger instance.</param>
+        public NetworkService(
+            ISubject<IList<NetworkInterfaceStatus>> networkInterfacesStatusSubject,
             ILogger logger)
             : base(logger)
         {
             this.networkInterfacesStatusSubject = networkInterfacesStatusSubject;
         }
 
+        /// <inheritdoc/>
         public async Task<IList<NetworkInterfaceStatus>> GetNetworkInterfacesStatusAsync(IList<string> networkInterfaceNames, int samplingInterval)
         {
-            logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfacesStatusAsync");
+            this.Logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfacesStatusAsync");
 
             var result = BashCommands.CatProcNetDev.Bash();
             var now = DateTime.Now;
-            logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
+            this.Logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
             var lines = result
                 .Split(
                     new[] { Environment.NewLine },
@@ -62,7 +70,7 @@
 
             result = BashCommands.CatProcNetDev.Bash();
             now = DateTime.Now;
-            logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
+            this.Logger.Trace($"Result of '{BashCommands.CatProcNetDev}' command: '{result}'");
             lines = result
                 .Split(
                     new[] { Environment.NewLine },
@@ -92,20 +100,23 @@
             return networkInterfacesStatuses.Values.ToList();
         }
 
+        /// <inheritdoc/>
         public IObservable<NetworkInterfaceStatus> GetNetworkInterfaceStatusObservable(string networkInterfaceName)
         {
-            logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
+            this.Logger.Debug("Infra layer -> NetworkService -> GetNetworkInterfaceStatusObservable");
             return this.networkInterfacesStatusSubject
                 .Select(l => l.FirstOrDefault(i => i.NetworkInterfaceName == networkInterfaceName))
                 .AsObservable();
         }
 
+        /// <inheritdoc/>
         public void PublishNetworkInterfacesStatus(IList<NetworkInterfaceStatus> networkInterfacesStatus)
         {
-            logger.Debug("Infra layer -> NetworkService -> PublishNetworkInterfacesStatus");
+            this.Logger.Debug("Infra layer -> NetworkService -> PublishNetworkInterfacesStatus");
             this.networkInterfacesStatusSubject.OnNext(networkInterfacesStatus);
         }
 
+        /// <inheritdoc/>
         protected override Network GetModel()
         {
             var model = new Network()
@@ -114,7 +125,7 @@
             };
 
             var result = BashCommands.Ifconfig.Bash();
-            logger.Trace($"Result of '{BashCommands.Ifconfig}' command: '{result}'");
+            this.Logger.Trace($"Result of '{BashCommands.Ifconfig}' command: '{result}'");
 
             var regex = new Regex(@"(?<name>\S+):\sflags=\d+<\S*RUNNING\S*>\s+mtu\s\d+\r?\n\s+inet\s(?<ip>\S+)\s+netmask\s(?<mask>\S+)\s+broadcast\s(?<gateway>\S+)");
             var matches = regex.Matches(result);

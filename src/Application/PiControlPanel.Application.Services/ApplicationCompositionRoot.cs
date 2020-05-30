@@ -1,5 +1,6 @@
 ﻿namespace PiControlPanel.Application.Services
 {
+    using System.Collections.Generic;
     using System.Reactive.Subjects;
     using LightInject;
     using PiControlPanel.Domain.Models.Hardware.Cpu;
@@ -9,23 +10,22 @@
     using PiControlPanel.Infrastructure.Persistence.Repositories;
     using AutoMapper;
     using PiControlPanel.Infrastructure.Persistence.MapperProfile;
-    using Contracts = PiControlPanel.Domain.Contracts.Infrastructure;
-    using Persistence = PiControlPanel.Infrastructure.Persistence.Services;
-    using OnDemand = PiControlPanel.Infrastructure.OnDemand.Services;
     using PiControlPanel.Domain.Models.Hardware.Os;
     using PiControlPanel.Domain.Models.Hardware.Network;
-    using System.Collections.Generic;
+    using Contracts = PiControlPanel.Domain.Contracts.Infrastructure;
+    using OnDemand = PiControlPanel.Infrastructure.OnDemand.Services;
+    using Persistence = PiControlPanel.Infrastructure.Persistence.Services;
 
     /// <summary>
     ///     Implementation of LightInject's ICompositionRoot responsible for
-    ///     registering all services required for the Application layer
+    ///     registering all services required for the Application layer.
     /// </summary>
     public class ApplicationCompositionRoot : ICompositionRoot
     {
         /// <summary>
-        ///     Called after LightInject ServiceContainer RegisterFor method is called
+        ///     Called after LightInject ServiceContainer RegisterFor method is called.
         /// </summary>
-        /// <param name="serviceRegistry">LightInject's service registry</param>
+        /// <param name="serviceRegistry">LightInject's service registry.</param>
         public void Compose(IServiceRegistry serviceRegistry)
         {
             serviceRegistry.Register<IUnitOfWork, UnitOfWork>(new PerRequestLifeTime());
@@ -63,7 +63,7 @@
             serviceRegistry.Register<Contracts.OnDemand.IDiskService, OnDemand.DiskService>();
             serviceRegistry.Register<Contracts.OnDemand.IOsService, OnDemand.OsService>();
             serviceRegistry.Register<Contracts.OnDemand.INetworkService, OnDemand.NetworkService>();
-            
+
             serviceRegistry.RegisterSingleton<IMapper>(factory => new AutoMapperConfiguration().GetIMapper());
 
             serviceRegistry.RegisterSingleton<ISubject<CpuFrequency>>(factory => new ReplaySubject<CpuFrequency>(1));

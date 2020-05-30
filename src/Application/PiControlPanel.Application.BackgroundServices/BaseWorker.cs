@@ -8,69 +8,97 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
 
+    /// <inheritdoc/>
     public abstract class BaseWorker<T> : BackgroundService
     {
-        protected readonly IBaseService<T> service;
-        protected readonly IConfiguration configuration;
-        protected readonly ILogger logger;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseWorker{T}"/> class.
+        /// </summary>
+        /// <param name="service">The application layer service.</param>
+        /// <param name="configuration">The IConfiguration instance.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public BaseWorker(
             IBaseService<T> service,
             IConfiguration configuration,
             ILogger logger)
         {
-            this.service = service;
-            this.configuration = configuration;
-            this.logger = logger;
+            this.Service = service;
+            this.Configuration = configuration;
+            this.Logger = logger;
         }
 
+        /// <summary>
+        /// Gets the application layer service.
+        /// </summary>
+        protected IBaseService<T> Service { get; }
+
+        /// <summary>
+        /// Gets the IConfiguration instance.
+        /// </summary>
+        protected IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Gets the NLog logger instance.
+        /// </summary>
+        protected ILogger Logger { get; }
+
+        /// <inheritdoc/>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
             {
-                bool.TryParse(configuration[$"Workers:{typeof(T).Name}:Enabled"], out var enabled);
+                bool.TryParse(this.Configuration[$"Workers:{typeof(T).Name}:Enabled"], out var enabled);
                 if (!enabled)
                 {
-                    logger.Warn($"{this.GetType().Name} is not enabled, returning...");
+                    this.Logger.Warn($"{this.GetType().Name} is not enabled, returning...");
                     return;
                 }
 
-                logger.Info($"{this.GetType().Name} started");
+                this.Logger.Info($"{this.GetType().Name} started");
                 await this.SaveAsync();
 
-                var workerInterval = int.Parse(configuration[$"Workers:{typeof(T).Name}:Interval"]);
+                var workerInterval = int.Parse(this.Configuration[$"Workers:{typeof(T).Name}:Interval"]);
                 if (workerInterval <= 0)
                 {
-                    logger.Debug($"{this.GetType().Name} has no interval set for recurring task, returning...");
+                    this.Logger.Debug($"{this.GetType().Name} has no interval set for recurring task, returning...");
                     return;
                 }
 
-                logger.Info($"{this.GetType().Name} configured to run at interval of {workerInterval} ms");
+                this.Logger.Info($"{this.GetType().Name} configured to run at interval of {workerInterval} ms");
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Debug($"{this.GetType().Name} running at: {DateTimeOffset.Now}");
+                    this.Logger.Debug($"{this.GetType().Name} running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(stoppingToken);
                     await Task.Delay(workerInterval, stoppingToken);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.Error(ex, $"error running {this.GetType().Name}");
+                this.Logger.Error(ex, $"error running {this.GetType().Name}");
             }
             finally
             {
-                logger.Info($"{this.GetType().Name} ended");
+                this.Logger.Info($"{this.GetType().Name} ended");
             }
         }
 
+        /// <summary>
+        /// Retrieves and saves a new value for the model.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         protected virtual Task SaveAsync()
         {
-            return this.service.SaveAsync();
+            return this.Service.SaveAsync();
         }
 
+        /// <summary>
+        /// Retrieves and saves a new value for the timed model.
+        /// </summary>
+        /// <param name="stoppingToken">The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         protected virtual Task SaveRecurring(CancellationToken stoppingToken)
         {
-            logger.Debug($"{this.GetType().Name} has no recurring task, returning...");
+            this.Logger.Debug($"{this.GetType().Name} has no recurring task, returning...");
             return Task.CompletedTask;
         }
     }

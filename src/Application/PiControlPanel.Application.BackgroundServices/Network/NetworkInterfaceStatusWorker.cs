@@ -8,12 +8,19 @@
     using NLog;
     using PiControlPanel.Domain.Contracts.Application;
 
+    /// <inheritdoc/>
     public class NetworkInterfaceStatusWorker : BackgroundService
     {
-        protected readonly INetworkService networkService;
-        protected readonly IConfiguration configuration;
-        protected readonly ILogger logger;
+        private readonly INetworkService networkService;
+        private readonly IConfiguration configuration;
+        private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetworkInterfaceStatusWorker"/> class.
+        /// </summary>
+        /// <param name="networkService">The application layer NetworkService.</param>
+        /// <param name="configuration">The IConfiguration instance.</param>
+        /// <param name="logger">The NLog logger instance.</param>
         public NetworkInterfaceStatusWorker(
             INetworkService networkService,
             IConfiguration configuration,
@@ -24,43 +31,49 @@
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
             {
-                bool.TryParse(configuration[$"Workers:NetworkInterfaceStatus:Enabled"], out var enabled);
+                bool.TryParse(this.configuration[$"Workers:NetworkInterfaceStatus:Enabled"], out var enabled);
                 if (!enabled)
                 {
-                    logger.Warn($"NetworkInterfaceStatusWorker is not enabled, returning...");
+                    this.logger.Warn($"NetworkInterfaceStatusWorker is not enabled, returning...");
                     return;
                 }
 
-                logger.Info($"NetworkInterfaceStatusWorker started");
+                this.logger.Info($"NetworkInterfaceStatusWorker started");
 
-                var workerInterval = int.Parse(configuration["Workers:NetworkInterfaceStatus:Interval"]);
+                var workerInterval = int.Parse(this.configuration["Workers:NetworkInterfaceStatus:Interval"]);
                 if (workerInterval <= 0)
                 {
-                    logger.Debug($"NetworkInterfaceStatusWorker has no interval set for recurring task, returning...");
+                    this.logger.Debug($"NetworkInterfaceStatusWorker has no interval set for recurring task, returning...");
                     return;
                 }
 
-                logger.Info($"NetworkInterfaceStatusWorker configured to run at interval of {workerInterval} ms");
+                this.logger.Info($"NetworkInterfaceStatusWorker configured to run at interval of {workerInterval} ms");
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    logger.Debug($"NetworkInterfaceStatusWorker running at: {DateTimeOffset.Now}");
+                    this.logger.Debug($"NetworkInterfaceStatusWorker running at: {DateTimeOffset.Now}");
                     await this.SaveRecurring(workerInterval);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.Error(ex, $"error running NetworkInterfaceStatusWorker");
+                this.logger.Error(ex, $"error running NetworkInterfaceStatusWorker");
             }
             finally
             {
-                logger.Info($"NetworkInterfaceStatusWorker ended");
+                this.logger.Info($"NetworkInterfaceStatusWorker ended");
             }
         }
 
+        /// <summary>
+        /// Retrieves and saves a new value for the network interface status.
+        /// </summary>
+        /// <param name="samplingInterval">The sampling interval in milliseconds to be used to calculate the status.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         protected async Task SaveRecurring(int samplingInterval)
         {
             await this.networkService.SaveNetworkInterfacesStatusAsync(samplingInterval);

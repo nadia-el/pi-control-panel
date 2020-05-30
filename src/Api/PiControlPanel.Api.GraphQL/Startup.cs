@@ -1,4 +1,4 @@
-namespace PiControlPanel.Api.GraphQL
+﻿namespace PiControlPanel.Api.GraphQL
 {
     using System;
     using System.Security.Claims;
@@ -71,23 +71,23 @@ namespace PiControlPanel.Api.GraphQL
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = configuration["Jwt:Issuer"],
-                        ValidAudience = configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                        ValidIssuer = this.configuration["Jwt:Issuer"],
+                        ValidAudience = this.configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Jwt:Key"]))
                     };
 
-                    if (webHostEnvironment.IsDevelopment())
+                    if (this.webHostEnvironment.IsDevelopment())
                     {
                         options.Events = new JwtBearerEvents
                         {
                             OnAuthenticationFailed = context =>
                             {
-                                logger.Warn("OnAuthenticationFailed: " + context.Exception.Message);
+                                this.logger.Warn("OnAuthenticationFailed: " + context.Exception.Message);
                                 return Task.CompletedTask;
                             },
                             OnTokenValidated = context =>
                             {
-                                logger.Trace("OnTokenValidated: " + context.SecurityToken);
+                                this.logger.Trace("OnTokenValidated: " + context.SecurityToken);
                                 return Task.CompletedTask;
                             }
                         };
@@ -96,12 +96,14 @@ namespace PiControlPanel.Api.GraphQL
 
             services.AddGraphQLAuth(settings =>
             {
-                settings.AddPolicy(AuthorizationPolicyName.AuthenticatedPolicy,
+                settings.AddPolicy(
+                    AuthorizationPolicyName.AuthenticatedPolicy,
                     p => p
                         .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
                         .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString })
                         .RequireClaim(ClaimTypes.Role, new string[] { Roles.User }));
-                settings.AddPolicy(AuthorizationPolicyName.SuperUserPolicy,
+                settings.AddPolicy(
+                    AuthorizationPolicyName.SuperUserPolicy,
                     p => p
                         .RequireClaim(CustomClaimTypes.IsAnonymous, new string[] { bool.FalseString })
                         .RequireClaim(CustomClaimTypes.IsAuthenticated, new string[] { bool.TrueString })
@@ -122,7 +124,7 @@ namespace PiControlPanel.Api.GraphQL
                 options.AllowSynchronousIO = true;
             });
 
-            if (!isRunningInContainer)
+            if (!this.IsRunningInContainer())
             {
                 services.AddHostedService<ChipsetWorker>();
                 services.AddHostedService<CpuWorker>();
@@ -134,7 +136,7 @@ namespace PiControlPanel.Api.GraphQL
             }
             else
             {
-                logger.Warn("Running on Docker, not creating incompatible background services.");
+                this.logger.Warn("Running on Docker, not creating incompatible background services.");
             }
 
             services.AddHostedService<DiskWorker>();
@@ -149,9 +151,9 @@ namespace PiControlPanel.Api.GraphQL
         }
 
         /// <summary>
-        ///     This method is used to add services directly to LightInject
+        ///     This method is used to add services directly to LightInject.
         /// </summary>
-        /// <param name="container">LightInject service container</param>
+        /// <param name="container">LightInject service container.</param>
         public void ConfigureContainer(IServiceContainer container)
         {
             container.SetDefaultLifetime<PerScopeLifetime>();
@@ -169,11 +171,11 @@ namespace PiControlPanel.Api.GraphQL
             container.Register<IOsService, OsService>();
             container.Register<INetworkService, NetworkService>();
 
-            //Registers all services required for the Application layer
+            // Registers all services required for the Application layer
             container.RegisterFrom<ApplicationCompositionRoot>();
 
-            container.RegisterSingleton<IConfiguration>(factory => configuration);
-            container.RegisterSingleton<ILogger>(factory => logger);
+            container.RegisterSingleton<IConfiguration>(factory => this.configuration);
+            container.RegisterSingleton<ILogger>(factory => this.logger);
         }
 
         /// <summary>
@@ -210,21 +212,21 @@ namespace PiControlPanel.Api.GraphQL
             {
                 app.UseSpaStaticFiles();
             }
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "PiControlPanel.Ui.Angular";
             });
-
         }
 
-        /// <value>Property <c>isRunningInContainer</c> represents if running the application inside a Docker container.</value>
-        private bool isRunningInContainer
+        /// <summary>
+        /// Returns true if running the application inside a Docker container.
+        /// </summary>
+        private bool IsRunningInContainer()
         {
-            get
-            {
-                return true.ToString().Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), StringComparison.InvariantCultureIgnoreCase);
-            } 
+            return true.ToString().Equals(
+                Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"),
+                StringComparison.InvariantCultureIgnoreCase);
         }
-
     }
 }

@@ -6,15 +6,35 @@
     using PiControlPanel.Domain.Contracts.Application;
     using PiControlPanel.Domain.Models.Hardware.Memory;
 
+    /// <summary>
+    /// The RaspberryPi GraphQL output type.
+    /// </summary>
     public class RaspberryPiType : ObjectGraphType
     {
-        public RaspberryPiType(IChipsetService chipsetService, ICpuService cpuService,
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RaspberryPiType"/> class.
+        /// </summary>
+        /// <param name="chipsetService">The application layer ChipsetService.</param>
+        /// <param name="cpuService">The application layer CpuService.</param>
+        /// <param name="randomAccessMemoryService">The application layer RandomAccessMemoryService.</param>
+        /// <param name="swapMemoryService">The application layer SwapMemoryService.</param>
+        /// <param name="gpuService">The application layer GpuService.</param>
+        /// <param name="diskService">The application layer DiskService.</param>
+        /// <param name="operatingSystemService">The application layer OsService.</param>
+        /// <param name="networkService">The application layer NetworkService.</param>
+        /// <param name="logger">The NLog logger instance.</param>
+        public RaspberryPiType(
+            IChipsetService chipsetService,
+            ICpuService cpuService,
             IMemoryService<RandomAccessMemory, RandomAccessMemoryStatus> randomAccessMemoryService,
-            IMemoryService<SwapMemory, SwapMemoryStatus> swapMemoryService, IGpuService gpuService,
-            IDiskService diskService, IOsService osService, INetworkService networkService,
+            IMemoryService<SwapMemory, SwapMemoryStatus> swapMemoryService,
+            IGpuService gpuService,
+            IDiskService diskService,
+            IOsService operatingSystemService,
+            INetworkService networkService,
             ILogger logger)
         {
-            Field<ChipsetType>()
+            this.Field<ChipsetType>()
                 .Name("Chipset")
                 .ResolveAsync(async context =>
                 {
@@ -25,7 +45,7 @@
                     return await chipsetService.GetAsync();
                 });
 
-            Field<Cpu.CpuType>()
+            this.Field<Cpu.CpuType>()
                 .Name("Cpu")
                 .ResolveAsync(async context =>
                 {
@@ -36,7 +56,7 @@
                     return await cpuService.GetAsync();
                 });
 
-            Field<MemoryType<RandomAccessMemory, RandomAccessMemoryStatus>>()
+            this.Field<MemoryType<RandomAccessMemory, RandomAccessMemoryStatus>>()
                 .Name("Ram")
                 .ResolveAsync(async context =>
                 {
@@ -47,7 +67,7 @@
                     return await randomAccessMemoryService.GetAsync();
                 });
 
-            Field<MemoryType<SwapMemory, SwapMemoryStatus>>()
+            this.Field<MemoryType<SwapMemory, SwapMemoryStatus>>()
                 .Name("swapMemory")
                 .ResolveAsync(async context =>
                 {
@@ -58,7 +78,7 @@
                     return await swapMemoryService.GetAsync();
                 });
 
-            Field<GpuType>()
+            this.Field<GpuType>()
                 .Name("Gpu")
                 .ResolveAsync(async context =>
                 {
@@ -69,7 +89,7 @@
                     return await gpuService.GetAsync();
                 });
 
-            Field<Disk.DiskType>()
+            this.Field<Disk.DiskType>()
                 .Name("Disk")
                 .ResolveAsync(async context =>
                 {
@@ -80,7 +100,7 @@
                     return await diskService.GetAsync();
                 });
 
-            Field<Os.OsType>()
+            this.Field<Os.OsType>()
                 .Name("Os")
                 .ResolveAsync(async context =>
                 {
@@ -88,10 +108,10 @@
                     GraphQLUserContext graphQLUserContext = context.UserContext as GraphQLUserContext;
                     var businessContext = graphQLUserContext.GetBusinessContext();
 
-                    return await osService.GetAsync();
+                    return await operatingSystemService.GetAsync();
                 });
 
-            Field<Network.NetworkType>()
+            this.Field<Network.NetworkType>()
                 .Name("Network")
                 .ResolveAsync(async context =>
                 {
