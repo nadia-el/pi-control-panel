@@ -78,6 +78,10 @@ jobs:
         with:
           tag_name: ${{ steps.get_debian_package_version.outputs.version }}
           release_name: Release ${{ steps.get_debian_package_version.outputs.version }}
+          body: |
+            Changes in this Release:
+            - First Change
+            - Second Change
           draft: false
           prerelease: false
       - name: Upload Release Asset
