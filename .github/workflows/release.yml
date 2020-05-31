@@ -38,12 +38,12 @@ jobs:
         shell: bash
         run: |
           cd package
-          echo "::set-output name=version::$(grep 'Version:' control | awk -F  ": " '{print $2}')"
+          echo "::set-output name=version::$(grep 'Version:' ./pi-control-panel_VERSION.SUBVERSION_armhf/DEBIAN/control | awk -F  ": " '{print $2}')"
       - name: Create Debian package
         shell: bash
         run: |
-          chmod +x pi-control-panel_VERSION.SUBVERSION_armhf/DEBIAN/p*
           mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_${{steps.debian_package_version.outputs.version}}_armhf
+          chmod +x pi-control-panel_${{steps.debian_package_version.outputs.version}}_armhf/DEBIAN/p*
           dpkg-deb --build pi-control-panel_${{steps.debian_package_version.outputs.version}}_armhf
       - name: Create Release
         id: create_release
