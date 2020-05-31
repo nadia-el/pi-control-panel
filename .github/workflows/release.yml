@@ -2,7 +2,7 @@ name: Publish new Debian Package
 
 on:
   push:
-    branches: [ test ]
+    branches: [ master ]
 
 jobs:
   build:
