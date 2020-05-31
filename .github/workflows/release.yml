@@ -2,9 +2,8 @@ name: Publish new Debian Package
 
 on:
   push:
-    branches: [ test ]
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   build:
