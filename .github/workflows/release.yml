@@ -3,6 +3,8 @@ name: Release Debian Package - armhf
 on:
   push:
     branches: [ master ]
+    paths: 
+      - 'package/pi-control-panel_VERSION.SUBVERSION_armhf/DEBIAN/control'
 
 jobs:
   release_version:
