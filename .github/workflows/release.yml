@@ -37,15 +37,15 @@ jobs:
         id: debian_package_version
         shell: bash
         run: |
-          echo "::set-output name=version::$(grep 'Version:' package/control | awk -F  ": " '{print $2}')"
+          cd package
+          echo "::set-output name=version::$(grep 'Version:' control | awk -F  ": " '{print $2}')"
       - name: Create Debian package
         shell: bash
         run: |
-          cd package
           chmod +x pi-control-panel_VERSION.SUBVERSION_armhf/DEBIAN/p*
           mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_${{steps.debian_package_version.outputs.version}}_armhf
           dpkg-deb --build pi-control-panel_${{steps.debian_package_version.outputs.version}}_armhf
-      - name: Create Release ${{steps.debian_package_version.outputs.version}}
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
