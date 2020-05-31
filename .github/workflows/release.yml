@@ -1,0 +1,54 @@
+name: Publish new Debian Package
+
+on:
+  push:
+    branches: [ test ]
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: .NET Core
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build
+      run: dotnet build .\src\Api\PiControlPanel.Api.GraphQL\PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi
+    - name: Upload results for job "package"
+      uses: actions/upload-artifact@v1
+      with:
+        name: package
+        path: package
+
+  package:
+    name: Debian package archive
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download result from job "build"
+        uses: actions/download-artifact@v1
+        with:
+          name: package
+      - shell: bash
+        run: |
+          mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_${{ github.ref }}_armhf
+          dpkg-deb --build pi-control-panel_${{ github.ref }}_armhf
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
