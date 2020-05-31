@@ -1,4 +1,4 @@
-name: Publish Debian Package
+name: Release Debian Package
 
 on:
   push:
@@ -35,6 +35,7 @@ jobs:
           name: package
       - shell: bash
         run: |
+          cd package
           dpkg-deb --build pi-control-panel_VERSION.SUBVERSION_armhf
       - name: Create Release
         id: create_release
