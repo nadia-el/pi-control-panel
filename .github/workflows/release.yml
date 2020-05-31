@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  dotnet_build:
     name: .NET Core
     runs-on: ubuntu-latest
 
@@ -17,18 +17,19 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build
       run: dotnet build src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi
-    - name: Upload results for job "package"
+    - name: Upload results for job debian_package
       uses: actions/upload-artifact@v1
       with:
         name: package
         path: package
 
-  package:
+  debian_package:
     name: Debian package archive
+    needs: [dotnet_build]
     runs-on: ubuntu-latest
     
     steps:
-      - name: Download result from job "build"
+      - name: Download result from job dotnet_build
         uses: actions/download-artifact@v1
         with:
           name: package
