@@ -1,4 +1,4 @@
-name: Publish new Debian Package
+name: Publish Debian Package
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Build
-      run: dotnet build .\src\Api\PiControlPanel.Api.GraphQL\PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi
+      run: dotnet build src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi
     - name: Upload results for job "package"
       uses: actions/upload-artifact@v1
       with:
