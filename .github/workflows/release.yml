@@ -2,8 +2,7 @@ name: Publish new Debian Package
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ test ]
 
 jobs:
   build:
@@ -35,16 +34,15 @@ jobs:
           name: package
       - shell: bash
         run: |
-          mv pi-control-panel_VERSION.SUBVERSION_armhf pi-control-panel_${{ github.ref }}_armhf
-          dpkg-deb --build pi-control-panel_${{ github.ref }}_armhf
+          dpkg-deb --build pi-control-panel_VERSION.SUBVERSION_armhf
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: VERSION.SUBVERSION
+          release_name: Release VERSION.SUBVERSION
           body: |
             Changes in this Release
             - First Change
