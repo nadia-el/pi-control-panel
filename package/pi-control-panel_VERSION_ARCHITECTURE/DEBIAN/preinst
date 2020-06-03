@@ -14,13 +14,10 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-echo 'Executing pre installation steps...'
-
 case "$1" in
     install)
 	
 		if [ ! $(getent passwd picontrolpanel) ]; then
-        	echo 'Creating user...'
         	useradd -M picontrolpanel
         	echo picontrolpanel:v!p4S#hM | chpasswd
         	usermod -aG sudo picontrolpanel
@@ -29,18 +26,15 @@ case "$1" in
         fi
         
         if [ ! -d '/var/log/picontrolpanel' ]; then
-        	echo 'Creating log directory...'
         	mkdir /var/log/picontrolpanel
         	chown picontrolpanel /var/log/picontrolpanel
         fi
         
         if [ ! -d '/var/db' ]; then
-        	echo 'Creating /var/db directory...'
         	mkdir /var/db
         fi
         
         if [ ! -d '/var/db/picontrolpanel' ]; then
-        	echo 'Creating db directory...'
         	mkdir /var/db/picontrolpanel
         	chown picontrolpanel /var/db/picontrolpanel
         fi

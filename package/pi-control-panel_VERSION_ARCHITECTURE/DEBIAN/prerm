@@ -16,8 +16,6 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-echo 'Executing pre removal steps...'
-
 case "$1" in
     remove|upgrade|deconfigure)
 	
@@ -27,8 +25,6 @@ case "$1" in
 		if (systemctl is-enabled --quiet picontrolpanel) then
 			systemctl disable picontrolpanel
 		fi
-		
-		echo -e "\nPiControlPanel was \`$1'd successfully\n"
 
     ;;
 	

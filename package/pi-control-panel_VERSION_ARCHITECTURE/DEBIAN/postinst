@@ -23,8 +23,6 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-echo 'Executing post installation steps...'
-
 case "$1" in
     configure)
 

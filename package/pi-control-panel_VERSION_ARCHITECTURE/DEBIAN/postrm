@@ -18,8 +18,6 @@ set -e
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-echo 'Executing post removal steps...'
-
 case "$1" in
     purge)
     
@@ -29,16 +27,12 @@ case "$1" in
         killall -9 -u picontrolpanel
         userdel picontrolpanel
 
-        echo -e '\nPiControlPanel was purged successfully\n'
-
     ;;
 	
 	remove)
     
         systemctl daemon-reload
         systemctl reset-failed
-		
-		echo -e '\nPiControlPanel was removed successfully\n'
 
     ;;
 	
