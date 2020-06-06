@@ -1,4 +1,4 @@
-# Pi Control Panel - Introduction
+# Pi Control Panel
 
 Web control panel for Raspberry Pi 4 implemented on Angular and  .NET Core using GraphQL as API and EF Core as ORM. Allows easy overclocking, killing processes, updating Raspbian, rebooting and shutting down the Pi. It also provides real-time access to system information such as temperature, memory and disk usage, CPU load and network status.
 
@@ -43,6 +43,6 @@ or
 sudo apt purge pi-control-panel
 ````
 
-# Development
+## Development
 
 Check the [Wiki](https://github.com/rembertmagri/pi-control-panel/wiki/Development) for documentation for developers
