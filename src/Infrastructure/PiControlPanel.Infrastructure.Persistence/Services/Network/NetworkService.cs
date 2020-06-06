@@ -10,6 +10,8 @@
     /// <inheritdoc/>
     public class NetworkService : BaseService<Network, Entities.Network.Network>, INetworkService
     {
+        private readonly IRepositoryBase<Entities.Network.NetworkInterface> networkInterfaceRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NetworkService"/> class.
         /// </summary>
@@ -19,6 +21,29 @@
         public NetworkService(IUnitOfWork unitOfWork, IMapper mapper, ILogger logger)
             : base(unitOfWork.NetworkRepository, unitOfWork, mapper, logger)
         {
+            this.networkInterfaceRepository = unitOfWork.NetworkInterfaceRepository;
+        }
+
+        /// <inheritdoc/>
+        public override async Task UpdateAsync(Network model)
+        {
+            var entity = this.Mapper.Map<Entities.Network.Network>(model);
+            foreach (var networkInterface in entity.NetworkInterfaces)
+            {
+                var networkInterfaceExists =
+                    await this.networkInterfaceRepository.ExistsAsync(n => n.Name == networkInterface.Name);
+                if (networkInterfaceExists)
+                {
+                    this.networkInterfaceRepository.Update(networkInterface);
+                }
+                else
+                {
+                    this.networkInterfaceRepository.Create(networkInterface);
+                }
+            }
+
+            this.Repository.Update(entity);
+            await this.UnitOfWork.CommitAsync();
         }
 
         /// <inheritdoc/>
