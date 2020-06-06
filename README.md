@@ -45,4 +45,4 @@ sudo apt purge pi-control-panel
 
 # Development
 
-Check the Wiki for documentation for developers
+Check the [Wiki](https://github.com/rembertmagri/pi-control-panel/wiki/Development) for documentation for developers
