@@ -32,16 +32,7 @@ sudo apt install ./pi-control-panel_VERSION_arm64.deb
 ````
 
 ## Running on Raspberry Pi
-1. Access http://<<ip_of_raspberry_pi>>:8080/
-
-2. To uninstall:
-````bash
-sudo apt remove pi-control-panel
-````
-or
-````bash
-sudo apt purge pi-control-panel
-````
+After installing, access http://localhost:8080 from the Pi or http://<<ip_of_raspberry_pi>>:8080 from another machine.
 
 ## Development
 
