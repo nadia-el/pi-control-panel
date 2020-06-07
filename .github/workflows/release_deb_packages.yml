@@ -171,14 +171,17 @@ jobs:
         DEBIAN_PACKAGE_REPO_PRIVATE_KEY: ${{ secrets.DEBIAN_PACKAGE_REPO_PRIVATE_KEY }}
       run: |
         cd debian_repo
-        echo "tty is $(tty)"
-        GPG_TTY=$(tty)
-        export GPG_TTY
-        echo "GPG_TTY is $GPG_TTY"
+        echo "11"
+        export GPG_TTY=$(tty)
+        echo "12"
         echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > PRIVATE.KEY
+        echo "13"
         gpg --allow-secret-key-import --import PRIVATE.KEY
+        echo "14"
         rm PRIVATE.KEY
+        echo "15"
         dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
+        echo "16"
     - name: Publish signed packages to Debian Repository
       shell: bash
       run: |
