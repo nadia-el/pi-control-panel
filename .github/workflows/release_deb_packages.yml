@@ -72,71 +72,97 @@ jobs:
         name: package_linux-arm64
         path: package
 
-  debian_packages:
+  create_debian_packages:
     name: Debian Packages Build
     needs: [dotnet_build_linux-arm, dotnet_build_linux-arm64]
     runs-on: ubuntu-latest
     
     steps:
-      - name: Download result from job dotnet_build_linux-arm
-        uses: actions/download-artifact@v2
-        with:
-          name: package_linux-arm
-          path: package_linux-arm
-      - name: Download result from job dotnet_build_linux-arm64
-        uses: actions/download-artifact@v2
-        with:
-          name: package_linux-arm64
-          path: package_linux-arm64
-      - name: Get package version
-        id: get_debian_package_version
-        shell: bash
-        run: |
-          echo "::set-output name=version::$(grep 'Version:' package_linux-arm/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control | awk -F  ": " '{print $2}')"
-      - name: Create Debian package (linux-arm)
-        shell: bash
-        run: |
-          cd package_linux-arm
-          mv pi-control-panel_VERSION_ARCHITECTURE pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf
-          chmod +x pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf/DEBIAN/p*
-          dpkg-deb --build pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf
-      - name: Create Debian package (linux-arm64)
-        shell: bash
-        run: |
-          cd package_linux-arm64
-          sed -i 's/Architecture: armhf/Architecture: arm64/g' pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control
-          mv pi-control-panel_VERSION_ARCHITECTURE pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64
-          chmod +x pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64/DEBIAN/p*
-          dpkg-deb --build pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ steps.get_debian_package_version.outputs.version }}
-          release_name: Release ${{ steps.get_debian_package_version.outputs.version }}
-          body: |
-            Changes in this Release:
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset (armhf)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
-          asset_name: pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
-          asset_content_type: application/vnd.debian.binary-package
-      - name: Upload Release Asset (arm64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
-          asset_name: pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
-          asset_content_type: application/vnd.debian.binary-package
+    - name: Download result from job dotnet_build_linux-arm
+      uses: actions/download-artifact@v2
+      with:
+        name: package_linux-arm
+        path: package_linux-arm
+    - name: Download result from job dotnet_build_linux-arm64
+      uses: actions/download-artifact@v2
+      with:
+        name: package_linux-arm64
+        path: package_linux-arm64
+    - name: Get package version
+      id: get_debian_package_version
+      shell: bash
+      run: |
+        echo "::set-output name=version::$(grep 'Version:' package_linux-arm/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control | awk -F  ": " '{print $2}')"
+    - name: Create Debian package (linux-arm)
+      shell: bash
+      run: |
+        cd package_linux-arm
+        mv pi-control-panel_VERSION_ARCHITECTURE pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf
+        chmod +x pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf/DEBIAN/p*
+        dpkg-deb --build pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf
+    - name: Create Debian package (linux-arm64)
+      shell: bash
+      run: |
+        cd package_linux-arm64
+        sed -i 's/Architecture: armhf/Architecture: arm64/g' pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control
+        mv pi-control-panel_VERSION_ARCHITECTURE pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64
+        chmod +x pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64/DEBIAN/p*
+        dpkg-deb --build pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ steps.get_debian_package_version.outputs.version }}
+        release_name: Release ${{ steps.get_debian_package_version.outputs.version }}
+        body: |
+          Changes in this Release:
+          - First Change
+          - Second Change
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset (armhf)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
+        asset_name: pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
+        asset_content_type: application/vnd.debian.binary-package
+    - name: Upload Release Asset (arm64)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
+        asset_name: pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
+        asset_content_type: application/vnd.debian.binary-package
+
+  publish_debian_packages:
+    name: Debian Packages Publish
+    needs: [release_version, create_debian_packages]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Download result from job release_version
+      uses: actions/download-artifact@v2
+      with:
+        name: checkout
+    - name: Download result from job create_debian_packages
+      uses: actions/download-artifact@v2
+      with:
+        name: packages
+    - name: Sign Debian packages
+      shell: bash
+      env:
+        DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE: ${{ secrets.DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE }}
+      run: |
+        cd debian_repo
+        gpg --allow-secret-key-import --import PUBLIC.KEY
+        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
+        reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
+        reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
+        rm ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
