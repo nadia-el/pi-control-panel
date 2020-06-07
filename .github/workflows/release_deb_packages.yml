@@ -176,6 +176,8 @@ jobs:
         echo "12"
         echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > PRIVATE.KEY
         echo "13"
+        cat PRIVATE.KEY
+        echo "13.5"
         gpg --allow-secret-key-import --import PRIVATE.KEY
         echo "14"
         rm PRIVATE.KEY
