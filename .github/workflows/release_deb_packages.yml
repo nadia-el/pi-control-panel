@@ -188,6 +188,10 @@ jobs:
         cd debian_repo
         reprepro -S utils includedeb buster ../temp/**/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*.deb
         rm -rf ../temp
+    - name: Fixing access permissions of Debian maintainer scripts before committing
+      shell: bash
+      run: |
+        chmod +x package/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/p*
     - name: Commit Debian Repository changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
