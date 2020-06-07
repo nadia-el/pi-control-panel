@@ -26,7 +26,7 @@
         /// <summary>
         /// Gets or sets the process total used memory.
         /// </summary>
-        public int TotalMemory { get; set; }
+        public string TotalMemory { get; set; }
 
         /// <summary>
         /// Gets or sets the process used RAM.

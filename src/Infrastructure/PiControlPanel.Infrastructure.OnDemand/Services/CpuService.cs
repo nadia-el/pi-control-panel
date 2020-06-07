@@ -246,7 +246,7 @@
         private IList<CpuProcess> GetProcesses(IList<string> processLines, DateTime dateTime)
         {
             var processes = new List<CpuProcess>();
-            var regex = new Regex(@"^\s*(?<pid>\S*)\s*(?<user>\S*)\s*(?<pr>\S*)\s*(?<ni>\S*)\s*(?<virt>\d*)\s*(?<res>\d*)\s*(?<shr>\d*)\s*(?<s>\w)\s*(?<cpu>\d+\.\d)\s*(?<mem>\d+\.\d)\s*(?<time>\S*)\s*(?<command>.*)$");
+            var regex = new Regex(@"^\s*(?<pid>\S*)\s*(?<user>\S*)\s*(?<pr>\S*)\s*(?<ni>\S*)\s*(?<virt>\d*\w?)\s*(?<res>\d*)\s*(?<shr>\d*)\s*(?<s>\w)\s*(?<cpu>\d+\.\d)\s*(?<mem>\d+\.\d)\s*(?<time>\S*)\s*(?<command>.*)$");
 
             foreach (var line in processLines)
             {
@@ -257,7 +257,7 @@
                     User = groups["user"].Value,
                     Priority = groups["pr"].Value,
                     NiceValue = int.Parse(groups["ni"].Value),
-                    TotalMemory = int.Parse(groups["virt"].Value),
+                    TotalMemory = groups["virt"].Value,
                     Ram = int.Parse(groups["res"].Value),
                     SharedMemory = int.Parse(groups["shr"].Value),
                     State = groups["s"].Value,

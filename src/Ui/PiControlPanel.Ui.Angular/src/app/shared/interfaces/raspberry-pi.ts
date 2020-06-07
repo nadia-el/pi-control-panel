@@ -54,7 +54,7 @@ export interface ICpuProcess {
   user: string;
   priority: string;
   niceValue: number;
-  totalMemory: number;
+  totalMemory: string;
   ram: number;
   sharedMemory: number;
   state: string;

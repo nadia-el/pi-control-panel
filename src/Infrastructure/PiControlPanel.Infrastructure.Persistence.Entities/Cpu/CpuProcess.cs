@@ -35,8 +35,7 @@
         /// Gets or sets the process total used memory.
         /// </summary>
         [Required]
-        [Range(0, int.MaxValue)]
-        public int TotalMemory { get; set; }
+        public string TotalMemory { get; set; }
 
         /// <summary>
         /// Gets or sets the process used RAM.
