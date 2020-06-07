@@ -171,16 +171,12 @@ jobs:
         DEBIAN_PACKAGE_REPO_PRIVATE_KEY: ${{ secrets.DEBIAN_PACKAGE_REPO_PRIVATE_KEY }}
       run: |
         cd debian_repo
-        echo "11"
         export GPG_TTY=$(tty)
-        echo "12"
-        echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > PRIVATE.KEY
+        echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > private.key
         echo "13"
-        cat PRIVATE.KEY
-        echo "13.5"
-        gpg --allow-secret-key-import --import PRIVATE.KEY
+        gpg --batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE" --allow-secret-key-import --import private.key
         echo "14"
-        rm PRIVATE.KEY
+        rm private.key
         echo "15"
         dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
         echo "16"
