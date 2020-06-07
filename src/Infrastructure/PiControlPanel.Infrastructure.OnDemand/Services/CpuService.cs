@@ -218,7 +218,7 @@
 
             var cores = lines.Count(line => line.StartsWith("processor"));
             this.Logger.Trace($"Number of cores: '{cores}'");
-            var model = lines.Last(line => line.StartsWith("model name"));
+            var model = lines.LastOrDefault(line => line.StartsWith("model name"));
             model = string.IsNullOrWhiteSpace(model) ? "N/A" :
                 model.Split(':')[1].Trim();
             this.Logger.Trace($"Cpu model: '{model}'");
