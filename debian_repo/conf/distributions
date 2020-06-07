@@ -1,0 +1,8 @@
+Origin: Rembert Magri
+Label: Rembert Magri
+Suite: stable
+Codename: buster
+Architectures: armhf arm64
+Components: main
+Description: Debian ARM packages hosted on rembertmagri/debian github repository
+SignWith: F4109F88DD8DCD60
