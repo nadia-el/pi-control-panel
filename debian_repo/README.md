@@ -49,7 +49,7 @@ gpg --allow-secret-key-import --import PRIVATE.KEY
 ````
 
 3. Get the key id to be added as 'SignWith' property of the Distributions file
-![KEY_ID](https://user-images.githubusercontent.com/30979154/83933409-2bbce280-a776-11ea-8e25-8f8e362fd90c.png)
+![KEY_ID](https://user-images.githubusercontent.com/30979154/83982061-51bac200-a8f1-11ea-9809-ef31b16c31f5.png)
 
 4. Create repository
 ````bash
