@@ -163,14 +163,17 @@ jobs:
     - name: Install required packages
       shell: bash
       run: |
-        apt-get install dpkg-sig
+        sudo apt-get install dpkg-sig
     - name: Sign Debian packages
       shell: bash
       env:
         DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE: ${{ secrets.DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE }}
+        DEBIAN_PACKAGE_REPO_PRIVATE_KEY: ${{ secrets.DEBIAN_PACKAGE_REPO_PRIVATE_KEY }}
       run: |
         cd debian_repo
-        gpg --allow-secret-key-import --import PUBLIC.KEY
+        echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > PRIVATE.KEY
+        gpg --allow-secret-key-import --import PRIVATE.KEY
+        rm PRIVATE.KEY
         dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
     - name: Publish signed packages to Debian Repository
       shell: bash
