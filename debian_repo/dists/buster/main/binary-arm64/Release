@@ -1,0 +1,6 @@
+Archive: stable
+Component: main
+Origin: Rembert Magri
+Label: Rembert Magri
+Architecture: arm64
+Description: Debian packages hosted on rembertmagri/pi-control-panel github repository

@@ -11,8 +11,8 @@ Login | Dashboard | Real-Time Chart | Real-Time Chart (overclocking results)
 ### From the private Debian Package Repository
 1. Add the private Debian package repository to the list
 ````bash
-wget -qO - https://raw.githubusercontent.com/rembertmagri/debian/master/PUBLIC.KEY | sudo apt-key add -
-echo 'deb https://raw.githubusercontent.com/rembertmagri/debian/master buster main' | sudo tee -a /etc/apt/sources.list
+wget -qO - https://raw.githubusercontent.com/rembertmagri/pi-control-panel/master/debian_repo/PUBLIC.KEY | sudo apt-key add -
+echo 'deb https://raw.githubusercontent.com/rembertmagri/pi-control-panel/master/debian_repo buster main' | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 ````
 2. Install the package

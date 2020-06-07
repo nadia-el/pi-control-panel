@@ -1,0 +1,48 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Origin: Rembert Magri
+Label: Rembert Magri
+Suite: stable
+Codename: buster
+Date: Sun, 07 Jun 2020 22:40:07 UTC
+Architectures: armhf arm64
+Components: main
+Description: Debian packages hosted on rembertmagri/pi-control-panel github repository
+MD5Sum:
+ 76f6e2bad17b468b065e4cdd27e0ee1d 446 main/binary-armhf/Packages
+ 8e53024fb9758e2d3df37be24114c344 333 main/binary-armhf/Packages.gz
+ e1e36a3de182f38329e75bd123f78419 182 main/binary-armhf/Release
+ b47358567de1fb923aa0361bf410d282 446 main/binary-arm64/Packages
+ 1465851f544e428b52dabfb59ec50b72 334 main/binary-arm64/Packages.gz
+ 75efb98399e2479b7d88a9e42443a9e9 182 main/binary-arm64/Release
+SHA1:
+ cf773c310b4d0d61f55860186fdf65a42a5142e0 446 main/binary-armhf/Packages
+ 4b96a89d71f5f94da3b1a24baa29b8a396371954 333 main/binary-armhf/Packages.gz
+ 8675769074a42c4ceba8252af6b9a47fd2be6079 182 main/binary-armhf/Release
+ b98acbfdcd09e90993ea0d46392e29eafda9a612 446 main/binary-arm64/Packages
+ 25047c5f8745f20031b4dc9013e01aedd1b53100 334 main/binary-arm64/Packages.gz
+ 9b0ee21c355b7948e34a49b1f019d1bd31ae098f 182 main/binary-arm64/Release
+SHA256:
+ b06d70754ed92930c91e90bc6e24864c1bb096775545318836d0101071d0cc25 446 main/binary-armhf/Packages
+ 2a6fe865fa5e1af8a615b05ce65e9ad178428040ac73ea70efa7ee95483d357e 333 main/binary-armhf/Packages.gz
+ c5b822c1b00b8ae4e4ebf61523f30712068241f5e07dbfbac477e58126f75c27 182 main/binary-armhf/Release
+ a6b09caf807ba0ca4c721cbcb499aa8bab833cd69c9f7527af9bd75a8f912abb 446 main/binary-arm64/Packages
+ 27b78aea9d2ab28182cb10ca25c41892f98ff627f9730163982851da0c4db308 334 main/binary-arm64/Packages.gz
+ 4d99d1bfd4620153c7b7b3d94d3c7da0da28f94a328c55ac7b951db720364901 182 main/binary-arm64/Release
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEELRB2AnVz/p4LlBMc9BCfiN2NzWAFAl7dbMgACgkQ9BCfiN2N
+zWCgNxAAuy2Y5YjXA1B4IIIAt6SJ99an2C2KUWbqBIbp+3Ltv5lNQQ7fPhq3Y7Hi
+BQ5QjKAkSflctD2APfwP+CLV1CZdD92sxuNY4LMuWDTs8EbanjNuk5/vIIaEBuPd
+sm6N/RpnyzbiujpF7YawJYfGk7pD9g39BZbJ8Cvf3dYK3QCQ68liv/qGFYMsDiEi
+dytaTFrsplmcSZ1Ro2MMgB3C6zSTe9GQPbgWa8I2Q/eR8LepSOFksPR2ci6pnmI2
+TZRjAEa7WYAruYlZ/flOM2TwWfzqgL1WFeTgUwVqJ0i6GGCBimXB6YvWAGwRFRlE
+WtVT9GKzMrIkb+Jc+O/9fU3RzFQnqdXqOpQaiyb8YPYEHTi7Apqp4QO7wUyBh7fH
+BDUax+f8rLxRC65zuUTkJpHhj84kltOr4IwzszmLBhrFUvlDaTZt+07nrBWVs6mo
+EtnMVRBegOjojJgRsoKsaX3TEdmYX4Mp7Hrg+P+D2iNQX+bgYtQnV7Jj6CR/m+/3
+rJxmaA81Y5YaFhRaGdyL4auTjirykpOTTj6E91OgBCIBcATqseOL8Ac+dGgoQQya
+s5f/Ee9/rYjW/usNrq6dXYwGBJ/hedHsKKxQQ0/1hSrDwHuw9NBGnKY9qi8wMYNp
+t/vMSnzFqzqFt4UMumrLDIVsfAQ6rASOiJjyJf5296bIG1Tl4OI=
+=INKs
+-----END PGP SIGNATURE-----
