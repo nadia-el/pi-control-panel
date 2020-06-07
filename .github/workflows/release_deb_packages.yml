@@ -148,14 +148,11 @@ jobs:
 
   publish_debian_packages:
     name: Debian Packages Publish
-    needs: [release_version, create_debian_packages]
+    needs: [create_debian_packages]
     runs-on: ubuntu-latest
     
     steps:
-    - name: Download result from job release_version
-      uses: actions/download-artifact@v2
-      with:
-        name: checkout
+    - uses: actions/checkout@v2
     - name: Download result from job create_debian_packages
       uses: actions/download-artifact@v2
       with:
@@ -194,9 +191,8 @@ jobs:
         chmod +x package/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/p*
     - name: Commit Debian Repository changes
       run: |
-          git config --global user.name 'rembertmagri'
+          git config --global user.name 'Rembert Magri'
           git config --global user.email 'rembertmagri@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git add debian_repo/**
           git commit -m 'Debian Repository updated with Release ${{ steps.get_debian_package_version.outputs.version }}'
           git push
