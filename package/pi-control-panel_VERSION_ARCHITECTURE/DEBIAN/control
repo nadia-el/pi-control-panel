@@ -6,4 +6,3 @@ Priority: optional
 Depends: procps,sqlite3
 Maintainer: Rembert Magri
 Description: Raspberry Pi Control Panel
-
