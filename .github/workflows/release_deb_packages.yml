@@ -160,6 +160,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: packages
+        path: temp
     - name: Install required packages
       shell: bash
       run: |
@@ -168,7 +169,7 @@ jobs:
       id: get_debian_package_version
       shell: bash
       run: |
-        echo "::set-output name=version::$(grep 'Version:' package_linux-arm/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control | awk -F  ": " '{print $2}')"
+        echo "::set-output name=version::$(grep 'Version:' package/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/control | awk -F  ": " '{print $2}')"
     - name: Sign Debian packages
       shell: bash
       env:
@@ -180,17 +181,13 @@ jobs:
         echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > private.key
         gpg --batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE" --allow-secret-key-import --import private.key
         rm private.key
-        ls -la ../
-        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
-        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
+        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../temp/**/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*.deb
     - name: Publish signed packages to Debian Repository
       shell: bash
       run: |
         cd debian_repo
-        reprepro -S utils includedeb buster ../package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
-        reprepro -S utils includedeb buster ../package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
-        rm -rf ../package_linux-arm
-        rm -rf ../package_linux-arm64
+        reprepro -S utils includedeb buster ../temp/**/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*.deb
+        rm -rf ../temp
     - name: Commit Debian Repository changes
       run: |
           git config --global user.name 'GitHub Actions'
