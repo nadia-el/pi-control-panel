@@ -164,7 +164,7 @@ jobs:
     - name: Install required packages
       shell: bash
       run: |
-        sudo apt-get -y install dpkg-sig
+        sudo apt-get -y install dpkg-sig reprepro
     - name: Get package version
       id: get_debian_package_version
       shell: bash
@@ -192,5 +192,5 @@ jobs:
       run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github-actions@users.noreply.github.com'
-          git commit -am 'Debian Repository updated with version ${{ steps.get_debian_package_version.outputs.version }}'
+          git commit -am 'Debian Repository updated with Release ${{ steps.get_debian_package_version.outputs.version }}'
           git push
