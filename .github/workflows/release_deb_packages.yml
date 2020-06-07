@@ -192,11 +192,15 @@ jobs:
       shell: bash
       run: |
         chmod +x package/pi-control-panel_VERSION_ARCHITECTURE/DEBIAN/p*
+        cd debian_repo
+        ls -la
     - name: Commit Debian Repository changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
           git config --global user.name 'rembertmagri'
           git config --global user.email 'rembertmagri@users.noreply.github.com'
-          git commit -am 'Debian Repository updated with Release ${{ steps.get_debian_package_version.outputs.version }}'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git add debian_repo/**
+          git commit -m 'Debian Repository updated with Release ${{ steps.get_debian_package_version.outputs.version }}'
           git push origin master
