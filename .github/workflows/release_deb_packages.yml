@@ -173,23 +173,21 @@ jobs:
         cd debian_repo
         export GPG_TTY=$(tty)
         echo "$DEBIAN_PACKAGE_REPO_PRIVATE_KEY" > private.key
-        echo "13"
         gpg --batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE" --allow-secret-key-import --import private.key
-        echo "14"
         rm private.key
-        echo "15"
-        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
-        echo "16"
+        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
+        dpkg-sig --sign builder --gpg-options '--batch --pinentry-mode loopback --passphrase "$DEBIAN_PACKAGE_REPO_KEY_PASSPHRASE"' ../package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
     - name: Publish signed packages to Debian Repository
       shell: bash
       run: |
         cd debian_repo
-        reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
-        reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
-        rm ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
+        reprepro -S utils includedeb buster ../package_linux-arm/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
+        reprepro -S utils includedeb buster ../package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
+        rm -rf ../package_linux-arm
+        rm -rf ../package_linux-arm64
     - name: Commit Debian Repository changes
       run: |
-          git config --global user.name 'Rembert Magri'
-          git config --global user.email 'rembertmagri@users.noreply.github.com'
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
           git commit -am 'Debian Repository updated with version ${{ steps.get_debian_package_version.outputs.version }}'
           git push
