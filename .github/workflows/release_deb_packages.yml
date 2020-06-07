@@ -44,7 +44,7 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build
       run: dotnet build src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi_linux-arm
-    - name: Upload results for job debian_package
+    - name: Upload results for job create_debian_packages
       uses: actions/upload-artifact@v2
       with:
         name: package_linux-arm
@@ -66,7 +66,7 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build
       run: dotnet build src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj /p:DeployOnBuild=true /p:PublishProfile=RaspberryPi_linux-arm64
-    - name: Upload results for job debian_package
+    - name: Upload results for job create_debian_packages
       uses: actions/upload-artifact@v2
       with:
         name: package_linux-arm64
@@ -140,6 +140,11 @@ jobs:
         asset_path: ./package_linux-arm64/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
         asset_name: pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
         asset_content_type: application/vnd.debian.binary-package
+    - name: Upload results for job publish_debian_packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages
+        path: package_linux*/pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*.deb
 
   publish_debian_packages:
     name: Debian Packages Publish
@@ -166,3 +171,9 @@ jobs:
         reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_armhf.deb
         reprepro -S utils includedeb buster ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm64.deb
         rm ../pi-control-panel_${{ steps.get_debian_package_version.outputs.version }}_arm*
+    - name: Commit Debian Repository changes
+        run: |
+          git config --global user.name 'Rembert Magri'
+          git config --global user.email 'rembertmagri@users.noreply.github.com'
+          git commit -am 'Debian Repository updated with version ${{ steps.get_debian_package_version.outputs.version }}'
+          git push
