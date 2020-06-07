@@ -154,7 +154,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        persist-credentials: false
         token: ${{ secrets.PAT_FOR_GITHUB_ACTIONS }}
     - name: Download result from job create_debian_packages
       uses: actions/download-artifact@v2
