@@ -163,7 +163,7 @@ jobs:
     - name: Install required packages
       shell: bash
       run: |
-        sudo apt-get install dpkg-sig
+        sudo apt-get -y install dpkg-sig
     - name: Sign Debian packages
       shell: bash
       env:
