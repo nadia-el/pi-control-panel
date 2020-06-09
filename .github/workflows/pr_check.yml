@@ -16,8 +16,8 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet build src/Api/PiControlPanel.Api.GraphQL/PiControlPanel.Api.GraphQL.csproj --configuration Release --no-restore
+    #- name: Test
+    #  run: dotnet test --no-restore --verbosity normal
